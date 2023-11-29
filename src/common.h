@@ -122,11 +122,8 @@ struct SimulationsResult
     std::string spells;
 };
 
-double critRatingToChance(double rating);
-
-double hitRatingToChance(double rating);
-
-double hasteRatingToHaste(double rating);
+bool isSchool(School var, School cmp);
+bool isSchool(School var, School cmp1, School cmp2);
 
 // Global rng generator
 extern thread_local std::mt19937 g_rng;

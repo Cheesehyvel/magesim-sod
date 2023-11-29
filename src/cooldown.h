@@ -24,7 +24,8 @@ namespace cooldown
         ARCANE_POWER = 12042,
         PRESENCE_OF_MIND = 12043,
         POWER_INFUSION = 10060,
-        MANA_GEM = 42987
+        MANA_GEM = 42987,
+        LIVING_FLAME = 401558,
         // Trinkets
     };
 
@@ -191,6 +192,18 @@ namespace cooldown
         {
             id = EVOCATION;
             duration = 480;
+        }
+
+    };
+
+    class LivingFlame : public Cooldown
+    {
+
+    public:
+        LivingFlame()
+        {
+            id = LIVING_FLAME;
+            duration = 60;
         }
 
     };

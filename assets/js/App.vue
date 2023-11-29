@@ -556,7 +556,7 @@
                                     <th>Misses</th>
                                     <th>Hits</th>
                                     <th>Crits</th>
-                                    <th>Damage</th>
+                                    <th>DPS</th>
                                     <th>Min dmg</th>
                                     <th>Avg dmg</th>
                                     <th>Max dmg</th>
@@ -570,7 +570,9 @@
                                         <td>{{ $round(spell.hits, 1) }}</td>
                                         <td>{{ $round(spell.crits, 1) }} ({{ $round(spell.crits/(spell.hits + spell.crits + spell.misses)*100, 2) }}%)</td>
                                         <td>
-                                            {{ $round(spell.dmg, 0) }}
+                                            <template v-if="result.hasOwnProperty('t')">{{ $round(spell.dmg / result.t, 2) }}</template>
+                                            <template v-else>{{ $round(spell.dmg / spellDmg * result.avg_dps, 2) }}</template>
+                                            &nbsp;
                                             <template v-if="result.hasOwnProperty('dmg')">({{ $round(spell.dmg / result.dmg * 100, 2) }}%)</template>
                                             <template v-else>({{ $round(spell.dmg / spellDmg * 100, 2) }}%)</template>
                                         </td>
@@ -3205,7 +3207,7 @@
                     this.config.rotation = constants.rotations.ROTATION_ST_ARCANE;
                 }
                 else if (spec == "fire") {
-                    this.config.build = "https://www.wowhead.com/classic/talent-calc/mage/-505012-003_156j976vca6j8";
+                    this.config.build = "https://www.wowhead.com/classic/talent-calc/mage/-505012-003_156j976jha6rb";
                     this.config.rotation = constants.rotations.ROTATION_ST_FIRE;
                 }
                 else if (spec == "frost") {

@@ -1177,7 +1177,7 @@ double Simulation::critChance(std::shared_ptr<unit::Unit> unit, std::shared_ptr<
     if (!unit->get_raid_debuffs)
         return crit;
 
-    if (target->hasDebuff(debuff::WINTERS_CHILL) && spell->school == SCHOOL_FROST)
+    if (target->hasDebuff(debuff::WINTERS_CHILL) && spell->isSchool(SCHOOL_FROST))
         crit += target->debuffStacks(debuff::WINTERS_CHILL);
 
     crit = std::min(crit, 100.0);
@@ -1224,7 +1224,7 @@ double Simulation::debuffDmgMultiplier(std::shared_ptr<unit::Unit> unit, std::sh
     if (!unit->get_raid_debuffs)
         return multi;
 
-    if (target->hasDebuff(debuff::IMPROVED_SCORCH) && spell->school == SCHOOL_FIRE)
+    if (target->hasDebuff(debuff::IMPROVED_SCORCH) && spell->isSchool(SCHOOL_FIRE))
         multi *= 1 + (0.03 * target->debuffStacks(debuff::IMPROVED_SCORCH));
 
     return multi;

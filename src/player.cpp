@@ -64,7 +64,7 @@ void Player::applyMana(const State& state, double _mana)
 {
     Unit::applyMana(state, _mana);
 
-    if (_mana < 0)
+    if (_mana < 0) 
         t_mana_spent = state.t;
 }
 
@@ -74,20 +74,25 @@ double Player::manaPerSecond(const State& state) const
     double spi = spiritManaPerSecond();
 
     double while_casting = 0;
+
+
+    if (talents.arcane_meditation)
+        while_casting+= 0.05 * talents.arcane_meditation;
+    if (runes.enlightenment && manaPercent() <= 30.0)
+        while_casting+= 0.1;
+
     if (t_mana_spent + 5 <= state.t)
         while_casting = 1;
-    else if (talents.arcane_meditation)
-        while_casting+= 0.05 * talents.arcane_meditation;
 
     if (hasBuff(buff::INNERVATE)) {
         spi*= 5.0;
         while_casting = 1;
     }
-    else if (hasBuff(buff::EVOCATION)) {
+    if (hasBuff(buff::EVOCATION)) {
         spi*= 16.0;
         while_casting = 1;
     }
-    else if (hasBuff(buff::ARCANE_SURGE)) {
+    if (hasBuff(buff::ARCANE_SURGE)) {
         spi*= 4.0;
         while_casting = 1;
     }
@@ -130,9 +135,9 @@ double Player::hitChance(std::shared_ptr<spell::Spell> spell, double dlevel) con
 {
     double hit = Unit::hitChance(spell, dlevel);
 
-    if (spell->school == SCHOOL_ARCANE && talents.arcane_focus)
+    if (spell->isSchool(SCHOOL_ARCANE) && talents.arcane_focus)
         hit += talents.arcane_focus * 2.0;
-    if ((spell->school == SCHOOL_FIRE || spell->school == SCHOOL_FROST) && talents.elemental_precision)
+    if (spell->isSchool(SCHOOL_FIRE, SCHOOL_FROST) && talents.elemental_precision)
         hit += talents.elemental_precision * 2.0;
 
     return hit;
@@ -157,10 +162,10 @@ double Player::critChance(std::shared_ptr<spell::Spell> spell) const
     if (talents.imp_arcane_explosion && spell->id == spell::ARCANE_EXPLOSION)
         crit += talents.imp_arcane_explosion * 2.0;
 
-    if (talents.critical_mass && (spell->school == SCHOOL_FIRE || spell->school == SCHOOL_SPELLFIRE))
+    if (talents.critical_mass && spell->isSchool(SCHOOL_FIRE))
         crit += talents.critical_mass * 2.0;
 
-    if (hasBuff(buff::COMBUSTION) && (spell->school == SCHOOL_FIRE || spell->school == SCHOOL_SPELLFIRE))
+    if (hasBuff(buff::COMBUSTION) && spell->isSchool(SCHOOL_FIRE))
         crit += buffStacks(buff::COMBUSTION) * 10.0;
 
     if (talents.shatter && isFrozen())
@@ -176,7 +181,7 @@ double Player::critMultiplierMod(std::shared_ptr<spell::Spell> spell) const
     if (spell->proc)
         return multi;
 
-    if (spell->school == SCHOOL_FROST && talents.ice_shards)
+    if (spell->isSchool(SCHOOL_FROST) && talents.ice_shards)
         multi += talents.ice_shards * 0.2;
 
     return multi;
@@ -187,15 +192,18 @@ double Player::buffDmgMultiplier(std::shared_ptr<spell::Spell> spell, const Stat
     double multi = Unit::buffDmgMultiplier(spell, state);
     double additive = 1;
 
-    if (talents.piercing_ice && spell->school == SCHOOL_FROST)
+    if (spell->proc)
+        return multi;
+
+    if (runes.enlightenment && manaPercent() >= 70.0)
+        multi *= 1.1;
+
+    if (talents.piercing_ice && spell->isSchool(SCHOOL_FROST))
         multi *= 1 + talents.piercing_ice * 0.02;
     if (spell->id == spell::CONE_OF_COLD && talents.imp_cone_of_cold)
         multi *= 1.05 + talents.imp_cone_of_cold * 0.1;
 
-    if (spell->proc)
-        return multi;
-
-    if (spell->school == SCHOOL_ARCANE && spell->id != spell::ARCANE_BLAST && hasBuff(buff::ARCANE_BLAST, true)) {
+    if (spell->isSchool(SCHOOL_ARCANE) && spell->id != spell::ARCANE_BLAST && hasBuff(buff::ARCANE_BLAST, true)) {
         double ab = 0.15;
         multi *= 1 + ab * buffStacks(buff::ARCANE_BLAST, true);
     }
@@ -209,7 +217,7 @@ double Player::buffDmgMultiplier(std::shared_ptr<spell::Spell> spell, const Stat
     // Additive category
     additive = 1;
 
-    if (talents.fire_power && spell->school == SCHOOL_FIRE)
+    if (talents.fire_power && spell->isSchool(SCHOOL_FIRE))
         additive += talents.fire_power * 0.02;
 
     if (hasBuff(buff::ARCANE_POWER))
@@ -325,6 +333,8 @@ std::vector<action::Action> Player::onCastSuccessProc(const State& state, std::s
         actions.push_back(cooldownAction<cooldown::BlastWave>());
     if (spell->id == spell::CONE_OF_COLD)
         actions.push_back(cooldownAction<cooldown::ConeOfCold>());
+    if (spell->id == spell::LIVING_FLAME)
+        actions.push_back(cooldownAction<cooldown::LivingFlame>());
     if (spell->id == spell::EVOCATION) {
         actions.push_back(cooldownAction<cooldown::Evocation>());
         actions.push_back(buffAction<buff::Evocation>());
@@ -363,7 +373,7 @@ std::vector<action::Action> Player::onCastSuccessProc(const State& state, std::s
 
     if (spell->id == spell::ARCANE_BLAST)
         actions.push_back(buffAction<buff::ArcaneBlast>());
-    else if (hasBuff(buff::ARCANE_BLAST) && spell->school == SCHOOL_ARCANE && spell->min_dmg > 0)
+    else if (hasBuff(buff::ARCANE_BLAST) && spell->isSchool(SCHOOL_ARCANE) && spell->min_dmg > 0)
         actions.push_back(buffExpireAction<buff::ArcaneBlast>());
 
     if (runes.fingers_of_frost && hasBuff(buff::FINGERS_OF_FROST) && is_harmful) {
@@ -434,7 +444,7 @@ std::vector<action::Action> Player::onSpellImpactProc(const State& state, const 
             //         actions.push_back(manaAction(33.0, "Judgement of Wisdom"));
             // }
 
-            if (hasBuff(buff::COMBUSTION) && (instance.spell->school == SCHOOL_FIRE || instance.spell->school == SCHOOL_SPELLFIRE)) {
+            if (hasBuff(buff::COMBUSTION) && instance.spell->isSchool(SCHOOL_FIRE)) {
                 if (instance.result == spell::CRIT)
                     combustion++;
                 if (combustion == 3) {
@@ -451,7 +461,7 @@ std::vector<action::Action> Player::onSpellImpactProc(const State& state, const 
     if (instance.result == spell::CRIT) {
         // Ignite
         // TODO: MAJOR REWORK FOR VANILLA IGNITE
-        if (talents.ignite && (instance.spell->school == SCHOOL_FIRE || instance.spell->school == SCHOOL_SPELLFIRE) && !instance.spell->proc) {
+        if (talents.ignite && instance.spell->isSchool(SCHOOL_FIRE) && !instance.spell->proc) {
             // 40% over 2 ticks = 20%
             actions.push_back(spellAction<spell::Ignite>(target, round(instance.dmg * 0.2)));
         }
@@ -929,6 +939,10 @@ action::Action Player::nextAction(const State& state)
     if (config.rotation == ROTATION_ST_FIRE || config.rotation == ROTATION_ST_FIRE_SC) {
 
         bool multi_target = config.targets > 1;
+
+        if (runes.living_flame && !hasCooldown(cooldown::LIVING_FLAME)) {
+            return spellAction<spell::LivingFlame>();
+        }
 
         // Check for Living Bomb targets
         if (runes.living_bomb && state.t + 12.0 < state.duration) {

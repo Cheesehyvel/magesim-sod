@@ -2,7 +2,7 @@
 
 #include <string>
 
-const double RUNE_SCALE = 0.41666; // lvl 25
+const double RUNE_SCALE = 0.41667; // lvl 25
 
 namespace spell
 {
@@ -86,6 +86,16 @@ namespace spell
         double avgDmg() const
         {
             return (min_dmg + max_dmg)/2.0;
+        }
+
+        bool isSchool(School cmp) const
+        {
+            return ::isSchool(school, cmp);
+        }
+
+        bool isSchool(School cmp1, School cmp2) 
+        {
+            return ::isSchool(school, cmp1, cmp2);
         }
 
         // TODO: what other fields can be const-init?
@@ -363,6 +373,22 @@ namespace spell
             min_dmg = 171.0 * RUNE_SCALE;
             max_dmg = 171.0 * RUNE_SCALE;
             coeff = 0.4;
+        }
+    };
+
+    struct LivingFlame : Spell
+    {
+        LivingFlame() : Spell(LIVING_FLAME, "Living Flame", SCHOOL_SPELLFIRE)
+        {
+            aoe = true;
+            cost_base_mana = true;
+            cost = 11;
+            dot = true;
+            t_interval = 1;
+            ticks = 20;
+            min_dmg = 100.0 * RUNE_SCALE;
+            max_dmg = 100.0 * RUNE_SCALE;
+            coeff = 0.143;
         }
     };
 
