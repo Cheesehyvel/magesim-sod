@@ -226,7 +226,7 @@ void Unit::applyMana(const State& state, double _mana)
 
 double Unit::spiritManaPerSecond() const
 {
-    return 0.001 + getSpirit() * 0.017936 * sqrt(getIntellect());
+    return (getSpirit() * 0.25 + 12.5) * 0.5;
 }
 
 double Unit::staticManaPerSecond() const

@@ -59,6 +59,12 @@ def getItem(item_id, phase = 1, faction = None):
             stats["spi"] = equip["spi"]
         if "splpwr" in equip:
             stats["sp"] = equip["splpwr"]
+        if "frosplpwr" in equip:
+            stats["sp_frost"] = equip["frosplpwr"]
+        if "firsplpwr" in equip:
+            stats["sp_fire"] = equip["firsplpwr"]
+        if "arcsplpwr" in equip:
+            stats["sp_arcane"] = equip["arcsplpwr"]
         if "spldmg" in equip:
             stats["sp"] = equip["spldmg"]
         if "splcritstrkpct" in equip:

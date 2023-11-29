@@ -1709,7 +1709,7 @@
                 is_running_ep: false,
                 active_tab: "gear",
                 item_source: "wowhead",
-                search_item: this.loadFilters("phase:1-")+" ",
+                search_item: this.loadFilters("phase:1")+" ",
                 search_log: "",
                 log_filter: {
                     "0": true,
@@ -1872,9 +1872,9 @@
                             if (arr[0] == "pvp") {
                                 value = fnBool(arr[1]);
                                 if (value)
-                                    items = items.filter(item => item.title.indexOf(" Gladiator's ") != -1);
+                                    items = items.filter(item => _.get(item, "pvp", false) === true);
                                 else if (value !== null)
-                                    items = items.filter(item => item.title.indexOf(" Gladiator's ") == -1);
+                                    items = items.filter(item => _.get(item, "pvp", false) === false);
                             }
                             else if (arr[0] == "ilvl") {
                                 items = items.filter(item => filterInt(arr[1], _.get(item, "ilvl", 0)));
@@ -2954,7 +2954,7 @@
 
                 var id = item.id;
                 if (typeof(id) == "string")
-                    id = id.split(":")[0];
+                    id = id.replace(":", "&rand=");
 
                 var url = "https://www.wowhead.com/classic/item="+id;
 
@@ -3061,8 +3061,6 @@
 
                     var enchant = this.equippedEnchant(slot);
                     if (!item.twohand && enchant && enchant.twohand)
-                        this.enchants[slot] = null;
-                    else if (item.twohand && enchant && !enchant.twohand)
                         this.enchants[slot] = null;
                 }
 
