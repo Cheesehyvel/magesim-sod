@@ -246,16 +246,6 @@ double Player::manaCostMultiplier(std::shared_ptr<spell::Spell> spell) const
     return multi;
 }
 
-double Player::baseManaCost(std::shared_ptr<spell::Spell> spell) const
-{
-    double cost = Unit::baseManaCost(spell);
-
-    if (cost && runes.burnout)
-        cost+= base_mana*0.1;
-
-    return cost;
-}
-
 double Player::manaCostMod(std::shared_ptr<spell::Spell> spell, double mana_cost) const
 {
     double mod = Unit::manaCostMod(spell, mana_cost);
@@ -476,6 +466,9 @@ std::vector<action::Action> Player::onSpellImpactProc(const State& state, const 
                     mana = mana / instance.spell->ticks;
                 actions.push_back(manaAction(mana, "Master of Elements"));
             }
+
+            if (runes.burnout && instance.spell->actual_cost)
+                actions.push_back(manaAction(instance.spell->actual_cost * -0.01 * runes.burnout, "Burnout"));
         }
     }
 
@@ -1008,22 +1001,34 @@ action::Action Player::nextAction(const State& state)
     // Arcane rotations
     else if (config.rotation == ROTATION_ST_ARCANE) {
         auto ab = std::make_shared<spell::ArcaneBlast>();
+        int ab_stacks = 3;
 
-        if (runes.regeneration && !hasBuff(buff::TEMPORAL_BEACON)) {
-            return spellAction<spell::Regeneration>();
+        if (!state.isMoving()) {
+            if (runes.regeneration && !hasBuff(buff::TEMPORAL_BEACON)) {
+                return spellAction<spell::Regeneration>();
+            }
+            else if (runes.mass_regeneration && !hasBuff(buff::TEMPORAL_BEACON_PARTY)) {
+                return spellAction<spell::MassRegeneration>();
+            }
         }
-        else if (runes.mass_regeneration && !hasBuff(buff::TEMPORAL_BEACON_PARTY)) {
-            return spellAction<spell::MassRegeneration>();
+
+        if (runes.living_flame && !hasCooldown(cooldown::LIVING_FLAME)) {
+            if (ab_streak == 4)
+                return spellAction<spell::LivingFlame>();
+            else if (!state.isMoving())
+                return spellAction(ab);
         }
-        else if (runes.arcane_surge && 
+
+        if (runes.arcane_surge && 
             !hasCooldown(cooldown::ARCANE_SURGE) &&
             (state.timeRemain() < 2.5 ||
-             manaPercent() < 20.0 && ab_streak >= 3 ||
+             manaPercent() < 20.0 && ab_streak >= ab_stacks ||
              manaPercent() < 30.0 && !runes.arcane_blast))
         {
             return spellAction<spell::ArcaneSurge>();
         }
-        else if (state.isMoving() && !hasBuff(buff::PRESENCE_OF_MIND)) {
+
+        if (state.isMoving() && !hasBuff(buff::PRESENCE_OF_MIND)) {
             if (config.targets > 2 && config.distance <= 10) {
                 return spellAction<spell::ArcaneExplosion>();
             }
@@ -1040,7 +1045,7 @@ action::Action Player::nextAction(const State& state)
         }
         else if (state.duration - state.t < castTime(ab) && !hasCooldown(cooldown::FIRE_BLAST))
             return spellAction<spell::FireBlast>(target);
-        else if (ab_streak >= 3)
+        else if (ab_streak >= ab_stacks)
             return spellAction<spell::ArcaneMissiles>();
         else if (runes.arcane_blast && canCast(ab))
             return spellAction(ab, target);

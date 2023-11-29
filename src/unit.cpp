@@ -267,7 +267,10 @@ double Unit::baseCastTime(std::shared_ptr<spell::Spell> spell) const
 
 double Unit::castTime(std::shared_ptr<spell::Spell> spell) const
 {
-    return baseCastTime(spell) * castHaste();
+    double t = baseCastTime(spell);
+    if (!spell->channeling)
+        t*= castHaste();
+    return t;
 }
 
 double Unit::castHaste() const
