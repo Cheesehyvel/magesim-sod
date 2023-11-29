@@ -36,6 +36,7 @@ export default {
         OIL_BRILLIANT_MANA: 20748,
         OIL_LESSER_MANA: 25127,
         OIL_MINOR_MANA: 25125,
+        OIL_BLACKFATHOM: 211848,
     },
     buffs: {
         INNERVATE: 29166,

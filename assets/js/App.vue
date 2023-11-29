@@ -925,7 +925,8 @@
                                     <label>Weapon oil</label>
                                     <select v-model="config.weapon_oil">
                                         <option :value="weapon_oils.OIL_NONE">None</option>
-                                        <!-- <option :value="weapon_oils.OIL_BRILLIANT_WIZARD">Brilliant Wizard Oil (36 sp / 1%crit)</option> -->
+                                        <option :value="weapon_oils.OIL_BLACKFATHOM">Blackfathom Oil (12 mp5 / 1% hit)</option>
+                                        <!-- <option :value="weapon_oils.OIL_BRILLIANT_WIZARD">Brilliant Wizard Oil (36 sp / 1% crit)</option> -->
                                         <!-- <option :value="weapon_oils.OIL_WIZARD">Wizard Oil (24 sp)</option> -->
                                         <!-- <option :value="weapon_oils.OIL_LESSER_WIZARD">Lesser Wizard Oil (16 sp)</option> -->
                                         <option :value="weapon_oils.OIL_MINOR_WIZARD">Minor Wizard Oil (8 sp)</option>
@@ -2862,6 +2863,10 @@
                     stats.mana+= 2000;
 
                 // Weapon oils
+                if (this.config.weapon_oil == this.weapon_oils.OIL_BLACKFATHOM) {
+                    stats.mp5+= 12;
+                    stats.hit+= 1;
+                }
                 if (this.config.weapon_oil == this.weapon_oils.OIL_BRILLIANT_WIZARD) {
                     stats.sp+= 36;
                     stats.crit+= 1;
