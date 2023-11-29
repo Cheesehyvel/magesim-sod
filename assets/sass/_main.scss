@@ -1,0 +1,1456 @@
+body {
+    background: rgb(20, 15, 23);
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    font-family: "Source Sans Pro", Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+html.callback {
+    body {
+        > * {
+            display: none !important;
+        }
+    }
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+label {
+    display: block;
+}
+
+.faded {
+    color: #aaa;
+
+    &.warning {
+        color: #c66;
+    }
+}
+
+a {
+    color: $color_primary;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.clearfix {
+    @include clearfix();
+}
+
+.fl { float: left; }
+.fr { float: right; }
+
+.material-icons {
+    font-size: inherit;
+    vertical-align: middle;
+
+    &.flip-v {
+        transform: rotateX(180deg);
+    }
+}
+
+.timeline {
+    .graph {
+        padding-left: 75px;
+    }
+
+    .events {
+        padding-right: 20px;
+        margin-top: $spacer*0.5;
+        line-height: 30px;
+
+        .title {
+            float: left;
+            width: 200px;
+            border-right: 1px solid $color_stroke;
+        }
+
+        .times {
+            float: left;
+            position: relative;
+            width: calc(100% - 201px);
+            height: 30px;
+        }
+
+        .time {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            border-left: 1px solid $color_stroke;
+            padding-left: 3px;
+        }
+
+        .bar {
+            position: absolute;
+            top: 5px;
+            bottom: 5px;
+            opacity: 0.7;
+            transition: opacity 0.2s ease;
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+
+        .timestamps,
+        .item {
+            @include clearfix();
+        }
+
+        .item {
+            border-top: 1px solid $color_stroke;
+        }
+    }
+}
+
+.sort-link {
+    cursor: pointer;
+
+    .material-icons {
+        font-size: 18px;
+        color: #888;
+    }
+
+    &.active {
+        .material-icons {
+            color: $color_primary;
+        }
+    }
+}
+
+.tal {
+    text-align: left;
+}
+.tar {
+    text-align: right;
+}
+.tac {
+    text-align: center;
+}
+
+.btn {
+    display: inline-block;
+    border-radius: 20px;
+    padding: 10px 20px;
+    background: $color_primary;
+    cursor: pointer;
+    user-select: none;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: opacity 0.2s ease, background 0.2s ease, color 0.2s ease;
+    text-align: center;
+    line-height: 18px;
+
+    &:hover {
+        background: $color_primary_hover;
+        color: #fff;
+    }
+
+    &.block {
+        display: block;
+    }
+
+    &.large {
+        padding: 15px 20px;
+        border-radius: 30px;
+        font-size: 16px;
+        line-height: 1.2;
+
+        div:nth-child(n+2) {
+            display: none;
+        }
+    }
+
+    &.wide {
+        padding: 10px 25px;
+    }
+
+    &.danger {
+        background: #800;
+
+        &:hover {
+            background: #f00;
+        }
+    }
+
+    &.disabled {
+        pointer-events: none;
+        opacity: 0.5;
+    }
+
+    &.secondary {
+        padding: 10px 14px;
+        border-radius: 0;
+        background: #004;
+        color: #ccc;
+
+        &:hover {
+            background: #006;
+            color: #fff;
+        }
+    }
+
+    &.small {
+        border-radius: 20px;
+        padding: 8px 12px;
+    }
+
+    img {
+        max-width: 16px;
+        vertical-align: middle;
+        margin-top: -2px;
+        box-shadow: 0 0 3px rgba(0, 0, 0, 0.6);
+        border-radius: 50%;
+    }
+}
+
+.text-error {
+    color: #f00;
+}
+
+.btn-text {
+    display: inline-block;
+    padding: 5px 12px;
+    cursor: pointer;
+    text-align: center;
+    white-space: nowrap;
+    transition: opacity 0.2s ease, background 0.2s ease;
+
+    &:hover,
+    &.active {
+        background: #05b;
+    }
+}
+
+.help {
+    display: inline-block;
+    margin-left: 2px;
+    cursor: default;
+
+    .material-icons {
+        margin-top: -2px;
+        color: $color_primary;
+    }
+}
+
+input[type="text"],
+input[type="number"],
+textarea,
+select {
+    background: rgba(0,0,0,0.5);
+    border: 0;
+    font-family: inherit;
+    font-size: inherit;
+    padding: 10px;
+    display: block;
+    color: #fff;
+    width: 100%;
+    box-sizing: border-box;
+
+    &:focus {
+        outline: 0;
+    }
+}
+
+option {
+    color: #fff;
+    background: #000;
+}
+
+fieldset {
+    padding: 5px 20px 20px;
+    border: 0;
+    background: rgba(10,10,20,0.6);
+
+    legend {
+        font-weight: 700;
+        color: $color_primary;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    textarea,
+    select {
+        padding: 5px 8px;
+        background: rgba(255,255,255,0.1);
+    }
+}
+
+.form-item {
+    &:nth-child(n+2) {
+        margin-top: 10px;
+    }
+
+    input ~ span {
+        color: #aaa;
+        user-select: none;
+    }
+
+    input:checked ~ span {
+        color: #fff;
+    }
+
+    input:disabled ~ span {
+        color: #888;
+        pointer-events: none;
+    }
+}
+
+.form-row {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(10px, 1fr));
+
+    &:nth-child(n+2) {
+        margin-top: 10px;
+    }
+
+    &.mt-0 {
+        margin-top: 0;
+    }
+
+    > label {
+        line-height: 38px;
+    }
+
+    input[type="checkbox"] {
+        margin-top: 12px;
+    }
+
+    > .form-item {
+        grid-row: 1;
+        grid-column-width: 1fr;
+        margin-top: 0 !important;
+    }
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th, td {
+        padding: 4px 12px;
+        text-align: left;
+
+        &.min {
+            width: 1px;
+            padding: 4px 8px;
+
+            &.narrow {
+                padding: 4px;
+            }
+        }
+
+        &.title {
+            width: auto !important;
+        }
+    }
+
+    tbody tr {
+        border-top: 1px solid $color_stroke;
+        cursor: pointer;
+
+        &.active {
+            background: rgba(85, 85, 142, 0.24);
+        }
+    }
+
+    &.simple {
+        color: #aaa;
+
+        tbody tr {
+            border-color: #333;
+
+            &:first-child {
+                border-top: 0;
+            }
+        }
+
+        th, td {
+            padding: 2px 8px;
+
+            &:first-child {
+                padding-left: 0;
+            }
+            &:last-child {
+                padding-right: 0;
+                text-align: right;
+            }
+        }
+    }
+
+    &.large {
+        th {
+            background: #08001a;
+            font-weight: 500;
+            color: #ccd4ff;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+
+        tbody tr {
+            border-top: 0;
+            border-bottom: 1px solid rgba(200,210,255,0.2);
+        }
+    }
+}
+
+.gem-color {
+    &.color-m { color: #aaa; }
+    &.color-b { color: #3b9ac7; }
+    &.color-r { color: #f00; }
+    &.color-y { color: #ff0; }
+    &.color-o { color: #f80; }
+    &.color-p { color: #f0f; }
+    &.color-g { color: #0f0; }
+
+    a { color: inherit; }
+}
+
+.quality {
+    &-epic { color: #a335ee; a { color: inherit; } }
+    &-rare { color: #0070dd; a { color: inherit; } }
+    &-legendary { color: #ff8000; a { color: inherit; } }
+    &-uncommon { color: #1eff00; a { color: inherit; } }
+    &-common { color: #fff; a { color: inherit; } }
+}
+
+.loader {
+    display: block;
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin-left: auto;
+    margin-right: auto;
+
+    div {
+        box-sizing: border-box;
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: 8px;
+        border: 8px solid $color_primary;
+        border-radius: 50%;
+        animation: loader 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        border-color: $color_primary transparent transparent transparent;
+
+        &:nth-child(1) {
+            animation-delay: -0.45s;
+        }
+        &:nth-child(2) {
+            animation-delay: -0.3s;
+        }
+        &:nth-child(3) {
+            animation-delay: -0.15s;
+        }
+    }
+
+    &.small {
+        width: 80px;
+        height: 80px;
+
+        div {
+            width: 64px;
+            height: 64px;
+        }
+    }
+}
+
+#app {
+    .wrapper {
+        display: grid;
+        grid-template-columns: 220px auto;
+
+        .sidebar {
+            position: relative;
+            background: rgba(20, 15, 23, 1);
+            padding: $spacer*0.5 $spacer*0.5 360px;
+            transition: background 0.2s ease;
+
+            .actions {
+                .btn.large {
+                    margin-bottom: 20px;
+                }
+
+                .btn.large ~ .btn {
+                    background: none;
+                    font-size: 13px;
+                    padding: 5px;
+                    opacity: 0.6;
+
+                    &:hover {
+                        opacity: 1;
+                    }
+                }
+            }
+
+            .display-stats {
+                position: absolute;
+                left: $spacer*0.5;
+                right: $spacer*0.5;
+                bottom: 130px;
+
+                td.active {
+                    color: $color_primary;
+                }
+            }
+
+            .ep-stats {
+                margin-top: $spacer*0.5;
+            }
+
+            .result {
+                margin-top: $spacer;
+                text-align: center;
+
+                .help {
+                    text-align: left;
+                }
+
+                .dps-result {
+                    position: relative;
+
+                    > div:nth-child(1) {
+                        font-weight: 700;
+                        color: $color_primary;
+                    }
+                    > div.dps {
+                        font-weight: 700;
+                        font-size: 32px;
+                    }
+                }
+
+                .pin,
+                .pinned {
+                    .material-icons {
+                        font-size: 18px;
+                        cursor: pointer;
+                        padding: 7px;
+                        border-radius: 50%;
+                        background: rgba(255,255,255,0.1);
+                        transition: color 0.2s ease, background 0.2s ease;
+
+                        &:hover {
+                            background: rgba(255,255,255,0.15);
+                        }
+                    }
+                }
+
+                .pin {
+                    color: $color_primary;
+                }
+
+                .pinned {
+                    .diff {
+                        font-size: 16px;
+                        font-weight: 500;
+                        min-width: 40px;
+                        display: inline-block;
+                        padding: 0 10px;
+
+                        &.gt {
+                            color: #0a0;
+                        }
+                        &.lt {
+                            color: #a00;
+                        }
+                    }
+
+                    .update {
+                        .material-icons {
+                            margin-top: -4px;
+                            color: $color_primary;
+                        }
+                    }
+
+                    .remove .material-icons {
+                        color: #a00;
+                    }
+                }
+
+                .warnings {
+                    .warning {
+                        display: inline-block;
+
+                        .material-icons {
+                            color: #fa0;
+                            cursor: pointer;
+                            font-size: 20px;
+                        }
+                    }
+                }
+            }
+
+            .github {
+                display: block;
+                height: 86px;
+                position: absolute;
+                right: 0;
+                left: 0;
+                bottom: 40px;
+                background: url("../img/GitHub-Mark-Light-64px.png") no-repeat center center;
+                background-size: 32px auto;
+            }
+
+            .donate {
+                position: absolute;
+                bottom: 20px;
+                left: 0;
+                right: 0;
+                text-align: center;
+            }
+        }
+
+        .main {
+            position: relative;
+
+            .tabs {
+                padding: 10px 10px 0;
+                background: #333 linear-gradient(90deg, rgba(0, 4, 255, 0.2) 0%, rgba(199, 105, 5, 0.2) 100%);
+                user-select: none;
+
+                .tab {
+                    display: inline-block;
+                    font-weight: 400;
+                    line-height: 50px;
+                    text-transform: uppercase;
+                    letter-spacing: 3px;
+                    background: #030441;
+                    transition: background 0.2s ease;
+                    padding: 0 30px;
+                    margin-right: 5px;
+                    opacity: 0.6;
+                    cursor: pointer;
+
+                    &.active {
+                        font-weight: 700;
+                        opacity: 1;
+                    }
+                }
+            }
+
+            .body {
+                background: #000 linear-gradient(30deg, rgb(6, 0, 36) 0%, rgb(3, 4, 68) 50%, rgb(0, 2, 32) 100%);
+                height: calc(100vh - 60px);
+                overflow: auto;
+                transition: background 0.2s ease;
+
+                > .close {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 30px;
+                    line-height: 30px;
+                    font-size: 20px;
+                    cursor: pointer;
+                    text-align: center;
+                }
+
+                > div {
+                    padding: $spacer*0.5;
+                    animation: fade 0.2s ease;
+                }
+
+                .gear {
+                    padding: 0;
+
+                    .slots {
+                        position: relative;
+                        background: rgba(0,0,0,0.2);
+                        padding: $spacer*0.5 $spacer*2.5 $spacer*0.5 $spacer*0.5;
+
+                        .slot {
+                            display: inline-block;
+                            font-weight: 700;
+                            font-size: 16px;
+                            cursor: pointer;
+                            color: rgba(255,255,255,0.5);
+                            border-bottom: 2px solid transparent;
+                            user-select: none;
+                            transition: color 0.2s ease, border-color 0.2s ease;
+
+                            &:nth-child(n+2) {
+                                margin-left: $spacer*0.5;
+
+                                @media all and (max-width: 1820px) {
+                                    margin-left: 20px;
+                                }
+                                @media all and (max-width: 1620px) {
+                                    margin-left: 15px;
+                                }
+                                @media all and (max-width: 1540px) {
+                                    font-size: 14px;
+                                }
+                            }
+
+                            &:hover {
+                                color: #fff;
+                            }
+
+                            &.active {
+                                color: #fff;
+                                border-color: #fff;
+                            }
+                        }
+                    }
+
+                    .gear-wrapper {
+                        display: grid;
+                        grid-template-columns: 1fr;
+                    }
+
+                    .btn-splitview {
+                        cursor: pointer;
+                        position: absolute;
+                        right: 25px;
+                        top: 23px;
+                    }
+
+                    .items {
+                        overflow: auto;
+                        box-sizing: border-box;
+                        max-height: calc(100vh - 146px);
+
+                        .items-wrapper {
+                            padding: $spacer*0.5;
+
+                            > .top {
+                                .form-item {
+                                    float: left;
+                                    margin: 0 $spacer*0.25 0 0;
+                                }
+
+                                input {
+                                    width: 400px;
+                                }
+                            }
+                        }
+
+                        .items-table,
+                        .enchants-table {
+                            th, td {
+                                &:nth-child(n+4) {
+                                    width: 6%;
+                                    white-space: nowrap;
+                                    text-align: center;
+                                }
+                            }
+                        }
+
+                        .diff {
+                            &.gt {
+                                color: #0a0;
+                            }
+                            &.lt {
+                                color: #a00;
+                            }
+                        }
+
+                        .warning {
+                            color: #fa0;
+                            cursor: pointer;
+                            margin-left: 2px;
+                            position: relative;
+                            top: -2px;
+                        }
+
+                        .compare {
+                            .help {
+                                cursor: pointer;
+
+                                .material-icons {
+                                    color: #aaa;
+                                }
+                            }
+
+                            &.active .help .material-icons {
+                                color: $color_primary;
+                            }
+
+                            &.error .help .material-icons {
+                                color: #f00;
+                            }
+                        }
+
+                        .favorite {
+                            .help {
+                                cursor: pointer;
+
+                                .material-icons {
+                                    color: #aaa;
+                                    margin-top: 0;
+                                }
+                            }
+
+                            &.active .help .material-icons {
+                                color: $color_primary;
+                            }
+
+                            &.error .help .material-icons {
+                                color: #f00;
+                            }
+                        }
+
+                        .delete .material-icons {
+                            cursor: pointer;
+                            color: #f00;
+                        }
+
+                        tr.active .socket-bonus {
+                            color: #bbe8ba;
+                        }
+
+                        .sockets {
+                            @include clearfix();
+
+                            .socket {
+                                float: left;
+                                width: 32%;
+
+                                &:nth-child(n+2) {
+                                    margin-left: 2%;
+                                }
+                            }
+                        }
+
+                        span.link {
+                            color: #888;
+
+                            &:hover {
+                                color: $color_primary;
+                            }
+                        }
+                    }
+
+                    .character {
+                        padding: $spacer*0.5;
+
+                        .paperdoll {
+                            @include clearfix();
+
+                            .left {
+                                float: left;
+
+                                .paperslot:nth-last-child(3) {
+                                    margin-top: 30px;
+                                }
+                            }
+                            .right {
+                                float: right;
+
+                                .paperslot .papers {
+                                    left: auto;
+                                    right: 60px;
+                                }
+                            }
+
+                            .paperslot {
+                                position: relative;
+                                margin-bottom: 5px;
+
+                                &.active .paperitem {
+                                    border-color: $color_primary;
+                                }
+
+                                .paperv {
+                                    position: relative;
+                                    background-size: cover;
+                                    background-repeat: no-repeat;
+                                    cursor: pointer;
+                                }
+
+                                a {
+                                    @include position-cover(absolute);
+                                    display: block;
+                                    width: auto;
+                                    height: auto;
+
+                                    span:nth-child(2) {
+                                        display: none;
+                                    }
+
+                                    * {
+                                        @include position-cover(absolute);
+                                        display: block;
+                                        width: auto;
+                                        height: auto;
+                                    }
+
+                                    ins {
+                                        background-size: cover;
+                                        background-repeat: no-repeat;
+                                    }
+
+                                    del {
+                                        display: none;
+                                    }
+                                }
+
+                                .paperitem {
+                                    width: 50px;
+                                    height: 50px;
+                                    border: 2px solid rgba(255,255,255,0.2);
+                                }
+
+                                .papers {
+                                    @include clearfix();
+                                    position: absolute;
+                                    left: 60px;
+                                    bottom: 0;
+                                    white-space: nowrap;
+
+                                    .paperv {
+                                        display: inline-block;
+                                        width: 16px;
+                                        height: 16px;
+                                        border: 1px solid rgba(255,255,255,0.2);
+
+                                        &:nth-child(n+2) {
+                                            margin-left: 2px;
+                                        }
+                                    }
+                                }
+
+                                .paperenchant {
+                                    background-image: url("https://wow.zamimg.com/images/wow/icons/large/inventoryslot_enchant.jpg");
+                                }
+
+                                .papersocket {
+                                    background-image: url("https://wow.zamimg.com/images/Icon/small/socket/background.jpg");
+                                    background-size: auto 18px;
+
+                                    &.papersocket-color-m { border-color: rgba(255,255,255,0.4); background-position: -1 0; }
+                                    &.papersocket-color-r { border-color: rgba(255,0,0,0.4); background-position: -19px 0; }
+                                    &.papersocket-color-y { border-color: rgba(255,255,0,0.4); background-position: -37px 0; }
+                                    &.papersocket-color-b { border-color: rgba(0,0,255,0.4); background-position: -55px 0; }
+                                    &.papersocket-color-a { border-color: rgba(255,255,255,0.4); background-position: -73px 0; }
+                                }
+
+                                &.head .paperitem { background-image: url("https://wow.zamimg.com/images/wow/icons/large/inventoryslot_head.jpg"); }
+                                &.neck .paperitem { background-image: url("https://wow.zamimg.com/images/wow/icons/large/inventoryslot_neck.jpg"); }
+                                &.shoulder .paperitem { background-image: url("https://wow.zamimg.com/images/wow/icons/large/inventoryslot_shoulder.jpg"); }
+                                &.chest .paperitem { background-image: url("https://wow.zamimg.com/images/wow/icons/large/inventoryslot_chest.jpg"); }
+                                &.back .paperitem { background-image: url("https://wow.zamimg.com/images/wow/icons/large/inventoryslot_chest.jpg"); }
+                                &.wrist .paperitem { background-image: url("https://wow.zamimg.com/images/wow/icons/large/inventoryslot_wrists.jpg"); }
+                                &.hands .paperitem { background-image: url("https://wow.zamimg.com/images/wow/icons/large/inventoryslot_hands.jpg"); }
+                                &.waist .paperitem { background-image: url("https://wow.zamimg.com/images/wow/icons/large/inventoryslot_waist.jpg"); }
+                                &.legs .paperitem { background-image: url("https://wow.zamimg.com/images/wow/icons/large/inventoryslot_legs.jpg"); }
+                                &.feet .paperitem { background-image: url("https://wow.zamimg.com/images/wow/icons/large/inventoryslot_feet.jpg"); }
+                                &.finger1 .paperitem,
+                                &.finger2 .paperitem { background-image: url("https://wow.zamimg.com/images/wow/icons/large/inventoryslot_finger.jpg"); }
+                                &.trinket1 .paperitem,
+                                &.trinket2 .paperitem { background-image: url("https://wow.zamimg.com/images/wow/icons/large/inventoryslot_trinket.jpg"); }
+                                &.weapon .paperitem { background-image: url("https://wow.zamimg.com/images/wow/icons/large/inventoryslot_mainhand.jpg"); }
+                                &.off_hand .paperitem { background-image: url("https://wow.zamimg.com/images/wow/icons/large/inventoryslot_offhand.jpg"); }
+                                &.ranged .paperitem { background-image: url("https://wow.zamimg.com/images/wow/icons/large/inventoryslot_ranged.jpg"); }
+                            }
+                        }
+                    }
+
+                    &.splitview {
+                        .gear-wrapper {
+                            grid-template-columns: 1fr 350px;
+                        }
+
+                        .items {
+                            .items-table {
+                                td, th {
+                                    @media all and (max-width: 1800px) {
+                                        &:nth-last-child(-n+1) {
+                                            display: none;
+                                        }
+                                    }
+                                    @media all and (max-width: 1700px) {
+                                        &:nth-last-child(-n+2) {
+                                            display: none;
+                                        }
+                                    }
+                                    @media all and (max-width: 1650px) {
+                                        &:nth-last-child(-n+3) {
+                                            display: none;
+                                        }
+                                    }
+                                    @media all and (max-width: 1600px) {
+                                        &:nth-last-child(-n+4) {
+                                            display: none;
+                                        }
+                                    }
+                                    @media all and (max-width: 1550px) {
+                                        &:nth-last-child(-n+5) {
+                                            display: none;
+                                        }
+                                    }
+                                    @media all and (max-width: 1500px) {
+                                        &:nth-last-child(-n+6) {
+                                            display: none;
+                                        }
+                                    }
+                                }
+                            }
+
+                            .enchants-table tr > :nth-child(n+2) {
+                                display: none;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .config {
+        .fieldsets {
+            display: grid;
+            grid-gap: 10px;
+            grid-template-columns: repeat(5, 1fr);
+
+            fieldset {
+                grid-row: 1/3;
+            }
+
+            .config-rotation {
+                grid-row: 1;
+            }
+            .config-precombat {
+                grid-row: 2;
+            }
+
+            .config-consumes {
+                grid-row: 1;
+            }
+            .config-debuffs {
+                grid-row: 2;
+            }
+
+            .config-profiles {
+                grid-column: 1/3;
+                grid-row: 3;
+            }
+            .config-quick-profiles {
+                grid-column: 3/5;
+                grid-row: 3;
+            }
+
+            .config-cooldowns {
+                grid-row: 1;
+            }
+            .config-interruptions {
+                grid-row: 2;
+            }
+
+            .timings,
+            .interruptions {
+                table {
+                    tr {
+                        border: none;
+
+                        th,
+                        td {
+                            position: relative;
+                            padding: 2px;
+                            text-align: left;
+                            font-weight: 400;
+
+                            &.icon {
+                                width: 32px;
+
+                                img {
+                                    max-width: 32px;
+                                    vertical-align: top;
+                                }
+                            }
+
+                            &.t,
+                            &.wait-t {
+                                width: 60px;
+                            }
+
+                            .remove {
+                                position: absolute;
+                                right: 100%;
+                                top: 0;
+                                cursor: pointer;
+                                padding: 0 5px;
+                                line-height: 32px;
+                                font-size: 18px;
+                                color: #c22;
+                                opacity: 0;
+                                transition: opacity 0.2s ease;
+                            }
+                        }
+
+                        &:hover td .remove {
+                            opacity: 1;
+                        }
+                    }
+                }
+
+                .add-timing {
+                    position: relative;
+                    margin-top: 15px;
+
+                    .plus {
+                        font-size: 0;
+                        padding: 0;
+                        width: 24px;
+                        border: 2px solid #fff;
+                        text-align: center;
+                        transition: all 0.2s ease;
+                        border-radius: 50%;
+                        cursor: default;
+
+                        .material-icons {
+                            font-size: 20px;
+                            line-height: 24px;
+                        }
+                    }
+
+                    .menu {
+                        @include clearfix();
+                        position: absolute;
+                        top: 0;
+                        left: 34px;
+                        right: 0;
+                        opacity: 0;
+                        visibility: hidden;
+                        transition: all 0.2s ease;
+                        transition-delay: 0.3s;
+
+                        > div {
+                            float: left;
+                            width: 32px;
+                            height: 32px;
+                            cursor: pointer;
+
+                            img {
+                                max-width: 100%;
+                            }
+                        }
+                    }
+
+                    &:hover .menu {
+                        opacity: 1;
+                        visibility: visible;
+                        transition: all 0.2s ease;
+                        transition-delay: 0s;
+                    }
+                }
+            }
+
+            .interruptions {
+                table tr td {
+                    &.type,
+                    &.affects {
+                        width: 120px;
+                    }
+                }
+                .add-timing .plus {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+    .profiles {
+        .profile {
+            background: rgba(40,40,60,0.7);
+            padding: 5px 10px;
+            display: grid;
+            grid-template-columns: auto min-content;
+
+            &:nth-child(n+1) {
+                margin-top: 10px;
+            }
+
+            > * {
+                cursor: pointer;
+            }
+
+            .name {
+                transition: color 0.2s ease;
+
+                &:hover {
+                    color: $color_primary;
+                }
+            }
+
+            .actions {
+                white-space: nowrap;
+
+                > * {
+                    display: inline-block;
+                    margin-left: 4px;
+
+                    .material-icons {
+                        font-size: 16px;
+                        transition: opacity 0.2s ease;
+                    }
+
+                    &:hover .material-icons {
+                        opacity: 0.5;
+                    }
+                }
+            }
+
+            .save {
+                color: $color_primary;
+            }
+
+            .delete {
+                color: #f00;
+            }
+        }
+
+        .new-profile {
+            display: grid;
+            grid-template-columns: 1fr min-content;
+            grid-gap: $spacer*0.25;
+        }
+    }
+
+    .log {
+        .log-wrapper {
+            .filter {
+                @include clearfix();
+                margin-bottom: $spacer*0.5;
+
+                .form-item {
+                    float: left;
+                    margin: 0 $spacer*0.5 0 0;
+                }
+            }
+        }
+
+        table {
+            th, td {
+                &:nth-child(-n+3) {
+                    width: 1px;
+                    white-space: nowrap;
+                }
+            }
+
+            td {
+                &:nth-child(1) {
+                    color: #ccc;
+                }
+                &:nth-child(2) {
+                    color: $color_primary;
+                }
+            }
+
+            tr.type-4 td:nth-child(4) {
+                color: #807fa2;
+            }
+            tr.type-5 td:nth-child(4) {
+                color: #bbe8ba;
+            }
+            tr.type-6 td:nth-child(4) {
+                color: #aaa;
+            }
+            tr.type-8 td:nth-child(4),
+            tr.type-9 td:nth-child(4) {
+                color: #b88;
+            }
+            tr.type-10 td:nth-child(4) {
+                color: #fb2;
+            }
+        }
+    }
+
+    .history-table {
+        th,td {
+            &:first-child,
+            &:last-child {
+                width: 1%;
+            }
+        }
+    }
+
+    .profile-choices {
+        margin-top: $spacer*0.5;
+
+        .profile-choice {
+            margin: 0 10px 15px 0;
+        }
+    }
+
+    .lightbox {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0,0,0,0.6);
+        z-index: 200;
+        animation: fade 0.4s ease forwards;
+
+        > .closer {
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        > .inner {
+            position: absolute;
+            left: 10%;
+            top: 10%;
+            right: 10%;
+            width: 80vw;
+            background: #000 linear-gradient(30deg, rgb(6, 0, 36) 0%, rgb(3, 4, 68) 50%, rgb(0, 2, 32) 100%);
+            padding: $spacer*0.5;
+            box-sizing: border-box;
+            overflow: auto;
+            animation: moveInFromBelow 0.4s ease forwards;
+
+            > .title {
+                font-size: 18px;
+                margin-bottom: $spacer*0.25;
+                font-weight: 700;
+            }
+
+            > .description {
+                margin-top: -$spacer*0.25;
+                margin-bottom: $spacer*0.25;
+            }
+
+            textarea {
+                height: 350px;
+            }
+        }
+
+        &.small {
+            > .inner {
+                position: relative;
+                left: auto;
+                top: auto;
+                right: auto;
+                bottom: auto;
+                max-width: 100%;
+                width: 500px;
+                margin: 10vh auto;
+            }
+        }
+
+        &.warning {
+            > .inner {
+                margin: 10vh auto;
+                text-align: center;
+
+                > .title {
+                    font-size: 24px;
+                    letter-spacing: 2px;
+                    text-transform: uppercase;;
+                }
+
+                > .text {
+                    font-size: 16px;
+
+                    &.left {
+                        text-align: left;
+                    }
+                }
+            }
+        }
+
+        .close {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 30px;
+            line-height: 30px;
+            font-size: 20px;
+            cursor: pointer;
+            text-align: center;
+        }
+    }
+}
+
+.notice {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    max-width: 350px;
+    z-index: 1000;
+    background: rgba(0,0,0,0.5);
+    animation: fade 0.4s ease forwards, moveInFromBelow 0.4s ease forwards;
+    cursor: pointer;
+
+    &.notice-alt {
+        right: 50%;
+        margin-right: -175px;
+    }
+
+    > .inner {
+        background: #161620;
+        padding: $spacer*0.5;
+
+        .title {
+            font-size: 24px;
+            margin-bottom: $spacer*0.25;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .text {
+            margin-bottom: $spacer*0.25;
+
+            b {
+                font-weight: 700;
+            }
+        }
+
+        .checklist {
+            font-size: 16px;
+        }
+    }
+}
+
+.notices {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    max-width: 350px;
+    z-index: 1000;
+
+    .notice {
+        position: relative;
+        bottom: auto;
+        right: auto;
+
+        &:nth-child(n+2) {
+            margin-top: 20px;
+        }
+    }
+}
+
+.checklist {
+    text-align: left;
+
+    .check-item {
+        .material-icons {
+            margin-right: 4px;
+        }
+
+        &.checked .material-icons {
+            color: #0f0;
+        }
+        &.unchecked .material-icons {
+            color: #f00;
+        }
+    }
+}
