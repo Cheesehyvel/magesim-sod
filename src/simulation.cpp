@@ -179,12 +179,11 @@ SimulationResult Simulation::run(bool single)
     work();
 
     SimulationResult result;
-    if (config.only_main_dmg)
-        result.dmg = state.mainDmg();
-    else
-        result.dmg = state.totalDmg();
     result.t = state.t;
+    result.dmg = config.only_main_dmg ? state.mainDmg() : state.totalDmg();
     result.dps = result.dmg / state.t;
+    result.heal = state.healed;
+    result.hps = result.heal / state.t;
     result.t_gcd_capped = player->t_gcd_capped;
     result.t_oom = player->t_oom;
 
@@ -737,7 +736,11 @@ void Simulation::onSpellImpact(std::shared_ptr<unit::Unit> unit, spell::SpellIns
         instance.dmg -= instance.resist;
     }
 
-    target->dmg += static_cast<unsigned long long>(instance.dmg);
+    if (instance.dmg)
+        target->dmg += static_cast<unsigned long long>(instance.dmg);
+    if (instance.heal)
+        state.healed += static_cast<unsigned long long>(instance.heal);
+
     logSpellImpact(unit, instance, target);
     onSpellImpactProc(unit, instance, target);
 
@@ -752,11 +755,13 @@ void Simulation::onSpellImpact(std::shared_ptr<unit::Unit> unit, spell::SpellIns
         else
             state.spells[instance.spell->id].hits++;
 
-        state.spells[instance.spell->id].dmg += instance.dmg;
-        if (instance.dmg > state.spells[instance.spell->id].max_dmg)
-            state.spells[instance.spell->id].max_dmg = instance.dmg;
-        if (instance.dmg < state.spells[instance.spell->id].min_dmg || state.spells[instance.spell->id].min_dmg == 0)
-            state.spells[instance.spell->id].min_dmg = instance.dmg;
+        if (instance.dmg) {
+            state.spells[instance.spell->id].dmg += instance.dmg;
+            if (instance.dmg > state.spells[instance.spell->id].max_dmg)
+                state.spells[instance.spell->id].max_dmg = instance.dmg;
+            if (instance.dmg < state.spells[instance.spell->id].min_dmg || state.spells[instance.spell->id].min_dmg == 0)
+                state.spells[instance.spell->id].min_dmg = instance.dmg;
+        }
     }
 }
 
@@ -799,7 +804,7 @@ void Simulation::dotApply(std::shared_ptr<unit::Unit> unit, std::shared_ptr<spel
             removeSpellImpacts(unit, spell, target);
 
             for (int i = 1; i <= spell->ticks; i++)
-                pushDot(unit, spell, target, i);
+                pushDot(unit, spell, target, i, unit->travelTime(spell));
         }
         else {
 
@@ -819,7 +824,7 @@ void Simulation::dotApply(std::shared_ptr<unit::Unit> unit, std::shared_ptr<spel
 
             // Add dot ticks at the end
             for (int i = 1 + queued_ticks; i <= spell->ticks; i++)
-                pushDot(unit, spell, target, i, last_tick - queued_ticks * spell->t_interval);
+                pushDot(unit, spell, target, i, unit->travelTime(spell) + last_tick - queued_ticks * spell->t_interval);
         }
     }
 }
@@ -1208,6 +1213,15 @@ double Simulation::critMultiplier(std::shared_ptr<unit::Unit> unit, std::shared_
     return (base - 1) * multi + 1;
 }
 
+double Simulation::buffHealMultiplier(const std::shared_ptr<unit::Unit> unit, std::shared_ptr<spell::Spell> spell) const
+{
+    double multi = 1;
+
+    multi *= unit->buffHealMultiplier(spell, state);
+
+    return multi;
+}
+
 double Simulation::buffDmgMultiplier(const std::shared_ptr<unit::Unit> unit, std::shared_ptr<spell::Spell> spell) const
 {
     double multi = 1;
@@ -1239,7 +1253,7 @@ double Simulation::spellDmg(const std::shared_ptr<unit::Unit> unit, std::shared_
     else
         dmg = random<double>(spell->min_dmg, spell->max_dmg);
 
-    if (spell->fixed_dmg)
+    if (spell->fixed_value)
         return dmg;
 
     if (spell->coeff) {
@@ -1253,6 +1267,30 @@ double Simulation::spellDmg(const std::shared_ptr<unit::Unit> unit, std::shared_
     dmg *= debuffDmgMultiplier(unit, spell, target);
 
     return dmg;
+}
+
+double Simulation::spellHeal(const std::shared_ptr<unit::Unit> unit, std::shared_ptr<spell::Spell> spell, std::shared_ptr<target::Target> target)
+{
+    double heal;
+
+    if (config.avg_spell_dmg)
+        heal = spell->avgHeal();
+    else
+        heal = random<double>(spell->min_heal, spell->max_heal);
+
+    if (spell->fixed_value)
+        return heal;
+
+    if (spell->coeff) {
+        auto const sp = unit->getSpellPower(spell->school);
+        double coeff = spell->coeff + unit->spellCoeffMod(spell);
+
+        heal += sp * coeff;
+    }
+
+    heal *= buffHealMultiplier(unit, spell);
+
+    return heal;
 }
 
 double Simulation::spellDmgResist(std::shared_ptr<unit::Unit> unit, const spell::SpellInstance &instance)
@@ -1323,6 +1361,16 @@ void Simulation::rollSpellInstance(std::shared_ptr<unit::Unit> unit, spell::Spel
             instance.dmg = round(instance.dmg);
         }
     }
+
+    if (instance.spell->max_heal > 0) {
+        instance.result = getSpellResult(unit, instance.spell, target);
+        instance.heal = spellHeal(unit, instance.spell, target);
+
+        if (instance.result == spell::CRIT)
+            instance.heal *= critMultiplier(unit, instance.spell);
+
+        instance.heal = round(instance.heal);
+    }
 }
 
 void Simulation::logCastStart(std::shared_ptr<unit::Unit> unit, std::shared_ptr<spell::Spell> spell, std::shared_ptr<target::Target> target)
@@ -1367,12 +1415,24 @@ void Simulation::logSpellImpact(std::shared_ptr<unit::Unit> unit, const spell::S
 
     if (instance.spell->dot)
         s += " (dot)";
-    if (instance.result == spell::MISS)
+
+    if (instance.result == spell::MISS) {
         s += " missed";
-    else if (instance.result == spell::CRIT)
-        s += " crit for " + std::to_string(static_cast<unsigned int>(instance.dmg));
-    else
-        s += " hit for " + std::to_string(static_cast<unsigned int>(instance.dmg));
+    }
+    else {
+        if (instance.dmg) {
+            if (instance.result == spell::CRIT)
+                s += " crit for " + std::to_string(static_cast<unsigned int>(instance.dmg));
+            else
+                s += " hit for " + std::to_string(static_cast<unsigned int>(instance.dmg));
+        }
+        else if (instance.heal) {
+            if (instance.result == spell::CRIT)
+                s += " healed for *" + std::to_string(static_cast<unsigned int>(instance.heal)) + "*";
+            else
+                s += " healed for " + std::to_string(static_cast<unsigned int>(instance.heal));
+        }
+    }
 
     if (instance.resist)
         s += " (" + std::to_string(static_cast<unsigned int>(instance.resist)) + " resisted)";

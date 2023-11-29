@@ -305,7 +305,7 @@ bool Unit::canBuff(const buff::Buff &buff) const
 
 bool Unit::canMiss(std::shared_ptr<spell::Spell> spell) const
 {
-    return !spell->dot;
+    return !spell->dot && !spell->max_heal;
 }
 
 bool Unit::canCrit(std::shared_ptr<spell::Spell> spell) const
@@ -331,6 +331,11 @@ double Unit::critMultiplierMod(std::shared_ptr<spell::Spell> spell) const
 double Unit::spellCoeffMod(std::shared_ptr<spell::Spell> spell) const
 {
     return 0;
+}
+
+double Unit::buffHealMultiplier(std::shared_ptr<spell::Spell>, const State&) const
+{
+    return 1;
 }
 
 double Unit::buffDmgMultiplier(std::shared_ptr<spell::Spell>, const State&) const

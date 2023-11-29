@@ -24,6 +24,9 @@ enum ID : int
     BRAIN_FREEZE = 57761,
     FINGERS_OF_FROST = 44544,
     GHOST_FINGERS = 4454411,
+    TEMPORAL_BEACON = 400735,
+    TEMPORAL_BEACON_PARTY = 4007350, // Fake id
+    TANGLED_CAUSALITY = 432069,
     MQG = 23723,
 };
 
@@ -154,6 +157,27 @@ class GhostFingers : public Buff
 
 public:
     GhostFingers();
+};
+
+class TemporalBeacon : public Buff
+{
+
+public:
+    TemporalBeacon();
+};
+
+class TemporalBeaconParty : public Buff
+{
+
+public:
+    TemporalBeaconParty();
+};
+
+class TangledCausality : public Buff
+{
+
+public:
+    TangledCausality();
 };
 
 class MindQuickening : public Buff

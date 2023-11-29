@@ -36,6 +36,7 @@ namespace spell
         PYROBLAST_DOT = 1136600, // Fake id
         REGENERATION = 401417,
         REWIND_TIME = 401462,
+        TEMPORAL_BEACON = 400735,
         SCORCH = 2948,
     };
 
@@ -55,6 +56,8 @@ namespace spell
         double cost = 0;
         double min_dmg = 0;
         double max_dmg = 0;
+        double min_heal = 0;
+        double max_heal = 0;
         double cast_time = 0;
         double delay = 0;
         double coeff = 1;
@@ -67,7 +70,7 @@ namespace spell
         bool binary = false;
         bool aoe = false;
         bool aoe_capped = true;
-        bool fixed_dmg = false;
+        bool fixed_value = false;
         bool active_use = true;
         bool off_gcd = false;
         bool is_trigger = false;
@@ -86,6 +89,11 @@ namespace spell
         double avgDmg() const
         {
             return (min_dmg + max_dmg)/2.0;
+        }
+
+        double avgHeal() const
+        {
+            return (min_heal + max_heal)/2.0;
         }
 
         bool isSchool(School cmp) const
@@ -108,6 +116,7 @@ namespace spell
         std::shared_ptr<Spell> spell;
         Result result = Result::NONE;
         double dmg = 0;
+        double heal = 0;
         double resist = 0;
         int tick = 0;
     };
@@ -389,6 +398,7 @@ namespace spell
             min_dmg = 100.0 * RUNE_SCALE;
             max_dmg = 100.0 * RUNE_SCALE;
             coeff = 0.143;
+            speed = 24; // UNCONFIRMED
         }
     };
 
@@ -438,7 +448,7 @@ namespace spell
             ticks = 2;
             coeff = 0;
             min_dmg = max_dmg = _dmg;
-            fixed_dmg = true;
+            fixed_value = true;
         }
     };
 
@@ -459,6 +469,47 @@ namespace spell
             channeling = true;
             ticks = 1;
             cast_time = 8;
+        }
+    };
+
+    struct Regeneration : Spell
+    {
+        Regeneration() : Spell(REGENERATION, "Regeneration", SCHOOL_ARCANE)
+        {
+            cost_base_mana = true;
+            cost = 43;
+            channeling = true;
+            ticks = 3;
+            cast_time = 3;
+            min_heal = 82.0 * RUNE_SCALE;
+            max_heal = 82.0 * RUNE_SCALE;
+        }
+    };
+
+    struct MassRegeneration : Spell
+    {
+        MassRegeneration() : Spell(MASS_REGENERATION, "Mass Regeneration", SCHOOL_ARCANE)
+        {
+            cost_base_mana = true;
+            cost = 69;
+            channeling = true;
+            ticks = 3;
+            cast_time = 3;
+            min_heal = 42.0 * 5.0 * RUNE_SCALE;
+            max_heal = 42.0 * 5.0 * RUNE_SCALE;
+        }
+    };
+
+    struct TemporalBeacon : Spell
+    {
+        TemporalBeacon(double heal) : Spell(TEMPORAL_BEACON, "Temporal Beacon", SCHOOL_ARCANE)
+        {
+            active_use = false;
+            fixed_value = true;
+            cast_time = 0;
+            min_heal = heal;
+            max_heal = heal;
+            coeff = 0;
         }
     };
 

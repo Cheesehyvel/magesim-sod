@@ -195,6 +195,9 @@ double Player::buffDmgMultiplier(std::shared_ptr<spell::Spell> spell, const Stat
     if (spell->proc)
         return multi;
 
+    if ((spell->school == SCHOOL_FIRE || spell->school == SCHOOL_FROST) && hasBuff(buff::TANGLED_CAUSALITY))
+        multi*= 0.5;
+
     if (runes.enlightenment && manaPercent() >= 70.0)
         multi *= 1.1;
 
@@ -485,6 +488,16 @@ std::vector<action::Action> Player::onSpellImpactProc(const State& state, const 
         }
     }
 
+    if (instance.dmg && instance.spell->isSchool(SCHOOL_ARCANE)) {
+        if (hasBuff(buff::TEMPORAL_BEACON)) {
+            actions.push_back(spellAction<spell::TemporalBeacon>(instance.dmg * 0.8));
+        }
+        if (hasBuff(buff::TEMPORAL_BEACON_PARTY)) {
+            for (int i=0; i<5; i++)
+                actions.push_back(spellAction<spell::TemporalBeacon>(instance.dmg * 0.8));
+        }
+    }
+
     return actions;
 }
 
@@ -496,6 +509,11 @@ std::vector<action::Action> Player::onSpellTickProc(const State& state, std::sha
         for (auto &i : onCastOrTick(state, spell, target, tick))
             actions.push_back(std::move(i));
     }
+
+    if (spell->id == spell::REGENERATION && tick == spell->ticks)
+        actions.push_back(buffAction<buff::TemporalBeacon>());
+    if (spell->id == spell::MASS_REGENERATION && tick == spell->ticks)
+        actions.push_back(buffAction<buff::TemporalBeaconParty>());
 
     return actions;
 }
@@ -991,7 +1009,13 @@ action::Action Player::nextAction(const State& state)
     else if (config.rotation == ROTATION_ST_ARCANE) {
         auto ab = std::make_shared<spell::ArcaneBlast>();
 
-        if (runes.arcane_surge && 
+        if (runes.regeneration && !hasBuff(buff::TEMPORAL_BEACON)) {
+            return spellAction<spell::Regeneration>();
+        }
+        else if (runes.mass_regeneration && !hasBuff(buff::TEMPORAL_BEACON_PARTY)) {
+            return spellAction<spell::MassRegeneration>();
+        }
+        else if (runes.arcane_surge && 
             !hasCooldown(cooldown::ARCANE_SURGE) &&
             (state.timeRemain() < 2.5 ||
              manaPercent() < 20.0 && ab_streak >= 3 ||

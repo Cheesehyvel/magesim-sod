@@ -141,6 +141,27 @@ GhostFingers::GhostFingers()
     hidden = true;
 }
 
+TemporalBeacon::TemporalBeacon()
+{
+    id = TEMPORAL_BEACON;
+    name = "Temporal Beacon";
+    duration = 30;
+}
+
+TemporalBeaconParty::TemporalBeaconParty()
+{
+    id = TEMPORAL_BEACON_PARTY;
+    name = "Temporal Beacon";
+    duration = 15;
+}
+
+TangledCausality::TangledCausality()
+{
+    id = TANGLED_CAUSALITY;
+    name = "Tangled Causality";
+    duration = 300;
+}
+
 MindQuickening::MindQuickening()
 {
     id = MQG;

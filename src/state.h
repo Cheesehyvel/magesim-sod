@@ -19,6 +19,7 @@ private:
 public:
     double t;
     double duration;
+    unsigned long long healed;
 
     std::unordered_map<spell::ID, SpellStats> spells;
     std::unordered_map<debuff::ID, std::shared_ptr<debuff::Debuff>> debuffs;

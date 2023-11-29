@@ -14,8 +14,8 @@ State::State(const Config& _config) : config(_config)
 void State::reset()
 {
     t = 0;
-    duration = config.duration;
-    duration += -config.duration_variance + random<double>(0, config.duration_variance * 2);
+    duration = config.duration - config.duration_variance + random<double>(0, config.duration_variance * 2);
+    healed = 0;
 
     spells.clear();
     units.clear();

@@ -228,6 +228,7 @@
                             <div>DPS</div>
                             <div class="faded">Damage: {{ result.dmg }}</div>
                             <div class="dps">{{ $round(result.dps, 2) }}</div>
+                            <div class="hps" v-if="result.hps">{{ $round(result.hps, 2) }} hps</div>
                             <div class="faded" v-if="result.t_gcd_capped">
                                 <span>Wasted haste: {{ $round(result.t_gcd_capped, 2) }}s</span>
                                 <help>Time spent gcd capped</help>
@@ -655,6 +656,7 @@
                                     <span class="btn secondary" @click="setSpec('arcane')">Arcane</span>
                                     <span class="btn secondary" @click="setSpec('fire')">Fire</span>
                                     <span class="btn secondary" @click="setSpec('frost')">Frost</span>
+                                    <span class="btn secondary" @click="setSpec('arcane_heal')">Healing</span>
                                 </div>
                                 <div class="form-item">
                                     <label>Race</label>
@@ -1132,7 +1134,7 @@
                         <ul>
                             <li>Rotations are very basic and not optimized</li>
                             <li>Ignite is personal and works like in WotLK</li>
-                            <li>Healing is not implemented</li>
+                            <li>Healing is not shown in graph or spell overview</li>
                             <li>Many items are missing. Use Custom Items for now</li>
                             <li>Imports might be buggy</li>
                         </ul>
@@ -3204,6 +3206,10 @@
             setSpec(spec) {
                 if (spec == "arcane") {
                     this.config.build = "https://www.wowhead.com/classic/talent-calc/mage/250025001001_156j976vca6j8";
+                    this.config.rotation = constants.rotations.ROTATION_ST_ARCANE;
+                }
+                else if (spec == "arcane_heal") {
+                    this.config.build = "https://www.wowhead.com/classic/talent-calc/mage/250025001001_156jg76rfa6j8";
                     this.config.rotation = constants.rotations.ROTATION_ST_ARCANE;
                 }
                 else if (spec == "fire") {
