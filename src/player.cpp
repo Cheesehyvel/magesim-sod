@@ -1091,7 +1091,7 @@ action::Action Player::nextAction(const State& state)
             if (ab_streak == 4)
                 return spellAction<spell::LivingFlame>();
             else if (!state.isMoving())
-                return spellAction(ab);
+                return spellAction(ab, target);
         }
 
         if (runes.arcane_surge && 
@@ -1125,7 +1125,7 @@ action::Action Player::nextAction(const State& state)
         else if (state.duration - state.t < castTime(ab) && !hasCooldown(cooldown::FIRE_BLAST))
             return spellAction<spell::FireBlast>(target);
         else if (ab_streak >= ab_stacks)
-            return spellAction<spell::ArcaneMissiles>();
+            return spellAction<spell::ArcaneMissiles>(target);
         else if (runes.arcane_blast && canCast(ab))
             return spellAction(ab, target);
         else
