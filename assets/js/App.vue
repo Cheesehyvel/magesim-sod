@@ -970,6 +970,15 @@
                                     </select>
                                 </div>
                                 <div class="form-item">
+                                    <label>Arcane scroll</label>
+                                    <select v-model="config.mage_scroll">
+                                        <option :value="mage_scrolls.SCROLL_NONE">None</option>
+                                        <option :value="mage_scrolls.SCROLL_ACCURACY1">Accuracy (1% hit)</option>
+                                        <option :value="mage_scrolls.SCROLL_POWER1">Power (1% crit)</option>
+                                        <option :value="mage_scrolls.SCROLL_RECOVERY1">Recovery (8 mp5)</option>
+                                    </select>
+                                </div>
+                                <div class="form-item">
                                     <label><input type="checkbox" v-model="config.elixir_firepower">
                                         <span>Elixir of Firepower</span>
                                         <help>10 fire spell power</help>
@@ -1562,6 +1571,7 @@
                 // Consumes
                 elixir_firepower: false,
                 weapon_oil: 0,
+                mage_scroll: 0,
                 flask: 0,
                 food: 0,
 
@@ -2929,6 +2939,14 @@
                     stats.mp5+= 8;
                 if (this.config.weapon_oil == this.weapon_oils.OIL_MINOR_MANA)
                     stats.mp5+= 4;
+
+                // Scroll
+                if (this.config.mage_scroll == this.mage_scrolls.SCROLL_ACCURACY1)
+                    stats.hit+= 1;
+                if (this.config.mage_scroll == this.mage_scrolls.SCROLL_POWER1)
+                    stats.crit+= 1;
+                if (this.config.mage_scroll == this.mage_scrolls.SCROLL_RECOVERY1)
+                    stats.mp5+= 8;
 
                 // Mana Restoration
                 if (this.config.blessing_of_wisdom && this.faction == "alliance") {

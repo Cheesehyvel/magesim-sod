@@ -38,6 +38,12 @@ export default {
         OIL_MINOR_MANA: 25125,
         OIL_BLACKFATHOM: 211848,
     },
+    mage_scrolls: {
+        SCROLL_NONE: 0,
+        SCROLL_ACCURACY1: 211954,
+        SCROLL_POWER1: 211957,
+        SCROLL_RECOVERY1: 211953,
+    },
     buffs: {
         INNERVATE: 29166,
     }
