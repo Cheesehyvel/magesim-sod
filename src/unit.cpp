@@ -397,7 +397,14 @@ double Unit::getSpirit() const
 
 double Unit::getSpellPower(School school) const
 {
-    return stats.sp + buff_stats.sp;
+    double sp = stats.sp + buff_stats.sp;
+
+    if (get_raid_buffs) {
+        if (config.demonic_pact && config.demonic_pact_bonus > 0)
+            sp += config.demonic_pact_bonus;
+    }
+
+    return sp;
 }
 
 double Unit::getMp5() const

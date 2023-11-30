@@ -127,6 +127,11 @@ EMSCRIPTEN_BINDINGS(my_module)
         .property("target_hp", &Config::target_hp)
         .property("distance", &Config::distance)
         .property("reaction_time", &Config::reaction_time)
+        
+        .property("demonic_pact", &Config::demonic_pact)
+        .property("demonic_pact_bonus", &Config::demonic_pact_bonus)
+        .property("ashenvale_cry", &Config::ashenvale_cry)
+        .property("dmf_dmg", &Config::dmf_dmg)
 
         .property("pre_cast", &Config::pre_cast)
 

@@ -64,6 +64,8 @@ public:
 
     double manaPerSecond(const State& state) const;
 
+    double maxMana() const;
+
     double baseCastTime(std::shared_ptr<spell::Spell> spell) const;
 
     double castHaste() const;
@@ -73,6 +75,8 @@ public:
     double critChance(std::shared_ptr<spell::Spell> spell) const;
 
     double critMultiplierMod(std::shared_ptr<spell::Spell> spell) const;
+
+    double buffHealMultiplier(std::shared_ptr<spell::Spell> spell, const State& state) const;
 
     double buffDmgMultiplier(std::shared_ptr<spell::Spell> spell, const State& state) const;
 

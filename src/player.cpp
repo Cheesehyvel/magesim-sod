@@ -102,6 +102,16 @@ double Player::manaPerSecond(const State& state) const
     return mps;
 }
 
+double Player::maxMana() const
+{
+    double mana = Unit::maxMana();
+
+    if (talents.arcane_mind)
+        mana *= 1.0 + (talents.arcane_mind * 0.02);
+
+    return mana;
+}
+
 double Player::baseCastTime(std::shared_ptr<spell::Spell> spell) const
 {
     double t = Unit::baseCastTime(spell);
@@ -150,9 +160,6 @@ double Player::critChance(std::shared_ptr<spell::Spell> spell) const
     if (spell->proc)
         return crit;
 
-    if (runes.burnout)
-        crit += 15;
-
     if (talents.incinerate && (spell->id == spell::FIRE_BLAST || spell->id == spell::SCORCH))
         crit += talents.incinerate * 2.0;
 
@@ -187,10 +194,25 @@ double Player::critMultiplierMod(std::shared_ptr<spell::Spell> spell) const
     return multi;
 }
 
+double Player::buffHealMultiplier(std::shared_ptr<spell::Spell> spell, const State& state) const
+{
+    double multi = Unit::buffHealMultiplier(spell, state);
+    
+    if (config.ashenvale_cry)
+        multi*= 1.05;
+
+    return multi;
+}
+
 double Player::buffDmgMultiplier(std::shared_ptr<spell::Spell> spell, const State& state) const
 {
     double multi = Unit::buffDmgMultiplier(spell, state);
     double additive = 1;
+
+    if (config.dmf_dmg)
+        multi*= 1.1;
+    if (config.ashenvale_cry)
+        multi*= 1.05;
 
     if (spell->proc)
         return multi;
@@ -942,10 +964,6 @@ action::Action Player::nextAction(const State& state)
         return spellAction<spell::Scorch>(target);
     }
 
-    if (config.rot_fire_blast_weave && !hasCooldown(cooldown::FIRE_BLAST)) {
-        return spellAction<spell::FireBlast>(target);
-    }
-
     // Fire rotations
     if (config.rotation == ROTATION_ST_FIRE || config.rotation == ROTATION_ST_FIRE_SC) {
 
@@ -956,10 +974,30 @@ action::Action Player::nextAction(const State& state)
         }
 
         // Check for Living Bomb targets
-        if (runes.living_bomb && state.t + 12.0 < state.duration) {
+        if (runes.living_bomb && state.timeRemain() >= 12.0) {
             for (auto const& tar : state.targets) {
                 if (tar->t_living_bomb + 12.0 < state.t && tar->id <= config.dot_targets)
                     return spellAction<spell::LivingBomb>(tar);
+            }
+        }
+
+        if (!multi_target || config.only_main_dmg) {
+            double t_explosion = state.targets[0]->t_living_bomb + 12.0 - state.t;
+
+            if (config.rot_fire_blast_weave && !hasCooldown(cooldown::FIRE_BLAST)) {
+                if (runes.living_bomb) {
+                    if (t_explosion <= 1.5)
+                        return spellAction<spell::FireBlast>(target);
+                }
+                else {
+                    return spellAction<spell::FireBlast>(target);
+                }
+            }
+
+            if (runes.living_bomb && t_explosion < 0.05 && state.timeRemain() >= 12.0) {
+                action::Action action{ action::TYPE_WAIT };
+                action.value = std::max(t_explosion, 0.0) + 0.01;
+                return action;
             }
         }
 
@@ -1028,6 +1066,10 @@ action::Action Player::nextAction(const State& state)
             return spellAction<spell::ArcaneSurge>();
         }
 
+        if (config.rot_fire_blast_weave && !hasCooldown(cooldown::FIRE_BLAST)) {
+            return spellAction<spell::FireBlast>(target);
+        }
+
         if (state.isMoving() && !hasBuff(buff::PRESENCE_OF_MIND)) {
             if (config.targets > 2 && config.distance <= 10) {
                 return spellAction<spell::ArcaneExplosion>();
@@ -1058,6 +1100,10 @@ action::Action Player::nextAction(const State& state)
 
         if (hasBuff(buff::GHOST_FINGERS) && config.rot_ice_lance)
             return spellAction<spell::IceLance>(target);
+
+        if (config.rot_fire_blast_weave && !hasCooldown(cooldown::FIRE_BLAST)) {
+            return spellAction<spell::FireBlast>(target);
+        }
 
         if (state.isMoving() && !hasBuff(buff::PRESENCE_OF_MIND)) {
             if (config.targets > 2 && config.distance <= 10) {

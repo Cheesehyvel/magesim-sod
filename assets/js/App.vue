@@ -766,14 +766,6 @@
                                     </label>
                                     <input type="text" v-model.number="config.stat_weight_increment">
                                 </div>
-                                <div class="form-item">
-                                    <label>Design</label>
-                                    <select @input="onDesignInput($event)">
-                                        <option :value="0">- Choose -</option>
-                                        <option :value="1">Wotlk</option>
-                                        <option :value="2">Alternative</option>
-                                    </select>
-                                </div>
                                 <div class="form-item" v-if="config.targets > 1">
                                     <label><input type="checkbox" v-model="config.only_main_dmg">
                                         <span>Focus dps on main target</span>
@@ -893,17 +885,42 @@
                                             <help>15 mp5 instead of 12</help>
                                         </label>
                                     </div>
-                                    <div class="form-item">
-                                        <label><input type="checkbox" v-model="config.blessing_of_kings">
-                                            <span>Blessing of Kings</span>
-                                            <help>10% stats</help>
-                                        </label>
-                                    </div>
                                 </template>
+                                <div class="form-item">
+                                    <label><input type="checkbox" v-model="config.blessing_of_kings">
+                                        <span>10% stats</span>
+                                        <help>Blessing of Kings<br>Aspect of the Lion</help>
+                                    </label>
+                                </div>
+                                <div class="form-item">
+                                    <label>
+                                        <input type="checkbox" v-model="config.demonic_pact">
+                                        <span>Demonic Pact</span>
+                                    </label>
+                                </div>
+                                <div class="form-item" v-if="config.demonic_pact">
+                                    <label>
+                                        <span>Demonic Pact Bonus</span>
+                                        <help>10% of the Warlocks spell power or level/2.</help>
+                                    </label>
+                                    <input type="text" v-model.number="config.demonic_pact_bonus">
+                                </div>
                                 <div class="form-item">
                                     <label><input type="checkbox" v-model="config.boon_blackfathom">
                                         <span>Boon of Blackfathom</span>
                                         <help>2% crit</help>
+                                    </label>
+                                </div>
+                                <div class="form-item">
+                                    <label><input type="checkbox" v-model="config.ashenvale_cry">
+                                        <span>Ashenvale Rallying Cry</span>
+                                        <help>5% dmg/heal from Ashenvale pvp objective</help>
+                                    </label>
+                                </div>
+                                <div class="form-item">
+                                    <label><input type="checkbox" v-model="config.dmf_dmg">
+                                        <span>Sayge's Dark Fortune of Damage</span>
+                                        <help>10% dmg from Darkmoon Faire</help>
                                     </label>
                                 </div>
                             </fieldset>
@@ -1519,7 +1536,11 @@
                 blessing_of_kings: false,
                 blessing_of_wisdom: false,
                 imp_blessing_of_wisdom: false,
+                demonic_pact: false,
+                demonic_pact_bonus: 0,
                 boon_blackfathom: false,
+                ashenvale_cry: false,
+                dmf_dmg: false,
 
                 // Consumes
                 elixir_firepower: false,
@@ -2015,11 +2036,11 @@
             timings() {
                 var timings = [];
 
-                // timings.push({
-                //     name: "power_infusion",
-                //     title: "Power Infusion",
-                //     icon: "https://www.wowhead.com/images/wow/icons/large/spell_holy_powerinfusion.jpg",
-                // });
+                timings.push({
+                    name: "power_infusion",
+                    title: "Power Infusion",
+                    icon: "https://www.wowhead.com/images/wow/icons/large/spell_holy_powerinfusion.jpg",
+                });
                 timings.push({
                     name: "mana_tide",
                     title: "Mana Tide",
@@ -2183,7 +2204,8 @@
             timingEnabled(name) {
                 var always = [
                     // "mana_tide", "power_infusion", "innervate",
-                    "mana_gem", "evocation",
+                    // "mana_gem", 
+                    "evocation",
                 ];
                 if (always.indexOf(name) != -1)
                     return true;
@@ -2838,12 +2860,6 @@
                 // Arcane intellect
                 stats.intellect+= 7;
 
-                // Spirit
-                if (this.config.divine_spirit)
-                    stats.spirit+= 80;
-                else if (this.config.fel_intelligence)
-                    stats.spirit+= 64;
-
                 if (this.config.mark_of_the_wild) {
                     x = 4;
                     if (this.config.imp_mark_of_the_wild)
@@ -2851,6 +2867,10 @@
                     stats.intellect+= x;
                     stats.spirit+= x;
                 }
+
+                // Runes
+                if (this.config.runes.burnout)
+                    stats.crit+= 15;
 
                 // Consumes
                 if (this.config.elixir_firepower)
@@ -2889,7 +2909,7 @@
                     stats.mp5+= 4;
 
                 // Mana Restoration
-                if (this.config.blessing_of_wisdom) {
+                if (this.config.blessing_of_wisdom && this.faction == "alliance") {
                     x = 15;
                     if (this.config.imp_blessing_of_wisdom)
                         x*= 1.2;
@@ -2901,8 +2921,6 @@
                     stats.crit+= 2;
 
                 // Attribute multipliers
-                if (this.config.talents.arcane_mind)
-                    stats.intellect*= 1.0 + this.config.talents.arcane_mind*0.02;
                 if (this.config.race == this.races.RACE_GNOME)
                     stats.intellect*= 1.05;
                 if (this.config.race == this.races.RACE_HUMAN)
@@ -2926,6 +2944,10 @@
             displayStats() {
                 var x;
                 var stats = _.cloneDeep(this.config.stats);
+
+                // Demonic pact
+                if (this.config.demonic_pact && this.config.demonic_pact_bonus > 0)
+                    stats.sp+= this.config.demonic_pact_bonus;
 
                 // Mana
                 stats.mana+= 493 + stats.intellect*15 - 280;
@@ -3203,7 +3225,7 @@
 
             setSpec(spec) {
                 if (spec == "arcane") {
-                    this.config.build = "https://www.wowhead.com/classic/talent-calc/mage/250025001001_156j976vca6j8";
+                    this.config.build = "https://www.wowhead.com/classic/talent-calc/mage/250025001001_156j976jha6j8";
                     this.config.rotation = constants.rotations.ROTATION_ST_ARCANE;
                 }
                 else if (spec == "arcane_heal") {
@@ -3933,6 +3955,14 @@
 
                     if (fight.duration)
                         profile.config.duration = _.round(fight.duration/1000);
+
+                    if (fight.dp_avg > 0) {
+                        profile.config.demonic_pact = true;
+                        profile.config.demonic_pact_bonus = fight.dp_avg;
+                    }
+                    else {
+                        profile.config.demonic_pact = false;
+                    }
                 }
 
                 if (this.import_profile.items && fight.player.gear && _.isArray(fight.player.gear)) {

@@ -20,6 +20,11 @@ struct Config
     int distance = 20;
     int reaction_time = 300;
 
+    bool demonic_pact = false;
+    double demonic_pact_bonus = 0;
+    bool ashenvale_cry = false;
+    bool dmf_dmg = false;
+
     bool pre_cast = false;
 
     Trinket trinket1 = TRINKET_NONE;

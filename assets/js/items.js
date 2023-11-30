@@ -156,7 +156,7 @@ var equip = {
         { id: 7046, title: "Azure Silk Pants", ilvl: 28, int: 6, "sp_frost": 10, q: "uncommon" },
         { id: 3073, title: "Smoldering Pants", ilvl: 26, "sp_fire": 13, q: "uncommon" },
         { id: 4317, title: "Phoenix Pants", ilvl: 25, int: 4, "sp_fire": 10, q: "uncommon" },
-        { id: 8282, title: "Valorous Shield", ilvl: 51, q: "uncommon" },
+        { id: 6282, title: "Sacred Burial Trousers", ilvl: 32, int: 5, spi: 9, q: "uncommon" },
         { id: 12987, title: "Darkweave Breeches", ilvl: 22, int: 7, spi: 6, q: "rare" },
         { id: 4037, title: "Silver-thread Pants", ilvl: 30, int: 8, spi: 4, q: "uncommon" },
         { id: 14379, title: "Sanguine Trousers", ilvl: 29, spi: 9, q: "uncommon" },

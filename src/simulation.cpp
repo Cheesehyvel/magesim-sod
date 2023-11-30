@@ -234,7 +234,7 @@ void Simulation::work()
         auto event = queue.front();
         queue.pop_front();
 
-        if (event.t >= state.duration)
+        if (event.t > state.duration)
         {
             state.t = state.duration;
             break;
