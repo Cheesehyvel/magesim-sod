@@ -308,12 +308,12 @@ bool Unit::canBuff(const buff::Buff &buff) const
 
 bool Unit::canMiss(std::shared_ptr<spell::Spell> spell) const
 {
-    return !spell->dot && !spell->max_heal;
+    return !spell->dot && !spell->max_heal && !spell->fixed_value;
 }
 
 bool Unit::canCrit(std::shared_ptr<spell::Spell> spell) const
 {
-    return !spell->dot;
+    return !spell->dot && !spell->fixed_value;
 }
 
 bool Unit::canResist(std::shared_ptr<spell::Spell> spell) const

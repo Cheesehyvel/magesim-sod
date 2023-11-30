@@ -1182,13 +1182,13 @@ double Simulation::critChance(std::shared_ptr<unit::Unit> unit, std::shared_ptr<
     if (!unit->get_raid_debuffs)
         return crit;
 
-    if (target->hasDebuff(debuff::WINTERS_CHILL) && spell->isSchool(SCHOOL_FROST))
+    if (target->hasDebuff(debuff::WINTERS_CHILL) && spell->isSchool(SCHOOL_FROST) && spell->max_dmg > 0.0)
         crit += target->debuffStacks(debuff::WINTERS_CHILL);
 
     crit = std::min(crit, 100.0);
 
     // Crit suppression
-    if (unit->crit_suppression) {
+    if (unit->crit_suppression && spell->max_dmg > 0.0) {
         if (config.target_level == 28)
             crit -= 2.1;
         if (config.target_level == 27)
@@ -1426,7 +1426,7 @@ void Simulation::rollSpellInstance(std::shared_ptr<unit::Unit> unit, spell::Spel
             if (instance.result == spell::CRIT)
                 instance.dmg *= critMultiplier(unit, instance.spell);
 
-            if (unit->canResist(instance.spell)) {
+            if (unit->canResist(instance.spell) && !instance.spell->fixed_value) {
                 instance.resist = spellDmgResist(unit, instance);
                 instance.dmg -= instance.resist;
             }
