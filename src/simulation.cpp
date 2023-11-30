@@ -66,7 +66,7 @@ SimulationsResult Simulation::runMultiple(int iterations)
             result.min_hps = r.hps;
         if (i == 0 || r.hps > result.max_hps)
             result.max_hps = r.hps;
-        result.avg_hps += (r.dps - result.avg_dps) / (i + 1);
+        result.avg_hps += (r.hps - result.avg_hps) / (i + 1);
 
         result.t_gcd_capped += (r.t_gcd_capped - result.t_gcd_capped) / (i + 1);
 

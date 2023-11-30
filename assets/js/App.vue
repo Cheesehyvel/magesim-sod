@@ -187,6 +187,7 @@
                             <div>DPS</div>
                             <div class="faded">{{ $round(result.min_dps, 2) }} - {{ $round(result.max_dps, 2) }}</div>
                             <div class="dps">{{ $round(result.avg_dps, 2) }}</div>
+                            <div class="hps" v-if="result.avg_hps">{{ $round(result.avg_hps, 2) }} hps</div>
                             <div class="mb-1" v-if="result.t_gcd_capped >= 0.01 || result.n_oom">
                                 <div class="faded" v-if="result.t_gcd_capped >= 0.01">
                                     <span>Wasted haste: {{ $round(result.t_gcd_capped, 2) }}s</span>
