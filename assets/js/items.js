@@ -3,10 +3,15 @@ var ids = {
     TRINKET_MQG: 19339,
     TRINKET_ALCHEMIST_STONE: 13503,
     TRINKET_RECOMBO: 4381,
+    SET_TWILIGHT_INVOKER: 1570,
 };
 
 var equip = {
     weapon: [
+        { id: 209561, title: "Rod of the Ancient Sleepwalker", ilvl: 30, int: 15, spi: 14, sp: 26, twohand: true },
+        { id: 211456, title: "Dagger of Willing Sacrifice", ilvl: 33, int: 3, sp: 12, q: "rare", unique: true },
+        { id: 209694, title: "Blackfathom Ritual Dagger", ilvl: 31, int: 5, sp: 4, q: "rare" },
+        { id: 209818, title: "Sun-Touched Crescent", ilvl: 30, "sp_fire": 9, q: "rare" },
         { id: "2077:1809", title: "Magician Staff of Arcane Wrath", ilvl: 29, sp_arcane: 16, twohand: true, q: "uncommon" },
         { id: "2077:1885", title: "Magician Staff of Fiery Wrath", ilvl: 29, sp_fire: 16, twohand: true, q: "uncommon" },
         { id: "2077:1961", title: "Magician Staff of Frozen Wrath", ilvl: 29, sp_frost: 16, twohand: true, q: "uncommon" },
@@ -32,6 +37,9 @@ var equip = {
         { id: 2567, title: "Evocator's Blade", ilvl: 23, int: 4, spi: 2, q: "rare", unique: true },
     ],
     off_hand: [
+        { id: 211458, title: "Tome of Shadow Warding", ilvl: 33, int: 3, q: "rare" },
+        { id: 209570, title: "Tome of Cavern Lore", ilvl: 30, sp: 7, q: "rare" },
+        { id: 209590, title: "Cracked Water Globe", ilvl: 30, int: 4, spi: 5, q: "rare" },
         { id: "15973:1804", title: "Watcher's Star of Arcane Wrath", ilvl: 30, sp_arcane: 9, q: "uncommon" },
         { id: "15973:1880", title: "Watcher's Star of Fiery Wrath", ilvl: 30, sp_fire: 9, q: "uncommon" },
         { id: "15973:1956", title: "Watcher's Star of Frozen Wrath", ilvl: 30, sp_frost: 9, q: "uncommon" },
@@ -46,13 +54,17 @@ var equip = {
         { id: 15926, title: "Spellbinder Orb", ilvl: 17, int: 3, q: "uncommon" },
     ],
     ranged: [
-        // { id: 7001, title: "Gravestone Scepter", ilvl: 29, spi: 1, q: "rare" }, // From 5man BFD
+        { id: 211461, title: "Inscribed Gravestone Scepter", ilvl: 33, spi: 1, q: "rare" },
+        { id: 209674, title: "Phoenix Ignition", ilvl: 30, int: 5, q: "rare" },
+        { id: 209571, title: "Deadlight", ilvl: 30, q: "rare" },
         { id: 6806, title: "Dancing Flame", ilvl: 40, q: "uncommon" },
         { id: 8184, title: "Firestarter", ilvl: 29, q: "uncommon" },
         { id: 5250, title: "Charred Wand", ilvl: 28, q: "uncommon" },
         { id: 13062, title: "Thunderwood", ilvl: 27, q: "rare" },
     ],
     head: [
+        { id: 209683, itemset: ids.SET_TWILIGHT_INVOKER, title: "Twilight Invoker's Shawl", ilvl: 30, spi: 9, sp: 7, q: "rare" },
+        { id: 211842, title: "Rakkamar's Tattered Thinking Cap", ilvl: 30, int: 8, spi: 6, sp: 14, q: "rare" },
         { id: 10502, title: "Spellpower Goggles Xtreme", ilvl: 43, sp: 21, q: "uncommon" },
         { id: 4373, title: "Shadow Goggles", ilvl: 24, int: 5, spi: 6, q: "uncommon" },
         { id: 10499, title: "Bright-Eye Goggles", ilvl: 35, spi: 9, q: "uncommon" },
@@ -60,11 +72,16 @@ var equip = {
         { id: 4368, title: "Flying Tiger Goggles", ilvl: 20, spi: 4, q: "uncommon" },
     ],
     neck: [
+        { id: 209686, title: "Jagged Bone Necklace", ilvl: 33, int: 2, spi: 7, sp: 6, q: "rare" },
+        { id: 209825, title: "Droplet Choker", ilvl: 30, spi: 6, q: "rare" },
         { id: "12047:763", title: "Spectral Necklace of the Owl", ilvl: 30, int: 4, spi: 4, q: "uncommon" },
         { id: "12047:133", title: "Spectral Necklace of Intellect", ilvl: 30, int: 6, q: "uncommon" },
         { id: 5002, title: "Glowing Green Talisman", ilvl: 30, spi: 6, q: "uncommon" },
     ],
     shoulder: [
+        { id: 209679, title: "Azshari Novice's Shoulderpads", ilvl: 30, int: 10, spi: 5, q: "rare" },
+        { id: 209828, title: "Sub-Zero Pauldrons", ilvl: 30, int: 6, "sp_frost": 13, q: "rare" },
+        { id: 211468, title: "Frayed Chestnut Mantle", ilvl: 30, int: 6, sp: 5, q: "rare" },
         { id: 12998, title: "Magician's Mantle", ilvl: 25, int: 9, sp: 5, q: "rare" },
         { id: 3748, title: "Feline Mantle", ilvl: 28, int: 10, spi: 3, q: "rare" },
         { id: 3560, title: "Mantle of Honor", ilvl: 35, int: 7, spi: 7, q: "uncommon" },
@@ -81,6 +98,10 @@ var equip = {
         { id: 6664, title: "Voodoo Mantle", ilvl: 26, spi: 5, q: "uncommon" },
     ],
     back: [
+        { id: 209423, title: "Flowing Scarf", ilvl: 30, int: 6, spi: 6, q: "rare" },
+        { id: 209523, title: "Shimmering Thresher Cape", ilvl: 30, spi: 6, q: "rare" },
+        { id: 209680, title: "Waterproof Scarf", ilvl: 30, spi: 6, q: "rare" },
+        { id: 211464, title: "Worn Prelacy Cape", ilvl: 30, spi: 9, q: "rare" },
         { id: "7356:1804", title: "Elder's Cloak of Arcane Wrath", ilvl: 30, sp_arcane: 9, q: "uncommon" },
         { id: "7356:1880", title: "Elder's Cloak of Fiery Wrath", ilvl: 30, sp_fire: 9, q: "uncommon" },
         { id: "7356:1956", title: "Elder's Cloak of Frozen Wrath", ilvl: 30, sp_frost: 9, q: "uncommon" },
@@ -92,10 +113,13 @@ var equip = {
         { id: 15468, title: "Windsong Drape", ilvl: 29, int: 4, spi: 4, q: "uncommon" },
         { id: 4713, title: "Silver-thread Cloak", ilvl: 26, int: 4, spi: 2, q: "uncommon" },
         { id: 14376, title: "Sanguine Cape", ilvl: 22, int: 4, q: "uncommon" },
+        { id: 211444, title: "Summoner's Cloak", ilvl: 18, int: 3, spi: 1, q: "uncommon" },
         { id: 5542, title: "Pearl-clasped Cloak", ilvl: 19, int: 3, q: "uncommon" },
         { id: 6667, title: "Engineer's Cloak", ilvl: 27, int: 2, q: "uncommon" },
     ],
     chest: [
+        { id: 209671, itemset: ids.SET_TWILIGHT_INVOKER, title: "Twilight Invoker's Robes", ilvl: 30, int: 11, sp: 8, q: "rare" },
+        { id: 209675, title: "Clamweave Tunic", ilvl: 30, int: 5, q: "rare" },
         { id: "14184:1809", title: "Watcher's Robes of Arcane Wrath", ilvl: 30, sp_arcane: 16, q: "uncommon" },
         { id: "14184:1885", title: "Watcher's Robes of Fiery Wrath", ilvl: 30, sp_fire: 16, q: "uncommon" },
         { id: "14184:1961", title: "Watcher's Robes of Frozen Wrath", ilvl: 30, sp_frost: 16, q: "uncommon" },
@@ -123,6 +147,8 @@ var equip = {
         { id: 15452, title: "Featherbead Bracers", ilvl: 18, int: 3, q: "uncommon" },
     ],
     hands: [
+        { id: 209672, title: "Black Fingerless Gloves", ilvl: 33, int: 9, spi: 4, sp: 6, q: "rare" },
+        { id: 211852, title: "Handwraps of Befouled Water", ilvl: 30, int: 4, q: "rare" },
         { id: "14191:1882", title: "Raincaller Mitts of Fiery Wrath", ilvl: 30, sp_fire: 11, q: "uncommon" },
         { id: "14191:769", title: "Raincaller Mitts of the Owl", ilvl: 30, int: 6, spi: 6, q: "uncommon" },
         { id: 4319, title: "Azure Silk Gloves", ilvl: 29, spi: 3, "sp_frost": 10, q: "uncommon" },
@@ -139,6 +165,7 @@ var equip = {
         { id: 4310, title: "Heavy Woolen Gloves", ilvl: 17, int: 2, spi: 2, q: "uncommon" },
     ],
     waist: [
+        { id: 209432, title: "Ghamoo-ra's Cinch", ilvl: 30, int: 8, q: "rare" },
         { id: "10404:1882", title: "Durable Belt of Fiery Wrath", ilvl: 30, sp_fire: 11, q: "uncommon" },
         { id: "10404:769", title: "Durable Belt of the Owl", ilvl: 30, int: 6, spi: 6, q: "uncommon" },
         { id: 6392, title: "Belt of Arugal", ilvl: 29, int: 10, spi: 3, q: "rare" },
@@ -153,6 +180,8 @@ var equip = {
         { id: 4786, title: "Wise Man's Belt", ilvl: 20, int: 5, q: "uncommon" },
     ],
     legs: [
+        { id: 209667, title: "Gaze Dreamer Leggings", ilvl: 33, int: 9, spi: 9, sp: 7, q: "rare" },
+        { id: 209684, title: "Soul Leech Pants", ilvl: 33, int: 8, spi: 6, sp: 11, q: "rare" },
         { id: "14183:1885", title: "Watcher's Leggings of Fiery Wrath", ilvl: 30, sp_fire: 16, q: "uncommon" },
         { id: "14183:772", title: "Watcher's Leggings of the Owl", ilvl: 30, int: 7, spi: 7, q: "uncommon" },
         { id: 7046, title: "Azure Silk Pants", ilvl: 28, int: 6, "sp_frost": 10, q: "uncommon" },
@@ -167,6 +196,9 @@ var equip = {
         { id: 3067, title: "Bright Pants", ilvl: 26, spi: 6, q: "uncommon" },
     ],
     feet: [
+        { id: 209669, itemset: ids.SET_TWILIGHT_INVOKER, title: "Twilight Invoker's Shoes", ilvl: 30, int: 8, spi: 8, q: "rare" },
+        { id: 209670, title: "Skinwalkers", ilvl: 30, spi: 7, q: "rare" },
+        { id: 211465, title: "Nimbus Boots of Insight", ilvl: 30, int: 5, spi: 4, q: "rare" },
         { id: 210795, title: "Extraplanar Spidersilk Boots", ilvl: 30, int: 5, spi: 6, sp: 7, hit: 1, unique: true },
         { id: "14195:1806", title: "Raincaller Boots of Arcane Wrath", ilvl: 29, sp_arcane: 11, q: "uncommon" },
         { id: "14195:1882", title: "Raincaller Boots of Fiery Wrath", ilvl: 29, sp_fire: 11, q: "uncommon" },
@@ -185,6 +217,8 @@ var equip = {
         { id: 2583, title: "Woolen Boots", ilvl: 19, int: 2, spi: 2, q: "uncommon" },
     ],
     finger: [
+        { id: 209668, title: "Signet of the Twilight Lord", ilvl: 30, spi: 6, sp: 7, q: "rare", unique: true },
+        { id: 211462, title: "Ever-Sustaining Ring", ilvl: 30, spi: 8, q: "rare" },
         { id: 20426, title: "Advisor's Ring", ilvl: 23, sp: 5, mp5: 2, q: "rare", unique: true, pvp: true },
         { id: 13094, title: "The Queen's Jewel", ilvl: 30, int: 2, spi: 8, q: "rare", unique: true },
         { id: 6463, title: "Deep Fathom Ring", ilvl: 26, int: 3, spi: 6, q: "rare", unique: true },
@@ -211,6 +245,7 @@ var equip = {
     trinket: [
         { id: ids.TRINKET_MQG, title: "Mind Quickening Gem", ilvl: 76, use: true, unique: true, phase: 4 },
         { id: ids.TRINKET_ALCHEMIST_STONE, title: "Alchemists' Stone", ilvl: 60, spi: 8, unique: true, phase: 4 },
+        { id: 211450, title: "Invoker's Void Pearl", ilvl: 33, sp: 11, q: "rare", unique: true },
         { id: ids.TRINKET_RECOMBO, title: "Minor Recombobulator", ilvl: 28, use: true, q: "uncommon" },
     ],
 };
