@@ -116,8 +116,8 @@
                                     <span>{{ $round(display_stats.hit, 2) }}%</span>
                                     <tooltip position="r">
                                         <div class="tal">
-                                            <div v-if="config.talents.precision">{{ config.talents.precision*2 }}% from Precision (fire/frost only)</div>
-                                            <div v-if="config.talents.arcane_focus">{{ config.talents.precision*2 }}% from Arcane Focus (arcane only)</div>
+                                            <div v-if="config.talents.elemental_precision">+{{ config.talents.elemental_precision*2 }}% from Precision (fire/frost only)</div>
+                                            <div v-if="config.talents.arcane_focus">+{{ config.talents.arcane_focus*2 }}% from Arcane Focus (arcane only)</div>
                                         </div>
                                     </tooltip>
                                 </td>
