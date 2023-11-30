@@ -14,12 +14,15 @@ struct Config
     bool only_main_dmg = false;
     int targets = 1;
     int dot_targets = 1;
-    int target_resistance = 0;
+    double target_resistance = 0;
     int target_level = 28;
     double target_hp = 100;
+    int player_level = 25;
     int distance = 20;
     int reaction_time = 300;
 
+    bool curse_of_elements = false;
+    bool curse_of_shadow = false;
     bool demonic_pact = false;
     double demonic_pact_bonus = 0;
     bool ashenvale_cry = false;

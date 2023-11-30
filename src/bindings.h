@@ -128,6 +128,8 @@ EMSCRIPTEN_BINDINGS(my_module)
         .property("distance", &Config::distance)
         .property("reaction_time", &Config::reaction_time)
         
+        .property("curse_of_elements", &Config::curse_of_elements)
+        .property("curse_of_shadow", &Config::curse_of_shadow)
         .property("demonic_pact", &Config::demonic_pact)
         .property("demonic_pact_bonus", &Config::demonic_pact_bonus)
         .property("ashenvale_cry", &Config::ashenvale_cry)

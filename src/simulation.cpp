@@ -1241,6 +1241,12 @@ double Simulation::debuffDmgMultiplier(std::shared_ptr<unit::Unit> unit, std::sh
     if (target->hasDebuff(debuff::IMPROVED_SCORCH) && spell->isSchool(SCHOOL_FIRE))
         multi *= 1 + (0.03 * target->debuffStacks(debuff::IMPROVED_SCORCH));
 
+    // CoE and CoS not available yet, but we leave it here for the future
+    // if (config.curse_of_shadow && instance.spell->isSchool(SCHOOL_ARCANE))
+    //     multi *= 1.08;
+    // else if (config.curse_of_elements && instance.spell->isSchool(SCHOOL_FIRE, SCHOOL_FROST))
+    //     multi *= 1.06;
+
     return multi;
 }
 
@@ -1293,32 +1299,99 @@ double Simulation::spellHeal(const std::shared_ptr<unit::Unit> unit, std::shared
     return heal;
 }
 
+/**
+ * Source for resistance based mitigation
+ * May not match exactly, but it is the best estimate we got
+ * https://royalgiraffe.github.io/legacy-sim/
+ */
+
 double Simulation::spellDmgResist(std::shared_ptr<unit::Unit> unit, const spell::SpellInstance &instance)
 {
+
     if (instance.spell->binary)
         return 0.0;
 
-    // No confirmed formulas or resistance tables can be found
-    // This resistance table is based on data from Karazhan in TBC Beta uploaded to WCL
-    // It results in abolut 6% mitigation
+    double res_score = resistScore(unit, instance.spell, true);
 
-    int resist[4] = {83, 11, 5, 1};
+    // Dots only use 10% of the resistance
+    // But only if the dot has no initial damage (like fireball, pyroblast)
+    // Unconfirmed for ignite/living bomb/living flame
+    if (instance.spell->dot && (instance.spell->id != spell::FIREBALL_DOT || instance.spell->id != spell::PYROBLAST_DOT))
+        res_score*= 0.1;
+
+    double cap = config.player_level * 5.0;
+    double ratio = res_score / cap;
+    int i = std::floor(ratio * 3.0);
+    double frac = ratio * 3.0 - i;
+    double percentages[4] = { 0, 0, 0, 0};
+
+    double segments[4][4] = {
+        { 100, 0, 0, 0},
+        { 24, 55, 18, 3},
+        { 0, 22, 56, 22 },
+        { 0, 4, 16, 80 }
+    };
+
+    if (i >= 3) {
+        for (int j=0; j<4; j++)
+            percentages[j] = segments[3][j];
+    }
+    else {
+        for (int j=0; j<4; j++)
+            percentages[j] = std::round(segments[i][j] * (1.0 - frac) + segments[i+1][j] * frac);
+
+        if (ratio < 2.0/3.0 - 0.000001)
+            percentages[0] = std::max(1.0, percentages[0]);
+    }
+
     int roll = random<int>(0, 99);
-
     double resistance_multiplier = 0.0;
     for (int i = 0; i < 4; i++) {
-        if (roll < resist[i]) {
-            resistance_multiplier = ((float)i) * 0.25;
+        if (roll < percentages[i]) {
+            resistance_multiplier = ((float) i) * 0.25;
             break;
         }
 
-        roll -= resist[i];
+        roll -= percentages[i];
     }
+
+    // Debug resistance tables
+    // printf("%.2f: Multi: %.2f -- score: %f -- ratio: %.2f\n", state.t, resistance_multiplier, res_score, ratio);
+    // for (int j=0; j<4; j++)
+    //     printf("%.2f: Resist %d = %f\n", state.t, j, percentages[j]);
 
     if (!resistance_multiplier)
         return 0.0;
 
     return round(instance.dmg * resistance_multiplier);
+}
+
+double Simulation::resistScore(std::shared_ptr<unit::Unit> unit, std::shared_ptr<spell::Spell> spell, bool level_based)
+{
+    double res_score = config.target_resistance;
+    res_score-= unit->spellPenetration(spell);
+
+    // CoE and CoS not available yet, but we leave it here for the future
+    // if (config.curse_of_shadow && spell->isSchool(SCHOOL_ARCANE))
+    //     res_score-= 60.0;
+    // else if (config.curse_of_elements && spell->isSchool(SCHOOL_FIRE, SCHOOL_FROST))
+    //     res_score-= 45.0
+
+    res_score = std::max(res_score, 0.0);
+
+    // Target level minimum resistance
+    if (level_based && config.target_level > config.player_level) {
+        double diff = config.target_level - config.player_level;
+
+        // Not sure what to do here, the same source disagree's with itself
+        // The guide says the level-based resistance is based on attacker level
+        // The calculator (by the same author) uses a fixed value of 8.0
+        // Let's go with the written guide for now
+        res_score+= 2.0/15.0 * ((double) config.player_level) * diff;
+        // res_score+= 8.0 * diff;
+    }
+
+    return res_score;
 }
 
 spell::Result Simulation::getSpellResult(std::shared_ptr<unit::Unit> unit, std::shared_ptr<spell::Spell> spell, std::shared_ptr<target::Target> target) const

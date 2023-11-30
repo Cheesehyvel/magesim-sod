@@ -849,6 +849,18 @@
                             </fieldset>
                             <fieldset class="config-debuffs">
                                 <legend>Debuffs</legend>
+                                <div class="form-item" v-if="false">
+                                    <label><input type="checkbox" v-model="config.curse_of_elements">
+                                        <span>Curse of Elements</span>
+                                        <help>6% fire/frost dmg, -45 resistance</help>
+                                    </label>
+                                </div>
+                                <div class="form-item" v-if="false">
+                                    <label><input type="checkbox" v-model="config.curse_of_shadow">
+                                        <span>Curse of Shadow</span>
+                                        <help>8% arcane dmg, -60 resistance</help>
+                                    </label>
+                                </div>
                             </fieldset>
                             <fieldset class="config-buffs">
                                 <legend>Buffs</legend>
@@ -1541,6 +1553,10 @@
                 boon_blackfathom: false,
                 ashenvale_cry: false,
                 dmf_dmg: false,
+
+                // Debuffs
+                curse_of_elements: false,
+                curse_of_shadow: false,
 
                 // Consumes
                 elixir_firepower: false,
@@ -3582,7 +3598,10 @@
                         var slot = this.getSlotFromSixtyUpgrades(data.items[i]);
                         if (!slot)
                             continue;
-                        var item = this.getItem(slot, data.items[i].id);
+                        var id = data.items[i].id;
+                        if (data.items[i].hasOwnProperty("suffixId"))
+                            id+= ":"+data.items[i].suffixId;
+                        var item = this.getItem(slot, id);
                         if (!item)
                             item = this.searchItem(data.items[i].name);
                         if (!item) {

@@ -119,6 +119,8 @@ public:
 
     virtual double spellCoeffMod(std::shared_ptr<spell::Spell> spell) const;
 
+    virtual double spellPenetration(std::shared_ptr<spell::Spell> spell) const;
+
     virtual double buffHealMultiplier(std::shared_ptr<spell::Spell> spell, const State& state) const;
 
     virtual double buffDmgMultiplier(std::shared_ptr<spell::Spell> spell, const State& state) const;
