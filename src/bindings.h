@@ -94,6 +94,7 @@ EMSCRIPTEN_BINDINGS(my_module)
         .value("TRINKET_NONE", TRINKET_NONE)
         .value("TRINKET_MQG", TRINKET_MQG)
         .value("TRINKET_ALCHEMIST_STONE", TRINKET_ALCHEMIST_STONE)
+        .value("TRINKET_RECOMBO", TRINKET_RECOMBO)
         ;
 
     emscripten::enum_<Enchant>("Enchant")

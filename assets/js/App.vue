@@ -2110,11 +2110,16 @@
                 });
 
                 var trinkets = [
-                    // {
-                    //     id: this.items.ids.TRINKET_MQG,
-                    //     title: "Mind Quickening Gem",
-                    //     icon: "https://www.wowhead.com/images/wow/icons/large/spell_nature_wispheal.jpg",
-                    // },
+                    {
+                        id: this.items.ids.TRINKET_MQG,
+                        title: "Mind Quickening Gem",
+                        icon: "https://www.wowhead.com/images/wow/icons/large/spell_nature_wispheal.jpg",
+                    },
+                    {
+                        id: this.items.ids.TRINKET_RECOMBO,
+                        title: "Minor Recombobulator",
+                        icon: "https://wow.zamimg.com/images/wow/icons/large/inv_gizmo_07.jpg",
+                    },
                 ];
 
                 var slots = ["trinket1", "trinket2"];

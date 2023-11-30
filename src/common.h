@@ -54,6 +54,7 @@ enum Trinket : int
     TRINKET_NONE = 0,
     TRINKET_MQG = 19339,
     TRINKET_ALCHEMIST_STONE = 13503,
+    TRINKET_RECOMBO = 4381,
 };
 
 enum EventType : int

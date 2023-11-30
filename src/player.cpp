@@ -725,6 +725,10 @@ bool Player::isUseTrinket(Trinket trinket) const
     if (trinket == TRINKET_MQG)
         return true;
 
+    // Lets not use this trinket automatically
+    // if (trinket == TRINKET_RECOMBO)
+    //     return true;
+
     return false;
 }
 
@@ -799,6 +803,10 @@ std::vector<action::Action> Player::useTrinket(Trinket trinket, std::shared_ptr<
         buff = std::make_shared<buff::MindQuickening>();
         cooldown->duration = 300;
     }
+    if (trinket == TRINKET_RECOMBO) {
+        actions.push_back(manaAction((double) random<int>(150, 250), "Minor Recombobulator"));
+        cooldown->duration = 300;
+    }
 
     if (buff != nullptr)
         actions.push_back(buffAction(buff));
@@ -858,6 +866,24 @@ action::Action Player::useCooldown(const State& state)
         return action;
     }
     else if (isUseTrinket(config.trinket2) && !hasCooldown(cooldown::TRINKET2) && !isTrinketOnSharedCD(config.trinket2) && useTimingIfPossible("trinket2", state)) {
+        action::Action action{ action::TYPE_TRINKET };
+        action.cooldown = std::make_shared<cooldown::Cooldown>(cooldown::TRINKET2);
+        action.trinket = config.trinket2;
+        action.primary_action = true;
+        return action;
+    }
+    else if (config.trinket1 == TRINKET_RECOMBO && !hasCooldown(cooldown::TRINKET1) && !isTrinketOnSharedCD(config.trinket1) && 
+            (useTimingIfPossible("trinket1", state, true) || !isTimingReadySoon("trinket1", state, 300.0) && maxMana() - mana >= 250.0))
+    {
+        action::Action action{ action::TYPE_TRINKET };
+        action.cooldown = std::make_shared<cooldown::Cooldown>(cooldown::TRINKET1);
+        action.trinket = config.trinket1;
+        action.primary_action = true;
+        return action;
+    }
+    else if (config.trinket2 == TRINKET_RECOMBO && !hasCooldown(cooldown::TRINKET2) && !isTrinketOnSharedCD(config.trinket2) && 
+            (useTimingIfPossible("trinket2", state, true) || !isTimingReadySoon("trinket2", state, 300.0) && maxMana() - mana >= 250.0))
+    {
         action::Action action{ action::TYPE_TRINKET };
         action.cooldown = std::make_shared<cooldown::Cooldown>(cooldown::TRINKET2);
         action.trinket = config.trinket2;

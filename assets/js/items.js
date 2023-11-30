@@ -1,6 +1,8 @@
 var ids = {
     // Trinkets
     TRINKET_MQG: 19339,
+    TRINKET_ALCHEMIST_STONE: 13503,
+    TRINKET_RECOMBO: 4381,
 };
 
 var equip = {
@@ -208,6 +210,8 @@ var equip = {
     ],
     trinket: [
         { id: ids.TRINKET_MQG, title: "Mind Quickening Gem", ilvl: 76, use: true, unique: true, phase: 4 },
+        { id: ids.TRINKET_ALCHEMIST_STONE, title: "Alchemists' Stone", ilvl: 60, spi: 8, unique: true, phase: 4 },
+        { id: ids.TRINKET_RECOMBO, title: "Minor Recombobulator", ilvl: 28, use: true, q: "uncommon" },
     ],
 };
 
