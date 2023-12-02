@@ -239,7 +239,7 @@ double Player::buffDmgMultiplier(std::shared_ptr<spell::Spell> spell, const Stat
     if (spell->id == spell::CONE_OF_COLD && talents.imp_cone_of_cold)
         multi *= 1.05 + talents.imp_cone_of_cold * 0.1;
 
-    if (spell->isSchool(SCHOOL_ARCANE) && spell->id != spell::ARCANE_BLAST && hasBuff(buff::ARCANE_BLAST, true)) {
+    if (spell->school == SCHOOL_ARCANE && spell->id != spell::ARCANE_BLAST && hasBuff(buff::ARCANE_BLAST, true)) {
         double ab = 0.15;
         multi *= 1 + ab * buffStacks(buff::ARCANE_BLAST, true);
     }
@@ -399,7 +399,7 @@ std::vector<action::Action> Player::onCastSuccessProc(const State& state, std::s
 
     if (spell->id == spell::ARCANE_BLAST)
         actions.push_back(buffAction<buff::ArcaneBlast>());
-    else if (hasBuff(buff::ARCANE_BLAST) && spell->isSchool(SCHOOL_ARCANE) && spell->min_dmg > 0)
+    else if (hasBuff(buff::ARCANE_BLAST) && spell->school == SCHOOL_ARCANE && spell->min_dmg > 0)
         actions.push_back(buffExpireAction<buff::ArcaneBlast>());
 
     if (runes.fingers_of_frost && hasBuff(buff::FINGERS_OF_FROST) && is_harmful) {
@@ -516,7 +516,7 @@ std::vector<action::Action> Player::onSpellImpactProc(const State& state, const 
 
     if (instance.dmg && instance.spell->isSchool(SCHOOL_ARCANE)) {
         double heal = instance.dmg * 0.8;
-        if (spell->id == spell::ARCANE_EXPLOSION)
+        if (instance.spell->id == spell::ARCANE_EXPLOSION)
             heal*= 0.2;
         if (hasBuff(buff::TEMPORAL_BEACON)) {
             actions.push_back(spellAction<spell::TemporalBeacon>(heal));
