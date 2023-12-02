@@ -65,7 +65,6 @@ var equip = {
     head: [
         { id: 209683, itemset: ids.SET_TWILIGHT_INVOKER, title: "Twilight Invoker's Shawl", ilvl: 30, spi: 9, sp: 7, q: "rare" },
         { id: 211842, title: "Rakkamar's Tattered Thinking Cap", ilvl: 30, int: 8, spi: 6, sp: 14, q: "rare" },
-        { id: 10502, title: "Spellpower Goggles Xtreme", ilvl: 43, sp: 21, q: "uncommon" },
         { id: 4373, title: "Shadow Goggles", ilvl: 24, int: 5, spi: 6, q: "uncommon" },
         { id: 10499, title: "Bright-Eye Goggles", ilvl: 35, spi: 9, q: "uncommon" },
         { id: 4385, title: "Green Tinted Goggles", ilvl: 30, spi: 7, q: "uncommon" },
@@ -300,7 +299,7 @@ var enchants = {
 };
 
 var itemsets = [
-
+    { id: ids.SET_TWILIGHT_INVOKER, set2: { sp: 9 }, set3: { hit: 1 }},
 ];
 
 export default { ids, equip, enchants, itemsets };

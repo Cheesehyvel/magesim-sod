@@ -515,12 +515,15 @@ std::vector<action::Action> Player::onSpellImpactProc(const State& state, const 
     }
 
     if (instance.dmg && instance.spell->isSchool(SCHOOL_ARCANE)) {
+        double heal = instance.dmg * 0.8;
+        if (spell->id == spell::ARCANE_EXPLOSION)
+            heal*= 0.2;
         if (hasBuff(buff::TEMPORAL_BEACON)) {
-            actions.push_back(spellAction<spell::TemporalBeacon>(instance.dmg * 0.8));
+            actions.push_back(spellAction<spell::TemporalBeacon>(heal));
         }
         if (hasBuff(buff::TEMPORAL_BEACON_PARTY)) {
             for (int i=0; i<5; i++)
-                actions.push_back(spellAction<spell::TemporalBeacon>(instance.dmg * 0.8));
+                actions.push_back(spellAction<spell::TemporalBeacon>(heal));
         }
     }
 
