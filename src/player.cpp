@@ -616,7 +616,7 @@ bool Player::shouldUseManaPotion(const State& state)
     if (hasBuff(buff::INNERVATE))
         return false;
 
-    double max = 585;
+    double max = 360;
 
     if (hasTrinket(TRINKET_ALCHEMIST_STONE))
         max *= 1.33;
@@ -700,7 +700,7 @@ std::vector<action::Action> Player::usePotion()
     std::vector<action::Action> actions = Unit::usePotion();
 
     double duration = 120;
-    double mana = round(random<double>(455, 585));
+    double mana = round(random<double>(280, 360));
 
     if (hasTrinket(TRINKET_ALCHEMIST_STONE))
         mana *= 1.33;

@@ -918,6 +918,12 @@
                                     </label>
                                     <input type="text" v-model.number="config.demonic_pact_bonus">
                                 </div>
+                                <div class="form-item" v-if="faction == 'horde'">
+                                    <label><input type="checkbox" v-model="config.rising_spirit">
+                                        <span>Rising Spirit</span>
+                                        <help>25 spirit for 30min. Horde only</help>
+                                    </label>
+                                </div>
                                 <div class="form-item">
                                     <label><input type="checkbox" v-model="config.boon_blackfathom">
                                         <span>Boon of Blackfathom</span>
@@ -1560,6 +1566,7 @@
                 imp_blessing_of_wisdom: false,
                 demonic_pact: false,
                 demonic_pact_bonus: 0,
+                rising_spirit: false,
                 boon_blackfathom: false,
                 ashenvale_cry: false,
                 dmf_dmg: false,
@@ -2957,6 +2964,8 @@
                 }
 
                 // World buffs
+                if (this.config.rising_spirit && this.faction == "horde")
+                    stats.spirit+= 25;
                 if (this.config.boon_blackfathom)
                     stats.crit+= 2;
 
