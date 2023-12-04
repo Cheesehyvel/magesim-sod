@@ -1010,7 +1010,7 @@ action::Action Player::nextAction(const State& state)
         bool multi_target = config.targets > 1;
 
         if (runes.living_flame && !hasCooldown(cooldown::LIVING_FLAME)) {
-            return spellAction<spell::LivingFlame>();
+            return spellAction<spell::LivingFlame>(config.distance);
         }
 
         // Check for Living Bomb targets
@@ -1092,7 +1092,7 @@ action::Action Player::nextAction(const State& state)
 
         if (runes.living_flame && !hasCooldown(cooldown::LIVING_FLAME)) {
             if (ab_streak == 4)
-                return spellAction<spell::LivingFlame>();
+                return spellAction<spell::LivingFlame>(config.distance);
             else if (!state.isMoving())
                 return spellAction(ab, target);
         }

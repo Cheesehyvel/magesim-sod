@@ -387,18 +387,27 @@ namespace spell
 
     struct LivingFlame : Spell
     {
-        LivingFlame() : Spell(LIVING_FLAME, "Living Flame", SCHOOL_SPELLFIRE)
+        LivingFlame(double distance) : Spell(LIVING_FLAME, "Living Flame", SCHOOL_SPELLFIRE)
         {
+            double diameter = 4;
+            double flames_per_second = 2;
+            double flame_hit = std::floor(distance / diameter);
+
+            if (flame_hit == 0)
+                speed = 0;
+            else
+                speed = distance / flame_hit * flames_per_second;
+            
+            ticks = 20 - std::ceil(flame_hit / flames_per_second);
+
             aoe = true;
             cost_base_mana = true;
             cost = 11;
             dot = true;
             t_interval = 1;
-            ticks = 20;
             min_dmg = 100.0 * RUNE_SCALE;
             max_dmg = 100.0 * RUNE_SCALE;
             coeff = 0.143;
-            speed = 24; // UNCONFIRMED
         }
     };
 
