@@ -969,10 +969,10 @@
                                         <!-- <option :value="weapon_oils.OIL_BRILLIANT_WIZARD">Brilliant Wizard Oil (36 sp / 1% crit)</option> -->
                                         <!-- <option :value="weapon_oils.OIL_WIZARD">Wizard Oil (24 sp)</option> -->
                                         <!-- <option :value="weapon_oils.OIL_LESSER_WIZARD">Lesser Wizard Oil (16 sp)</option> -->
-                                        <option :value="weapon_oils.OIL_MINOR_WIZARD">Minor Wizard Oil (8 sp)</option>
+                                        <!-- <option :value="weapon_oils.OIL_MINOR_WIZARD">Minor Wizard Oil (8 sp)</option> -->
                                         <!-- <option :value="weapon_oils.OIL_BRILLIANT_MANA">Brilliant Mana Oil (12 mp5)</option> -->
                                         <!-- <option :value="weapon_oils.OIL_LESSER_MANA">Lesser Mana Oil (8 mp5)</option> -->
-                                        <option :value="weapon_oils.OIL_MINOR_MANA">Minor Mana Oil (4 mp5)</option>
+                                        <!-- <option :value="weapon_oils.OIL_MINOR_MANA">Minor Mana Oil (4 mp5)</option> -->
                                     </select>
                                 </div>
                                 <div class="form-item">

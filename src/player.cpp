@@ -515,7 +515,7 @@ std::vector<action::Action> Player::onSpellImpactProc(const State& state, const 
     }
 
     if (instance.dmg && instance.spell->isSchool(SCHOOL_ARCANE)) {
-        double heal = instance.dmg * 0.8;
+        double heal = (instance.dmg + instance.resist)* 0.8;
         if (instance.spell->id == spell::ARCANE_EXPLOSION)
             heal*= 0.2;
         if (hasBuff(buff::TEMPORAL_BEACON)) {

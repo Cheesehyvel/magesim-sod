@@ -66,7 +66,6 @@ var equip = {
         { id: 209683, itemset: ids.SET_TWILIGHT_INVOKER, title: "Twilight Invoker's Shawl", ilvl: 30, spi: 9, sp: 7, q: "rare" },
         { id: 211842, title: "Rakkamar's Tattered Thinking Cap", ilvl: 30, int: 8, spi: 6, sp: 14, q: "rare" },
         { id: 4373, title: "Shadow Goggles", ilvl: 24, int: 5, spi: 6, q: "uncommon" },
-        { id: 10499, title: "Bright-Eye Goggles", ilvl: 35, spi: 9, q: "uncommon" },
         { id: 4385, title: "Green Tinted Goggles", ilvl: 30, spi: 7, q: "uncommon" },
         { id: 4368, title: "Flying Tiger Goggles", ilvl: 20, spi: 4, q: "uncommon" },
     ],
