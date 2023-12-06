@@ -323,6 +323,37 @@
                     yAxisID: "dps",
                 });
 
+                // HPS
+                if (this.result.hps) {
+                    // options.scales.yAxes.push({
+                    //     id: "hps",
+                    //     type: "linear",
+                    //     ticks: {
+                    //         beginAtZero: true,
+                    //     },
+                    //     scaleLabel: {
+                    //         display: true,
+                    //         labelString: "HPS",
+                    //     }
+                    // });
+                    d = [];
+                    d.push({x: 0, y: 0});
+                    for (var i=0; i<this.result.log.length; i++) {
+                        if (this.result.log[i].type == 3 && this.result.log[i].t)
+                            d.push({x: this.result.log[i].t, y: this.result.log[i].healed / this.result.log[i].t});
+                    }
+                    d.push({x: this.result.t, y: this.result.hps});
+                    data.datasets.push({
+                        data: d,
+                        borderColor: "#ff0",
+                        borderWidth: 1,
+                        pointRadius: 0,
+                        label: "HPS",
+                        fill: false,
+                        yAxisID: "dps",
+                    });
+                }
+
                 this.renderChart(data, options);
             },
         }

@@ -1079,7 +1079,10 @@ action::Action Player::nextAction(const State& state)
     // Arcane rotations
     else if (config.rotation == ROTATION_ST_ARCANE) {
         auto ab = std::make_shared<spell::ArcaneBlast>();
-        int ab_stacks = 3;
+        int ab_stacks = config.rot_ab_stacks;
+
+        if (config.rot_ab_stacks_dec_below >= manaPercent())
+            ab_stacks--;
 
         if (!state.isMoving()) {
             if (runes.regeneration && !hasBuff(buff::TEMPORAL_BEACON)) {
@@ -1091,10 +1094,7 @@ action::Action Player::nextAction(const State& state)
         }
 
         if (runes.living_flame && !hasCooldown(cooldown::LIVING_FLAME)) {
-            if (ab_streak == 4)
-                return spellAction<spell::LivingFlame>(config.distance);
-            else if (!state.isMoving())
-                return spellAction(ab, target);
+            return spellAction<spell::LivingFlame>(config.distance);
         }
 
         if (runes.arcane_surge && 
@@ -1125,8 +1125,11 @@ action::Action Player::nextAction(const State& state)
                 return action;
             }
         }
-        else if (state.duration - state.t < castTime(ab) && !hasCooldown(cooldown::FIRE_BLAST))
+        
+        if (state.duration - state.t < castTime(ab) && !hasCooldown(cooldown::FIRE_BLAST))
             return spellAction<spell::FireBlast>(target);
+        else if (config.rot_ab_spam_above <= manaPercent())
+            return spellAction(ab, target);
         else if (ab_streak >= ab_stacks)
             return spellAction<spell::ArcaneMissiles>(target);
         else if (runes.arcane_blast && canCast(ab))

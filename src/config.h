@@ -39,6 +39,9 @@ struct Config
     int scorching_mages = 0;
     bool rot_fire_blast_weave = false;
     bool rot_ice_lance = false;
+    int rot_ab_stacks = 3;
+    double rot_ab_spam_above = 100;
+    double rot_ab_stacks_dec_below = 0;
 
     std::vector<Timing> timings;
     std::vector<Interruption> interruptions;

@@ -1240,9 +1240,11 @@ table {
 
         table {
             th, td {
-                &:nth-child(-n+3) {
-                    width: 1px;
-                    white-space: nowrap;
+                width: 1px;
+                white-space: nowrap;
+                &:last-child {
+                    white-space: normal;
+                    width: auto;
                 }
             }
 
@@ -1255,20 +1257,20 @@ table {
                 }
             }
 
-            tr.type-4 td:nth-child(4) {
+            tr.type-4 td:last-child {
                 color: #807fa2;
             }
-            tr.type-5 td:nth-child(4) {
+            tr.type-5 td:last-child {
                 color: #bbe8ba;
             }
-            tr.type-6 td:nth-child(4) {
+            tr.type-6 td:last-child {
                 color: #aaa;
             }
-            tr.type-8 td:nth-child(4),
-            tr.type-9 td:nth-child(4) {
+            tr.type-8 td:last-child,
+            tr.type-9 td:last-child {
                 color: #b88;
             }
-            tr.type-10 td:nth-child(4) {
+            tr.type-10 td:last-child {
                 color: #fb2;
             }
         }

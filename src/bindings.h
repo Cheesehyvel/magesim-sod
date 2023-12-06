@@ -146,6 +146,9 @@ EMSCRIPTEN_BINDINGS(my_module)
         .property("scorching_mages", &Config::scorching_mages)
         .property("rot_fire_blast_weave", &Config::rot_fire_blast_weave)
         .property("rot_ice_lance", &Config::rot_ice_lance)
+        .property("rot_ab_stacks", &Config::rot_ab_stacks)
+        .property("rot_ab_spam_above", &Config::rot_ab_spam_above)
+        .property("rot_ab_stacks_dec_below", &Config::rot_ab_stacks_dec_below)
         ;
 
     emscripten::function("allocConfig", &allocConfig);

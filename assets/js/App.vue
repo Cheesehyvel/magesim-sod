@@ -530,6 +530,7 @@
                                     <th>Time</th>
                                     <th>Mana</th>
                                     <th>DPS</th>
+                                    <th v-if="result && result.hps">HPS</th>
                                     <th>Event</th>
                                 </thead>
                                 <tbody>
@@ -537,6 +538,7 @@
                                         <td>{{ formatTime(log.t) }}</td>
                                         <td>{{ round(log.mana) }} ({{ round(log.mana_percent) }}%)</td>
                                         <td>{{ (log.t ? round(log.dmg/log.t) : "0") }}</td>
+                                        <td v-if="result && result.hps">{{ (log.t ? round(log.healed/log.t) : "0") }}</td>
                                         <td>{{ log.text }}</td>
                                     </tr>
                                 </tbody>
@@ -840,6 +842,26 @@
                                         <span>Fire Blast Weave</span>
                                     </label>
                                 </div>
+                                <template v-if="config.rotation == rotations.ROTATION_ST_ARCANE && config.runes.arcane_blast">
+                                    <div class="form-item">
+                                        <label>
+                                            <span>AB stacks before reset</span>
+                                        </label>
+                                    <input type="text" v-model.number="config.rot_ab_stacks">
+                                    </div>
+                                    <div class="form-item">
+                                        <label>
+                                            <span>Spam AB above mana %</span>
+                                        </label>
+                                    <input type="text" v-model.number="config.rot_ab_spam_above">
+                                    </div>
+                                    <div class="form-item">
+                                        <label>
+                                            <span>Decrease AB stacks by 1 below mana %</span>
+                                        </label>
+                                        <input type="text" v-model.number="config.rot_ab_stacks_dec_below">
+                                    </div>
+                                </template>
                                 <template v-if="config.rotation == rotations.ROTATION_ST_FROST">
                                     <div class="form-item" v-if="config.runes.ice_lance && config.runes.fingers_of_frost">
                                         <label><input type="checkbox" v-model="config.rot_ice_lance">
@@ -1178,9 +1200,6 @@
                     <div class="text left mt-2">
                         <ul>
                             <li>Rotations are very basic and not optimized</li>
-                            <li>Ignite is personal and works like in WotLK</li>
-                            <li>Healing is not shown in graph or spell overview</li>
-                            <li>Many items are missing. Use Custom Items for now</li>
                             <li>Imports might be buggy</li>
                         </ul>
                     </div>
@@ -1238,7 +1257,6 @@
                             <div class="checklist mt-n">
                                 <check-item :value="import_profile.items">Player gear</check-item>
                                 <check-item :value="import_profile.config">Fight duration</check-item>
-                                <check-item :value="import_profile.config">Bloodlust timing</check-item>
                                 <check-item :value="import_profile.config">Demonic Pact values</check-item>
                             </div>
                             <div class="mt-2">It will <b>NOT</b> import the following:</div>
@@ -1279,10 +1297,6 @@
                                 <check-item :value="import_profile.config && import_wcl.fight.duration">
                                     Fight duration 
                                     <template v-if="import_wcl.fight.duration">({{ $round(import_wcl.fight.duration/1000) }}s)</template>
-                                </check-item>
-                                <check-item :value="import_profile.config && import_wcl.fight.timings.length">
-                                    Bloodlust timing 
-                                    <template v-if="import_wcl.fight.timings.length">({{ $round(import_wcl.fight.timings[0].t/1000) }}s)</template>
                                 </check-item>
                                 <check-item :value="import_profile.config && import_wcl.fight.dp_avg">
                                     Demonic Pact values
@@ -1552,7 +1566,7 @@
                 targets: 1,
                 dot_targets: 0,
                 target_resistance: 0,
-                target_level: 28,
+                target_level: 27,
                 target_hp: 100,
                 distance: 20,
                 reaction_time: 300,
@@ -1592,6 +1606,9 @@
                 scorching_mages: 0,
                 rot_fire_blast_weave: false,
                 rot_ice_lance: false,
+                rot_ab_stacks: 3,
+                rot_ab_spam_above: 100,
+                rot_ab_stacks_dec_below: 0,
 
                 timings: Array(),
                 interruptions: Array(),
@@ -3491,7 +3508,7 @@
                         import_type = "wse";
                 }
                 catch (e) {
-                    var m = str.match(/https\:\/\/classic\.warcraftlogs\.com\/reports\/([a-z0-9]+)/i);
+                    var m = str.match(/https\:\/\/vanilla\.warcraftlogs\.com\/reports\/([a-z0-9]+)/i);
                     if (m)
                         import_type = "wcl";
                     else

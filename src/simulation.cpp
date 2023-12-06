@@ -1633,6 +1633,7 @@ std::string Simulation::jsonLog() const
         s << ",\"t\":" << log[i].t;
         s << ",\"type\":" << log[i].type;
         s << ",\"dmg\":" << log[i].dmg;
+        s << ",\"healed\":" << log[i].healed;
         s << ",\"mana\":" << log[i].mana;
         s << ",\"mana_percent\":" << log[i].mana_percent;
         s << "}";
@@ -1648,7 +1649,7 @@ void Simulation::addLog(std::shared_ptr<unit::Unit> unit, LogType type, const st
     if (!logging)
         return;
 
-    log.emplace_back(type, unit, text, state.t, unit->mana, unit->manaPercent(), state.totalDmg());
+    log.emplace_back(type, unit, text, state.t, unit->mana, unit->manaPercent(), state.totalDmg(), state.healed);
 }
 
 void Simulation::clearLog()

@@ -290,11 +290,11 @@ var enchants = {
     // ],
     // legs: [
     // ],
-    feet: [
+    // feet: [
         // { id: 13890, enchantmentId: 911, title: "Minor speed" },
         // { id: 20024, enchantmentId: 851, title: "Spirit", spi: 5 },
         // { id: 13687, enchantmentId: 255, title: "Lesser spirit", spi: 3 },
-    ],
+    // ],
 };
 
 var itemsets = [
