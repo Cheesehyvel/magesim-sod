@@ -998,13 +998,22 @@
                                     </select>
                                 </div>
                                 <div class="form-item">
-                                    <label>Arcane scroll</label>
-                                    <select v-model="config.mage_scroll">
-                                        <option :value="mage_scrolls.SCROLL_NONE">None</option>
-                                        <option :value="mage_scrolls.SCROLL_ACCURACY1">Accuracy (1% hit)</option>
-                                        <option :value="mage_scrolls.SCROLL_POWER1">Power (1% crit)</option>
-                                        <option :value="mage_scrolls.SCROLL_RECOVERY1">Recovery (8 mp5)</option>
-                                    </select>
+                                    <label><input type="checkbox" v-model="config.arcane_scroll_accuracy">
+                                        <span>Arcane Scroll of Accuracy</span>
+                                        <help>1% hit</help>
+                                    </label>
+                                </div>
+                                <div class="form-item">
+                                    <label><input type="checkbox" v-model="config.arcane_scroll_power">
+                                        <span>Arcane Scroll of Power</span>
+                                        <help>1% crit</help>
+                                    </label>
+                                </div>
+                                <div class="form-item">
+                                    <label><input type="checkbox" v-model="config.arcane_scroll_recovery">
+                                        <span>Arcane Scroll of Recovery</span>
+                                        <help>8 mp5</help>
+                                    </label>
                                 </div>
                                 <div class="form-item">
                                     <label><input type="checkbox" v-model="config.elixir_firepower">
@@ -1590,9 +1599,11 @@
                 curse_of_shadow: false,
 
                 // Consumes
+                arcane_scroll_accuracy: false,
+                arcane_scroll_power: false,
+                arcane_scroll_recovery: false,
                 elixir_firepower: false,
                 weapon_oil: 0,
-                mage_scroll: 0,
                 flask: 0,
                 food: 0,
 
@@ -2964,12 +2975,12 @@
                 if (this.config.weapon_oil == this.weapon_oils.OIL_MINOR_MANA)
                     stats.mp5+= 4;
 
-                // Scroll
-                if (this.config.mage_scroll == this.mage_scrolls.SCROLL_ACCURACY1)
+                // Scrolls
+                if (this.config.arcane_scroll_accuracy)
                     stats.hit+= 1;
-                if (this.config.mage_scroll == this.mage_scrolls.SCROLL_POWER1)
+                if (this.config.arcane_scroll_power)
                     stats.crit+= 1;
-                if (this.config.mage_scroll == this.mage_scrolls.SCROLL_RECOVERY1)
+                if (this.config.arcane_scroll_recovery)
                     stats.mp5+= 8;
 
                 // Mana Restoration
