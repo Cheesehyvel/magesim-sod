@@ -700,10 +700,10 @@
                                     </div>
                                     <div class="form-item">
                                         <label>
-                                            <span>Target hp%</span>
-                                            <help>Starting health for all targets. The health will go down over time.</help>
+                                            <span>Target resistance</span>
+                                            <help>Does not include the unremovable level-based resistance</help>
                                         </label>
-                                        <input type="text" v-model.number="config.target_hp">
+                                        <input type="text" v-model.number="config.target_resistance">
                                     </div>
                                 </div>
                                 <div class="form-item form-row">
