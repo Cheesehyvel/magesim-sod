@@ -270,7 +270,7 @@ double Player::manaCostMultiplier(std::shared_ptr<spell::Spell> spell) const
 {
     double multi = Unit::manaCostMultiplier(spell);
 
-    if (hasBuff(buff::CLEARCAST))
+    if (hasBuff(buff::CLEARCAST) && spell->id != spell::ARCANE_SURGE)
         return 0;
 
     if (talents.frost_channeling)
@@ -281,6 +281,10 @@ double Player::manaCostMultiplier(std::shared_ptr<spell::Spell> spell) const
 
 double Player::manaCostMod(std::shared_ptr<spell::Spell> spell, double mana_cost) const
 {
+    if (spell->id == spell::ARCANE_SURGE) {
+        return mana - mana_cost;
+    }
+
     double mod = Unit::manaCostMod(spell, mana_cost);
 
     if (hasBuff(buff::ARCANE_POWER))
@@ -652,7 +656,7 @@ bool Player::shouldEvocate(const State& state)
             return false;
     }
 
-    if (hasBuff(buff::INNERVATE) || hasBuff(buff::MANA_TIDE))
+    if (hasBuff(buff::INNERVATE) || hasBuff(buff::MANA_TIDE) || hasBuff(buff::ARCANE_SURGE))
         return false;
 
     if (manaPercent() > 10.0)
