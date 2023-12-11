@@ -381,8 +381,6 @@ std::vector<action::Action> Player::onCastSuccessProc(const State& state, std::s
 
     if (spell->id == spell::LIVING_BOMB)
         target->t_living_bomb = state.t;
-    if (spell->id == spell::SCORCH)
-        t_scorch = state.t;
     if (spell->id == spell::FLAMESTRIKE) {
         t_flamestrike = state.t;
         actions.push_back(spellAction<spell::FlamestrikeDot>());
@@ -440,8 +438,10 @@ std::vector<action::Action> Player::onSpellImpactProc(const State& state, const 
     }
 
     if (instance.result != spell::MISS) {
-        if (talents.imp_scorch && instance.spell->id == spell::SCORCH)
+        if (talents.imp_scorch && instance.spell->id == spell::SCORCH && (talents.imp_scorch == 3 || random<int>(0, 2) < talents.imp_scorch)) {
+            t_scorch = state.t;
             actions.push_back(debuffAction<debuff::ImprovedScorch>(target));
+        }
 
         if (instance.spell->id == spell::FIREBALL)
             actions.push_back(spellAction<spell::FireballDot>(target));
@@ -1005,7 +1005,7 @@ action::Action Player::nextAction(const State& state)
     auto target = state.targets[0];
 
     if (config.maintain_imp_scorch && talents.imp_scorch) {
-        if (target->debuffStacks(debuff::IMPROVED_SCORCH) < 5 || state.t - t_scorch >= 22.5 + talents.imp_scorch * 1.5)
+        if (target->debuffStacks(debuff::IMPROVED_SCORCH) < 5 || state.t - t_scorch >= 15.0 + talents.imp_scorch * 4.0)
             return spellAction<spell::Scorch>(target);
     }
 
