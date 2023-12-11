@@ -1004,8 +1004,9 @@ action::Action Player::nextAction(const State& state)
     // Default target
     auto target = state.targets[0];
 
-    if (config.maintain_imp_scorch && talents.imp_scorch && t_scorch + 27.0 <= state.t) {
-        return spellAction<spell::Scorch>(target);
+    if (config.maintain_imp_scorch && talents.imp_scorch) {
+        if (target->debuffStacks(debuff::IMPROVED_SCORCH) < 5 || state.t - t_scorch >= 22.5 + talents.imp_scorch * 1.5)
+            return spellAction<spell::Scorch>(target);
     }
 
     // Fire rotations

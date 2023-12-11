@@ -1270,7 +1270,6 @@ double Simulation::spellDmg(const std::shared_ptr<unit::Unit> unit, std::shared_
     }
 
     dmg *= buffDmgMultiplier(unit, spell);
-    dmg *= debuffDmgMultiplier(unit, spell, target);
 
     return dmg;
 }
@@ -1421,7 +1420,8 @@ void Simulation::rollSpellInstance(std::shared_ptr<unit::Unit> unit, spell::Spel
         instance.result = getSpellResult(unit, instance.spell, target);
 
         if (instance.result != spell::MISS) {
-            instance.dmg = spellDmg(unit, instance.spell, target);
+            instance.initial_dmg = spellDmg(unit, instance.spell, target);
+            instance.dmg = instance.initial_dmg * debuffDmgMultiplier(unit, instance.spell, target);
 
             if (instance.result == spell::CRIT)
                 instance.dmg *= critMultiplier(unit, instance.spell);

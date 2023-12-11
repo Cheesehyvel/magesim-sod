@@ -116,6 +116,7 @@ namespace spell
         std::shared_ptr<Spell> spell;
         Result result = Result::NONE;
         double dmg = 0;
+        double initial_dmg = 0;
         double heal = 0;
         double resist = 0;
         int tick = 0;
@@ -514,7 +515,6 @@ namespace spell
         TemporalBeacon(double heal) : Spell(TEMPORAL_BEACON, "Temporal Beacon", SCHOOL_ARCANE)
         {
             active_use = false;
-            fixed_value = true;
             cast_time = 0;
             min_heal = heal;
             max_heal = heal;

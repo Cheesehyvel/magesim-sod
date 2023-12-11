@@ -40,6 +40,7 @@ namespace debuff
             id = IMPROVED_SCORCH;
             name = "Improved Scorch";
             duration = 30;
+            max_stacks = 5;
         }
     };
 
