@@ -949,7 +949,7 @@
                                 <div class="form-item">
                                     <label><input type="checkbox" v-model="config.boon_blackfathom">
                                         <span>Boon of Blackfathom</span>
-                                        <help>2% crit</help>
+                                        <help>3% hit + 25 sp</help>
                                     </label>
                                 </div>
                                 <div class="form-item">
@@ -2994,8 +2994,10 @@
                 // World buffs
                 if (this.config.rising_spirit && this.faction == "horde")
                     stats.spirit+= 25;
-                if (this.config.boon_blackfathom)
-                    stats.crit+= 2;
+                if (this.config.boon_blackfathom) {
+                    stats.hit+= 3;
+                    stats.sp+= 25;
+                }
 
                 // Attribute multipliers
                 if (this.config.race == this.races.RACE_GNOME)
