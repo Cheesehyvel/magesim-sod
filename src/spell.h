@@ -458,7 +458,6 @@ namespace spell
             ticks = 2;
             coeff = 0;
             min_dmg = max_dmg = _dmg;
-            fixed_value = true;
         }
     };
 

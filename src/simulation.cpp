@@ -779,7 +779,6 @@ void Simulation::onSpellTick(std::shared_ptr<unit::Unit> unit, std::shared_ptr<s
 void Simulation::dotApply(std::shared_ptr<unit::Unit> unit, std::shared_ptr<spell::Spell> spell, std::shared_ptr<target::Target> target)
 {
     // Ignite special case
-    // TODO: VANILLA IGNITE OVERHAUL
     if (spell->id == spell::IGNITE) {
         auto leftover = getDotDamage(unit, spell, target);
 
