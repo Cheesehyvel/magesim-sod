@@ -1004,11 +1004,6 @@ action::Action Player::nextAction(const State& state)
     // Default target
     auto target = state.targets[0];
 
-    if (config.maintain_imp_scorch && talents.imp_scorch) {
-        if (target->debuffStacks(debuff::IMPROVED_SCORCH) < 5 || state.t - t_scorch >= 15.0 + talents.imp_scorch * 4.0)
-            return spellAction<spell::Scorch>(target);
-    }
-
     // Fire rotations
     if (config.rotation == ROTATION_ST_FIRE || config.rotation == ROTATION_ST_FIRE_SC) {
 
@@ -1024,6 +1019,11 @@ action::Action Player::nextAction(const State& state)
                 if (tar->t_living_bomb + 12.0 < state.t && tar->id <= config.dot_targets)
                     return spellAction<spell::LivingBomb>(tar);
             }
+        }
+
+        if (config.maintain_imp_scorch && talents.imp_scorch) {
+            if (target->debuffStacks(debuff::IMPROVED_SCORCH) < 5 || state.t - t_scorch >= 15.0 + talents.imp_scorch * 4.0)
+                return spellAction<spell::Scorch>(target);
         }
 
         if (!multi_target || config.only_main_dmg) {
