@@ -935,8 +935,12 @@ bool Player::shouldPreCast() const
 
 std::shared_ptr<spell::Spell> Player::preCastSpell()
 {
-    if (config.rotation == ROTATION_ST_FIRE)
-        return std::make_shared<spell::Fireball>();
+    if (config.rotation == ROTATION_ST_FIRE) {
+        if (talents.pyroblast)
+            return std::make_shared<spell::Pyroblast>();
+        else
+            return std::make_shared<spell::Fireball>();
+    }
     if (config.rotation == ROTATION_ST_ARCANE && runes.arcane_blast)
         return std::make_shared<spell::ArcaneBlast>();
     if (config.rotation == ROTATION_ST_FROST)

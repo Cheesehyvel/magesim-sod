@@ -3312,7 +3312,7 @@
                     this.config.rotation = constants.rotations.ROTATION_ST_ARCANE;
                 }
                 else if (spec == "fire") {
-                    this.config.build = "https://www.wowhead.com/classic/talent-calc/mage/-505012-003_156j976jha6rb";
+                    this.config.build = "https://www.wowhead.com/classic/talent-calc/mage/-5050220101_156j976jha6rb";
                     this.config.rotation = constants.rotations.ROTATION_ST_FIRE;
                 }
                 else if (spec == "frost") {
