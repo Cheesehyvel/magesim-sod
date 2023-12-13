@@ -122,6 +122,18 @@
                                     </tooltip>
                                 </td>
                             </tr>
+                            <tr>
+                                <td :class="[config.custom_stats.spen ? 'active' : '']">
+                                    Spell pen
+                                    <span v-if="config.custom_stats.spen">
+                                        ({{ $plusMinus(config.custom_stats.spen) }})
+                                        <tooltip position="t">{{ config.custom_stats.spen }} bonus spell penetration</tooltip>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span>{{ $round(display_stats.spen) }}</span>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <div class="mt-1 tac">
@@ -368,6 +380,9 @@
                                                 <th>
                                                     <sort-link v-model="item_sort" name="mp5" order="desc">Mp5</sort-link>
                                                 </th>
+                                                <th>
+                                                    <sort-link v-model="item_sort" name="spen" order="desc">Spen</sort-link>
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -418,6 +433,7 @@
                                                 <td>{{ $get(item, "int", "") }}</td>
                                                 <td>{{ $get(item, "spi", "") }}</td>
                                                 <td>{{ $get(item, "mp5", "") }}</td>
+                                                <td>{{ $get(item, "spen", "") }}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -1385,6 +1401,10 @@
                         <label>Mp5</label>
                         <input type="number" v-model.number="config.custom_stats.mp5">
                     </div>
+                    <div class="form-item form-row">
+                        <label>Spell penetration</label>
+                        <input type="number" v-model.number="config.custom_stats.spen">
+                    </div>
                 </div>
             </div>
 
@@ -1462,6 +1482,10 @@
                         <div class="form-item form-row">
                             <label>Mp5</label>
                             <input type="number" v-model.number="custom_item.mp5">
+                        </div>
+                        <div class="form-item form-row">
+                            <label>Spell penetration</label>
+                            <input type="number" v-model.number="custom_item.spen">
                         </div>
                     </div>
                     <div class="mt-2 text-error" v-if="custom_item_error">
@@ -1778,6 +1802,7 @@
                     crit: null,
                     hit: null,
                     mp5: null,
+                    spen: null,
                     twohand: false,
                 },
                 custom_item_open: false,
@@ -4361,6 +4386,7 @@
                 this.custom_item.crit = null;
                 this.custom_item.hit = null;
                 this.custom_item.mp5 = null;
+                this.custom_item.spen = null;
                 this.custom_item.twohand = false;
                 this.custom_item_open = false;
                 this.custom_item_error = null;
