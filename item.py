@@ -75,6 +75,8 @@ def getItem(item_id, phase = 1, faction = None):
             stats["hit"] = equip["splhitrtng"]
         if "manargn" in equip:
             stats["mp5"] = equip["manargn"]
+        if "splpen" in equip:
+            stats["spen"] = equip["splpen"]
 
     # Two hand
     p = re.compile("\<inventorySlot id=\"([0-9]+)\"")

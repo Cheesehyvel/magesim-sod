@@ -37,6 +37,7 @@ void Unit::reset()
     buff_stats.sp_arcane = 0;
     buff_stats.sp_fire = 0;
     buff_stats.sp_frost = 0;
+    buff_stats.spen = 0;
     buff_stats.mana = 0;
 }
 
@@ -176,6 +177,11 @@ void Unit::addBuffStats(const Stats& _stats, int stacks)
     buff_stats.crit += _stats.crit * stacks;
     buff_stats.hit += _stats.hit * stacks;
     buff_stats.sp += _stats.sp * stacks;
+    buff_stats.sp_arcane += _stats.sp_arcane * stacks;
+    buff_stats.sp_fire += _stats.sp_fire * stacks;
+    buff_stats.sp_frost += _stats.sp_frost * stacks;
+    buff_stats.spen += _stats.spen * stacks;
+    buff_stats.mana += _stats.mana * stacks;
 }
 
 void Unit::removeBuffStats(const Stats& _stats, int stacks)
@@ -186,6 +192,11 @@ void Unit::removeBuffStats(const Stats& _stats, int stacks)
     buff_stats.crit -= _stats.crit * stacks;
     buff_stats.hit -= _stats.hit * stacks;
     buff_stats.sp -= _stats.sp * stacks;
+    buff_stats.sp_arcane -= _stats.sp_arcane * stacks;
+    buff_stats.sp_fire -= _stats.sp_fire * stacks;
+    buff_stats.sp_frost -= _stats.sp_frost * stacks;
+    buff_stats.spen -= _stats.spen * stacks;
+    buff_stats.mana -= _stats.mana * stacks;
 }
 
 int Unit::debuffStacks(debuff::ID id) const
@@ -336,11 +347,6 @@ double Unit::spellCoeffMod(std::shared_ptr<spell::Spell> spell) const
     return 0;
 }
 
-double Unit::spellPenetration(std::shared_ptr<spell::Spell> spell) const
-{
-    return 0;
-}
-
 double Unit::buffHealMultiplier(std::shared_ptr<spell::Spell>, const State&) const
 {
     return 1;
@@ -419,6 +425,11 @@ double Unit::getSpellPower(School school) const
     }
 
     return sp;
+}
+
+double Unit::getSpellPenetration(School school) const
+{
+    return stats.spen + buff_stats.spen;
 }
 
 double Unit::getMp5() const

@@ -11,5 +11,6 @@ struct Stats
     double sp_arcane = 0;
     double sp_fire = 0;
     double sp_frost = 0;
+    double spen = 0;
     double mana = 0;
 };

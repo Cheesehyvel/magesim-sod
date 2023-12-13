@@ -244,6 +244,7 @@ var equip = {
         { id: ids.TRINKET_MQG, title: "Mind Quickening Gem", ilvl: 76, use: true, unique: true, phase: 4 },
         { id: ids.TRINKET_ALCHEMIST_STONE, title: "Alchemists' Stone", ilvl: 60, spi: 8, unique: true, phase: 4 },
         { id: 211450, title: "Invoker's Void Pearl", ilvl: 33, sp: 11, q: "rare", unique: true },
+        { id: 21566, title: "Rune of Perfection", ilvl: 25, spen: 10, q: "rare", unique: true },
         { id: ids.TRINKET_RECOMBO, title: "Minor Recombobulator", ilvl: 28, use: true, q: "uncommon" },
     ],
 };

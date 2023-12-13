@@ -167,6 +167,7 @@ EMSCRIPTEN_BINDINGS(my_module)
         .field("sp_arcane", &Stats::sp_arcane)
         .field("sp_fire", &Stats::sp_fire)
         .field("sp_frost", &Stats::sp_frost)
+        .field("spen", &Stats::spen)
         .field("mana", &Stats::mana)
         ;
 

@@ -309,7 +309,7 @@
                                                     <b>Text search with filters</b><br><br>
                                                     Yes/no filters: pvp, 2h, set<br>
                                                     Example: 'pvp:no' will exclude all pvp items.<br><br>
-                                                    Number filters: phase, ilvl, sp, crit, hit, int, spi, mp5<br>
+                                                    Number filters: phase, ilvl, sp, crit, hit, int, spi, mp5, spen<br>
                                                     Example: 'ilvl:252+' will find items with ilvl 252 or higher.<br>
                                                     Example: 'ilvl:252-' will find items with ilvl 252 or lower.<br>
                                                     Example: 'ilvl:239-252' will find items with ilvl between 239 and 252.
@@ -1636,6 +1636,7 @@
                     sp_arcane: 0,
                     sp_fire: 0,
                     sp_frost: 0,
+                    spen: 0,
                     mana: 0,
                 },
 
@@ -1649,6 +1650,7 @@
                     sp_arcane: 0,
                     sp_fire: 0,
                     sp_frost: 0,
+                    spen: 0,
                     mana: 0,
                 },
 
@@ -1967,6 +1969,9 @@
                             }
                             else if (arr[0] == "sp") {
                                 items = items.filter(item => filterInt(arr[1], _.get(item, "sp", 0)));
+                            }
+                            else if (arr[0] == "spen") {
+                                items = items.filter(item => filterInt(arr[1], _.get(item, "spen", 0)));
                             }
                             else if (arr[0] == "crit") {
                                 items = items.filter(item => filterInt(arr[1], _.get(item, "crit", 0)));
@@ -2810,6 +2815,7 @@
                     sp_arcane: 0,
                     sp_fire: 0,
                     sp_frost: 0,
+                    spen: 0,
                     mana: 0,
                 };
 
@@ -2842,6 +2848,7 @@
                     sp_arcane: 0,
                     sp_fire: 0,
                     sp_frost: 0,
+                    spen: 0,
                     mana: 0,
                 };
 
@@ -2896,6 +2903,7 @@
                 stats.sp_arcane+= item_stats.sp_arcane;
                 stats.sp_fire+= item_stats.sp_fire;
                 stats.sp_frost+= item_stats.sp_frost;
+                stats.spen+= item_stats.spen;
                 stats.mana+= item_stats.mana;
 
                 this.config.stats = stats;

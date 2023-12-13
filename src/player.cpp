@@ -194,17 +194,6 @@ double Player::critMultiplierMod(std::shared_ptr<spell::Spell> spell) const
     return multi;
 }
 
-
-double Player::spellPenetration(std::shared_ptr<spell::Spell> spell) const
-{
-    double pen = Unit::spellPenetration(spell);
-
-    if (spell->isSchool(SCHOOL_ARCANE) && talents.arcane_subtlety)
-        pen+= 5.0 * talents.arcane_subtlety;
-
-    return pen;
-}
-
 double Player::buffHealMultiplier(std::shared_ptr<spell::Spell> spell, const State& state) const
 {
     double multi = Unit::buffHealMultiplier(spell, state);
@@ -296,6 +285,16 @@ double Player::manaCostMod(std::shared_ptr<spell::Spell> spell, double mana_cost
     }
 
     return mod;
+}
+
+double Player::getSpellPenetration(School school) const
+{
+    double pen = Unit::getSpellPenetration(school);
+
+    if (isSchool(school, SCHOOL_ARCANE) && talents.arcane_subtlety)
+        pen+= 5.0 * talents.arcane_subtlety;
+
+    return pen;
 }
 
 bool Player::shouldConsumeClearcast(std::shared_ptr<spell::Spell> spell) const

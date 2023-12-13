@@ -119,8 +119,6 @@ public:
 
     virtual double spellCoeffMod(std::shared_ptr<spell::Spell> spell) const;
 
-    virtual double spellPenetration(std::shared_ptr<spell::Spell> spell) const;
-
     virtual double buffHealMultiplier(std::shared_ptr<spell::Spell> spell, const State& state) const;
 
     virtual double buffDmgMultiplier(std::shared_ptr<spell::Spell> spell, const State& state) const;
@@ -142,6 +140,8 @@ public:
     virtual double getSpirit() const;
 
     virtual double getSpellPower(School school = SCHOOL_NONE) const;
+
+    virtual double getSpellPenetration(School school = SCHOOL_NONE) const;
 
     virtual double getMp5() const;
 

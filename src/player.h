@@ -76,8 +76,6 @@ public:
 
     double critMultiplierMod(std::shared_ptr<spell::Spell> spell) const;
 
-    double spellPenetration(std::shared_ptr<spell::Spell> spell) const;
-
     double buffHealMultiplier(std::shared_ptr<spell::Spell> spell, const State& state) const;
 
     double buffDmgMultiplier(std::shared_ptr<spell::Spell> spell, const State& state) const;
@@ -85,6 +83,8 @@ public:
     double manaCostMod(std::shared_ptr<spell::Spell> spell, double mana_cost) const;
 
     double manaCostMultiplier(std::shared_ptr<spell::Spell> spell) const;
+
+    double getSpellPenetration(School school) const;
 
     bool shouldConsumeClearcast(std::shared_ptr<spell::Spell>  spell) const;
 

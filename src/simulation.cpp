@@ -1367,7 +1367,7 @@ double Simulation::spellDmgResist(std::shared_ptr<unit::Unit> unit, const spell:
 double Simulation::resistScore(std::shared_ptr<unit::Unit> unit, std::shared_ptr<spell::Spell> spell, bool level_based)
 {
     double res_score = config.target_resistance;
-    res_score-= unit->spellPenetration(spell);
+    res_score-= unit->getSpellPenetration(spell->school);
 
     // CoE and CoS not available yet, but we leave it here for the future
     // if (config.curse_of_shadow && spell->isSchool(SCHOOL_ARCANE))
