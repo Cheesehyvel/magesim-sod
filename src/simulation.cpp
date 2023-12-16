@@ -147,13 +147,22 @@ SimulationResult Simulation::run(bool single)
 
     if (config.scorching_mages > 0) {
         int n = 0;
+        int p = player->talents.imp_scorch;
+        if (p == 0) {
+            if (config.player_level == 25)
+                p = 1;
+            else
+                p = 3;
+        }
         for (double t=1.5; t<state.duration;) {
             if (n < 5) {
                 for (int i=0; i<config.scorching_mages; i++) {
-                    pushDebuffGain(state.targets[0], std::make_shared<debuff::ImprovedScorch>(), t);
-                    n++;
-                    if (n == 5)
-                        break;
+                    if (p == 3 || random<int>(0, 2) < p) {
+                        pushDebuffGain(state.targets[0], std::make_shared<debuff::ImprovedScorch>(), t);
+                        n++;
+                        if (n == 5)
+                            break;
+                    }
                 }
             }
             else {
