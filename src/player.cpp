@@ -228,7 +228,7 @@ double Player::buffDmgMultiplier(std::shared_ptr<spell::Spell> spell, const Stat
     if (spell->id == spell::CONE_OF_COLD && talents.imp_cone_of_cold)
         multi *= 1.05 + talents.imp_cone_of_cold * 0.1;
 
-    if (spell->school == SCHOOL_ARCANE && spell->id != spell::ARCANE_BLAST && hasBuff(buff::ARCANE_BLAST, true)) {
+    if (spell->isSchool(SCHOOL_ARCANE) && spell->id != spell::ARCANE_BLAST && hasBuff(buff::ARCANE_BLAST, true)) {
         double ab = 0.15;
         multi *= 1 + ab * buffStacks(buff::ARCANE_BLAST, true);
     }
@@ -322,9 +322,8 @@ std::vector<action::Action> Player::onBuffGain(const State& state, std::shared_p
 {
     auto actions = Unit::onBuffGain(state, buff);
 
-    if (buff->id == buff::ARCANE_BLAST) {
+    if (buff->id == buff::ARCANE_BLAST)
         ab_streak++;
-    }
 
     return actions;
 }
@@ -400,7 +399,7 @@ std::vector<action::Action> Player::onCastSuccessProc(const State& state, std::s
 
     if (spell->id == spell::ARCANE_BLAST)
         actions.push_back(buffAction<buff::ArcaneBlast>());
-    else if (hasBuff(buff::ARCANE_BLAST) && spell->school == SCHOOL_ARCANE && spell->min_dmg > 0)
+    else if (hasBuff(buff::ARCANE_BLAST) && spell->isSchool(SCHOOL_ARCANE) && spell->min_dmg > 0)
         actions.push_back(buffExpireAction<buff::ArcaneBlast>());
 
     if (runes.fingers_of_frost && hasBuff(buff::FINGERS_OF_FROST) && is_harmful) {
@@ -1102,7 +1101,12 @@ action::Action Player::nextAction(const State& state)
         }
 
         if (runes.living_flame && !hasCooldown(cooldown::LIVING_FLAME)) {
-            return spellAction<spell::LivingFlame>(config.distance);
+            if (manaPercent() > 20)
+                ab_stacks = 4;
+            if (ab_streak < ab_stacks)
+                return spellAction(ab, target);
+            else
+                return spellAction<spell::LivingFlame>(config.distance);
         }
 
         if (runes.arcane_surge && 
