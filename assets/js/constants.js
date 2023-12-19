@@ -21,6 +21,11 @@ export default {
         FOOD_NONE: 0,
         FOOD_SPIRIT6: 12209,
         FOOD_SPIRIT8: 4457,
+        FOOD_SPIRIT12: 17222,
+        FOOD_MP3: 21072,
+        FOOD_MP6: 21217,
+        FOOD_MP8: 13931,
+        FOOD_INT10: 18254,
     },
     flasks: {
         FLASK_NONE: 0,
@@ -29,6 +34,7 @@ export default {
     },
     weapon_oils: {
         OIL_NONE: 0,
+        OIL_BLESSED_WIZARD: 23123,
         OIL_BRILLIANT_WIZARD: 20749,
         OIL_WIZARD: 25128,
         OIL_LESSER_WIZARD: 25126,

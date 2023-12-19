@@ -14,7 +14,15 @@ namespace unit
 Player::Player(const Config& _config, const Stats& _stats, const Talents& _talents, const Runes& _runes)
     : Unit(_config, _stats), talents(_talents), runes(_runes)
 {
-    base_mana = 493; // lvl 25
+    if (config.player_level == 25)
+        base_mana = 481;
+    else if (config.player_level == 40)
+        base_mana = 853;
+    else if (config.player_level == 50)
+        base_mana = 1048;
+    else if (config.player_level == 60)
+        base_mana = 1213;
+    
     name = "Player";
     id = 1;
     crit_suppression = true;
@@ -213,6 +221,8 @@ double Player::buffDmgMultiplier(std::shared_ptr<spell::Spell> spell, const Stat
         multi*= 1.1;
     if (config.ashenvale_cry)
         multi*= 1.05;
+    if (config.udc_3set)
+        multi*= 1.02;
 
     if (spell->proc)
         return multi;
@@ -503,7 +513,7 @@ std::vector<action::Action> Player::onSpellImpactProc(const State& state, const 
             }
 
             if (runes.burnout && instance.spell->actual_cost)
-                actions.push_back(manaAction(instance.spell->actual_cost * -0.01 * runes.burnout, "Burnout"));
+                actions.push_back(manaAction(instance.spell->actual_cost * -0.01, "Burnout"));
         }
     }
 

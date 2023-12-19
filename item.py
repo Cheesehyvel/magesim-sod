@@ -25,6 +25,7 @@ def getItem(item_id, phase = 1, faction = None):
         return None
 
     stats = {}
+    lvlreq = 0
 
     # ID
     p = re.compile("\<item id=\"([0-9]+)\"")
@@ -77,6 +78,8 @@ def getItem(item_id, phase = 1, faction = None):
             stats["mp5"] = equip["manargn"]
         if "splpen" in equip:
             stats["spen"] = equip["splpen"]
+        if "reqlevel" in equip:
+            lvlreq = int(equip["reqlevel"])
 
     # Two hand
     p = re.compile("\<inventorySlot id=\"([0-9]+)\"")
@@ -101,6 +104,14 @@ def getItem(item_id, phase = 1, faction = None):
     # Faction
     if faction != None:
         stats["faction"] = faction
+
+    # Level req
+    if lvlreq > 50 and phase < 4:
+        phase = 4
+    elif lvlreq > 40 and phase < 3:
+        phase = 3
+    elif lvlreq > 25 and phase < 2:
+        phase = 2
 
     # Phase
     if phase > 1:

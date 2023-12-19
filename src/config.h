@@ -21,12 +21,18 @@ struct Config
     int distance = 20;
     int reaction_time = 300;
 
+     // Buffs
+    bool mana_spring = false;
+    bool imp_mana_spring = false;
     bool curse_of_elements = false;
     bool curse_of_shadow = false;
     bool demonic_pact = false;
     double demonic_pact_bonus = 0;
     bool ashenvale_cry = false;
     bool dmf_dmg = false;
+
+    // Enchants / procs / sets
+    bool udc_3set = false;
 
     bool pre_cast = false;
 

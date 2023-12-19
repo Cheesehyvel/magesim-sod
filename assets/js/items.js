@@ -1,9 +1,20 @@
 var ids = {
     // Trinkets
+    TRINKET_RESTRAINED_ESSENCE: 23046,
+    TRINKET_WARMTH_OF_FORGIVENESS: 23027,
     TRINKET_MQG: 19339,
+    TRINKET_ZHC: 19950,
+    TRINKET_HAZZARAH: 19959,
+    TRINKET_BLUE_DRAGON: 19288,
     TRINKET_ALCHEMIST_STONE: 13503,
+    TRINKET_EYE_OF_MOAM: 21473,
+    TRINKET_NAT_PAGLE: 19947,
+    TRINKET_DRACONIC_EMBLEM: 22268,
+    TRINKET_BURST_OF_KNOWLEDGE: 11832,
+    TRINKET_FIRE_RUBY: 20036,
     TRINKET_RECOMBO: 4381,
     SET_TWILIGHT_INVOKER: 1570,
+    SET_UDC: 536,
 };
 
 var equip = {
@@ -117,6 +128,8 @@ var equip = {
         { id: 6667, title: "Engineer's Cloak", ilvl: 27, int: 2, q: "uncommon" },
     ],
     chest: [
+        { id: 23085, itemset: ids.SET_UDC, title: "Robe of Undead Cleansing", ilvl: 63, int: 13, q: "rare", phase: 4 },
+
         { id: 209671, itemset: ids.SET_TWILIGHT_INVOKER, title: "Twilight Invoker's Robes", ilvl: 30, int: 11, sp: 8, q: "rare" },
         { id: 209675, title: "Clamweave Tunic", ilvl: 30, int: 5, q: "rare" },
         { id: "14184:1809", title: "Watcher's Robes of Arcane Wrath", ilvl: 30, sp_arcane: 16, q: "uncommon" },
@@ -135,6 +148,8 @@ var equip = {
         { id: 7510, title: "Lesser Spellfire Robes", ilvl: 20, int: 6, q: "uncommon" },
     ],
     wrist: [
+        { id: 23091, itemset: ids.SET_UDC, title: "Bracers of Undead Cleansing", ilvl: 63, int: 7, q: "rare", phase: 4 },
+
         { id: "9821:1804", title: "Durable Bracers of Arcane Wrath", ilvl: 30, sp_arcane: 9, q: "uncommon" },
         { id: "9821:1880", title: "Durable Bracers of Fiery Wrath", ilvl: 30, sp_fire: 9, q: "uncommon" },
         { id: "9821:1956", title: "Durable Bracers of Frozen Wrath", ilvl: 30, sp_frost: 9, q: "uncommon" },
@@ -146,6 +161,8 @@ var equip = {
         { id: 15452, title: "Featherbead Bracers", ilvl: 18, int: 3, q: "uncommon" },
     ],
     hands: [
+        { id: 23084, itemset: ids.SET_UDC, title: "Gloves of Undead Cleansing", ilvl: 63, int: 10, q: "rare", phase: 4 },
+
         { id: 209672, title: "Black Fingerless Gloves", ilvl: 33, int: 9, spi: 4, sp: 6, q: "rare" },
         { id: 211852, title: "Handwraps of Befouled Water", ilvl: 30, int: 4, q: "rare" },
         { id: "14191:1882", title: "Raincaller Mitts of Fiery Wrath", ilvl: 30, sp_fire: 11, q: "uncommon" },
@@ -243,61 +260,88 @@ var equip = {
         { id: 8350, title: "The 1 Ring", ilvl: 15, int: 1, spi: 1, q: "uncommon" },
     ],
     trinket: [
+        { id: 23207, title: "Mark of the Champion", ilvl: 90, sp: 85, unique: true, phase: 4 },
+        { id: ids.TRINKET_RESTRAINED_ESSENCE, title: "The Restrained Essence of Sapphiron", ilvl: 90, sp: 40, use: true, unique: true, phase: 4 },
+        { id: ids.TRINKET_WARMTH_OF_FORGIVENESS, title: "Warmth of Forgiveness", ilvl: 85, mp5: 10, use: true, unique: true, phase: 4 },
+        { id: 21647, title: "Fetish of the Sand Reaver", ilvl: 77, unique: true, phase: 4 },
+        { id: 19379, title: "Neltharion's Tear", ilvl: 83, sp: 44, hit: 2, unique: true, phase: 4 },
         { id: ids.TRINKET_MQG, title: "Mind Quickening Gem", ilvl: 76, use: true, unique: true, phase: 4 },
+        { id: ids.TRINKET_ZHC, title: "Zandalarian Hero Charm", ilvl: 68, use: true, unique: true, phase: 4 },
+        { id: ids.TRINKET_HAZZARAH, title: "Hazza'rah's Charm of Magic", ilvl: 65, use: true, unique: true, phase: 4 },
+        { id: ids.TRINKET_BLUE_DRAGON, title: "Darkmoon Card: Blue Dragon", ilvl: 66, unique: true, phase: 4 },
         { id: ids.TRINKET_ALCHEMIST_STONE, title: "Alchemists' Stone", ilvl: 60, spi: 8, unique: true, phase: 4 },
+        { id: 17064, title: "Shard of the Scale", ilvl: 71, mp5: 16, unique: true, phase: 4 },
+        { id: ids.TRINKET_EYE_OF_MOAM, title: "Eye of Moam", ilvl: 74, q: "rare", use: true, unique: true, phase: 4 },
+        { id: ids.TRINKET_NAT_PAGLE, title: "Nat Pagle's Broken Reel", ilvl: 68, q: "rare", use: true, unique: true, phase: 4 },
+        { id: ids.TRINKET_DRACONIC_EMBLEM, title: "Draconic Infused Emblem", ilvl: 63, q: "rare", use: true, unique: true, phase: 4 },
+        { id: 19812, title: "Rune of the Dawn", ilvl: 61, sp: 48, q: "rare", unique: true, phase: 4 },
+        { id: 13968, title: "Eye of the Beast", ilvl: 63, crit: 2, q: "rare", phase: 4 },
+        { id: 12930, title: "Briarwood Reed", ilvl: 60, sp: 29, q: "rare", unique: true, phase: 4 },
+        { id: ids.TRINKET_BURST_OF_KNOWLEDGE, title: "Burst of Knowledge", ilvl: 58, sp: 12, q: "rare", use: true, unique: true, phase: 4 },
+        { id: 18371, title: "Mindtap Talisman", ilvl: 61, mp5: 11, q: "rare", phase: 4 },
+        { id: ids.TRINKET_FIRE_RUBY, title: "Fire Ruby", ilvl: 52, q: "rare", use: true, unique: true, phase: 3 },
+        { id: 10659, title: "Shard of the Splithooves", ilvl: 57, mp5: 5, q: "uncommon", faction: "a", phase: 3 },
         { id: 211450, title: "Invoker's Void Pearl", ilvl: 33, sp: 11, q: "rare", unique: true },
+        { id: 21565, title: "Rune of Perfection", ilvl: 45, spen: 20, q: "rare", unique: true, phase: 2 },
         { id: 21566, title: "Rune of Perfection", ilvl: 25, spen: 10, q: "rare", unique: true },
+        { id: 211420, title: "Shifting Scale Talisman", ilvl: 25, spi: 5, q: "rare" },
         { id: ids.TRINKET_RECOMBO, title: "Minor Recombobulator", ilvl: 28, use: true, q: "uncommon" },
     ],
 };
 
 var enchants = {
     weapon: [
-        // { id: 22749, enchantmentId: 2504, title: "Spell Power", sp: 30 },
-        { id: 21931, enchantmentId: 2443, title: "Winter's Might", sp_frost: 7 },
-        // { id: 23804, enchantmentId: 2568, title: "Mighty Intellect", int: 22 },
-        // { id: 20036, enchantmentId: 1904, title: "Major Intellect", int: 9, twohand: true },
+        { id: 22749, enchantmentId: 2504, title: "Spell Power", sp: 30, phase: 3 },
+        { id: 21931, enchantmentId: 2443, title: "Winter's Might", sp_frost: 7, phase: 2 },
+        { id: 23804, enchantmentId: 2568, title: "Mighty Intellect", int: 22, phase: 3 },
+        { id: 20036, enchantmentId: 1904, title: "Major Intellect", int: 9, twohand: true, phase: 3 },
         { id: 7793, enchantmentId: 723, title: "Lesser Intellect", int: 3, twohand: true },
-        // { id: 23803, enchantmentId: 2567, title: "Mighty Spirit", spi: 20 },
-        // { id: 20035, enchantmentId: 1903, title: "Major Spirit", spi: 9, twohand: true },
+        { id: 23803, enchantmentId: 2567, title: "Mighty Spirit", spi: 20, phase: 3 },
+        { id: 20035, enchantmentId: 1903, title: "Major Spirit", spi: 9, twohand: true, phase: 3 },
         { id: 13380, enchantmentId: 255, title: "Lesser Spirit", spi: 3, twohand: true },
     ],
-    // head: [
-    // ],
-    // shoulder: [
-    // ],
+    head: [
+        { id: 24164, enchantmentId: 2588, title: "Presence of Sight", sp: 18, hit: 1, phase: 4 },
+        { id: 22844, enchantmentId: 2544, title: "Arcanum of Focus", sp: 8, phase: 4 },
+    ],
+    shoulder: [
+        { id: 29467, enchantmentId: 2721, title: "Power of the Scourge", sp: 15, crit: 1, phase: 4 },
+        { id: 24421, enchantmentId: 2605, title: "Zandalar Signet of Mojo", sp: 18, phase: 4 },
+    ],
     chest: [
-        // { id: 20025, enchantmentId: 1891, title: "Greater Stats", int: 4, spi: 4 },
-        // { id: 13941, enchantmentId: 928, title: "Stats", int: 3, spi: 3 },
-        // { id: 13700, enchantmentId: 866, title: "Lesser Stats", int: 2, spi: 2 },
+        { id: 20025, enchantmentId: 1891, title: "Greater Stats", int: 4, spi: 4, phase: 3 },
+        { id: 13941, enchantmentId: 928, title: "Stats", int: 3, spi: 3, phase: 3 },
+        { id: 13700, enchantmentId: 866, title: "Lesser Stats", int: 2, spi: 2, phase: 2 },
         { id: 13626, enchantmentId: 847, title: "Minor Stats", int: 1, spi: 1 },
-        // { id: 20028, enchantmentId: 1893, title: "Major Mana", mana: 100 },
-        // { id: 13917, enchantmentId: 913, title: "Superior Mana", mana: 65 },
-        // { id: 13663, enchantmentId: 857, title: "Greater Mana", mana: 50 },
+        { id: 20028, enchantmentId: 1893, title: "Major Mana", mana: 100, phase: 3 },
+        { id: 13917, enchantmentId: 913, title: "Superior Mana", mana: 65, phase: 3 },
+        { id: 13663, enchantmentId: 857, title: "Greater Mana", mana: 50, phase: 2 },
         { id: 13607, enchantmentId: 843, title: "Mana", mana: 30 },
     ],
     wrist: [
-        // { id: 20008, enchantmentId: 1883, title: "Greater Intellect", int: 7 },
-        // { id: 13822, enchantmentId: 905, title: "Intellect", int: 5 },
+        { id: 20008, enchantmentId: 1883, title: "Greater Intellect", int: 7, phase: 3 },
+        { id: 13822, enchantmentId: 905, title: "Intellect", int: 5, phase: 2 },
         { id: 13622, enchantmentId: 723, title: "Lesser Intellect", int: 3 },
-        // { id: 23801, enchantmentId: 2565, title: "Mana Regeneration", mp5: 4 },
-        // { id: 20009, enchantmentId: 1884, title: "Superior Spirit", spi: 9 },
-        // { id: 13846, enchantmentId: 807, title: "Greater Spirit", spi: 7 },
-        // { id: 13642, enchantmentId: 851, title: "Spirit", spi: 5 },
+        { id: 23801, enchantmentId: 2565, title: "Mana Regeneration", mp5: 4, phase: 3 },
+        { id: 20009, enchantmentId: 1884, title: "Superior Spirit", spi: 9, phase: 3 },
+        { id: 13846, enchantmentId: 807, title: "Greater Spirit", spi: 7, phase: 2 },
+        { id: 13642, enchantmentId: 851, title: "Spirit", spi: 5, phase: 2 },
         { id: 7859, enchantmentId: 255, title: "Lesser Spirit", spi: 3 },
         { id: 7766, enchantmentId: 243, title: "Minor Spirit", spi: 1 },
     ],
-    // hands: [
-    //     { id: 25078, enchantmentId: 2616, title: "Fire Power", sp_fire: 20 },
-    //     { id: 25074, enchantmentId: 2615, title: "Frost Power", sp_frost: 20 },
-    // ],
-    // legs: [
-    // ],
-    // feet: [
-        // { id: 13890, enchantmentId: 911, title: "Minor speed" },
-        // { id: 20024, enchantmentId: 851, title: "Spirit", spi: 5 },
-        // { id: 13687, enchantmentId: 255, title: "Lesser spirit", spi: 3 },
-    // ],
+    hands: [
+        { id: 25078, enchantmentId: 2616, title: "Fire Power", sp_fire: 20, phase: 4 },
+        { id: 25074, enchantmentId: 2615, title: "Frost Power", sp_frost: 20, phase: 4 },
+    ],
+    legs: [
+        { id: 24164, enchantmentId: 2588, title: "Presence of Sight", sp: 18, hit: 1, phase: 4 },
+        { id: 22844, enchantmentId: 2544, title: "Arcanum of Focus", sp: 8, phase: 4 },
+    ],
+    feet: [
+        { id: 13890, enchantmentId: 911, title: "Minor speed", phase: 2 },
+        { id: 20024, enchantmentId: 851, title: "Spirit", spi: 5, phase: 3 },
+        { id: 13687, enchantmentId: 255, title: "Lesser spirit", spi: 3, phase: 2 },
+    ],
 };
 
 var itemsets = [

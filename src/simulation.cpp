@@ -135,6 +135,24 @@ SimulationResult Simulation::run(bool single)
 
     onManaRegen(player);
 
+    if (config.mana_spring && config.player_level > 25 && player->faction() == FACTION_HORDE) {
+        double m = 0;
+        if (config.player_level >= 56)
+            m = 10;
+        else if (config.player_level >= 46)
+            m = 8;
+        else if (config.player_level >= 36)
+            m = 6;
+        else if (config.player_level >= 26)
+            m = 4;
+
+        if (config.imp_mana_spring)
+            m = std::round(m * 1.25);
+        
+        for (double t = 0; t<state.duration; t+= 2)
+            pushManaGain(player, t, m, "Mana Spring");
+    }
+
     for (auto &timing : config.timings)
     {
         if (timing.name == "innervate")
@@ -1171,7 +1189,7 @@ void Simulation::removeUnitEvents(std::shared_ptr<unit::Unit> unit)
 
 double Simulation::hitChance(std::shared_ptr<unit::Unit> unit, std::shared_ptr<spell::Spell> spell, std::shared_ptr<target::Target> target) const
 {
-    int dlevel = config.target_level - 25;
+    int dlevel = config.target_level - config.player_level;
 
     double hit = 96.0 - dlevel;
 
@@ -1185,6 +1203,7 @@ double Simulation::hitChance(std::shared_ptr<unit::Unit> unit, std::shared_ptr<s
 
 double Simulation::critChance(std::shared_ptr<unit::Unit> unit, std::shared_ptr<spell::Spell> spell, std::shared_ptr<target::Target> target) const
 {
+    int dlevel = config.target_level - config.player_level;
     double crit = unit->critChance(spell);
 
     if (!unit->get_raid_debuffs)
@@ -1197,9 +1216,9 @@ double Simulation::critChance(std::shared_ptr<unit::Unit> unit, std::shared_ptr<
 
     // Crit suppression
     if (unit->crit_suppression && spell->max_dmg > 0.0) {
-        if (config.target_level == 28)
+        if (dlevel == 3)
             crit -= 2.1;
-        if (config.target_level == 27)
+        if (dlevel == 2)
             crit -= 0.3;
     }
 
@@ -1249,11 +1268,20 @@ double Simulation::debuffDmgMultiplier(std::shared_ptr<unit::Unit> unit, std::sh
     if (target->hasDebuff(debuff::IMPROVED_SCORCH) && spell->isSchool(SCHOOL_FIRE))
         multi *= 1 + (0.03 * target->debuffStacks(debuff::IMPROVED_SCORCH));
 
-    // CoE and CoS not available yet, but we leave it here for the future
-    // if (config.curse_of_shadow && instance.spell->isSchool(SCHOOL_ARCANE))
-    //     multi *= 1.08;
-    // else if (config.curse_of_elements && instance.spell->isSchool(SCHOOL_FIRE, SCHOOL_FROST))
-    //     multi *= 1.06;
+    if (config.curse_of_shadow && spell->isSchool(SCHOOL_ARCANE)) {
+        if (config.player_level >= 56)
+            multi *= 1.1;
+        else if (config.player_level >= 44)
+            multi *= 1.08;
+    }
+    else if (config.curse_of_elements && spell->isSchool(SCHOOL_FIRE, SCHOOL_FROST)) {
+        if (config.player_level >= 56)
+            multi *= 1.1;
+        else if (config.player_level >= 44)
+            multi *= 1.08;
+        else if (config.player_level >= 32)
+            multi *= 1.06;
+    }
 
     return multi;
 }
@@ -1378,11 +1406,20 @@ double Simulation::resistScore(std::shared_ptr<unit::Unit> unit, std::shared_ptr
     double res_score = config.target_resistance;
     res_score-= unit->getSpellPenetration(spell->school);
 
-    // CoE and CoS not available yet, but we leave it here for the future
-    // if (config.curse_of_shadow && spell->isSchool(SCHOOL_ARCANE))
-    //     res_score-= 60.0;
-    // else if (config.curse_of_elements && spell->isSchool(SCHOOL_FIRE, SCHOOL_FROST))
-    //     res_score-= 45.0
+    if (config.curse_of_shadow && spell->isSchool(SCHOOL_ARCANE)) {
+        if (config.player_level >= 56)
+            res_score-= 75.0;
+        else if (config.player_level >= 44)
+            res_score-= 60.0;
+    }
+    else if (config.curse_of_elements && spell->isSchool(SCHOOL_FIRE, SCHOOL_FROST)) {
+        if (config.player_level >= 56)
+            res_score-= 75.0;
+        else if (config.player_level >= 44)
+            res_score-= 60.0;
+        else if (config.player_level >= 32)
+            res_score-= 45.0;
+    }
 
     res_score = std::max(res_score, 0.0);
 

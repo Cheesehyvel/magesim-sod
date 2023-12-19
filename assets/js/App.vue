@@ -704,14 +704,20 @@
                                         <input type="text" v-model.number="config.duration_variance">
                                     </div>
                                 </div>
+                                <div class="form-item">
+                                    <label>Player level</label>
+                                    <select v-model="config.player_level" @input="onPlayerLevelInput">
+                                        <option :value="25">25</option>
+                                        <option :value="40">40</option>
+                                        <option :value="50">50</option>
+                                        <option :value="60">60</option>
+                                    </select>
+                                </div>
                                 <div class="form-item form-row">
                                     <div class="form-item">
                                         <label>Target level</label>
                                         <select v-model="config.target_level">
-                                            <option :value="28">28</option>
-                                            <option :value="27">27</option>
-                                            <option :value="26">26</option>
-                                            <option :value="25">25</option>
+                                            <option :value="config.player_level + i" v-for="i in 3">{{ config.player_level + i }}</option>
                                         </select>
                                     </div>
                                     <div class="form-item">
@@ -888,16 +894,16 @@
                             </fieldset>
                             <fieldset class="config-debuffs">
                                 <legend>Debuffs</legend>
-                                <div class="form-item" v-if="false">
+                                <div class="form-item" v-if="coeDmg">
                                     <label><input type="checkbox" v-model="config.curse_of_elements">
                                         <span>Curse of Elements</span>
-                                        <help>6% fire/frost dmg, -45 resistance</help>
+                                        <help>{{ coeDmg }}% fire/frost dmg, -{{ coeSpen }} resistance</help>
                                     </label>
                                 </div>
-                                <div class="form-item" v-if="false">
+                                <div class="form-item" v-if="cosDmg">
                                     <label><input type="checkbox" v-model="config.curse_of_shadow">
                                         <span>Curse of Shadow</span>
-                                        <help>8% arcane dmg, -60 resistance</help>
+                                        <help>{{ cosDmg }}% arcane dmg, -{{ cosSpen }} resistance</help>
                                     </label>
                                 </div>
                             </fieldset>
@@ -906,34 +912,55 @@
                                 <div class="form-item">
                                     <label><input type="checkbox" :checked="true" :disabled="true">
                                         <span>Arcane Intellect</span>
-                                        <help>7 intellect</help>
+                                        <help>{{ arcaneIntellect }} intellect</help>
+                                    </label>
+                                </div>
+                                <div class="form-item" v-if="divineSpirit">
+                                    <label><input type="checkbox" v-model="config.divine_spirit">
+                                        <span>Divine Spirit</span>
+                                        <help>{{ divineSpirit }} spirit</help>
                                     </label>
                                 </div>
                                 <div class="form-item">
                                     <label><input type="checkbox" v-model="config.mark_of_the_wild">
                                         <span>Mark of the Wild</span>
-                                        <help>4 stats</help>
+                                        <help>{{ motw }} stats</help>
                                     </label>
                                 </div>
                                 <div class="form-item sub" v-if="config.mark_of_the_wild">
                                     <label><input type="checkbox" v-model="config.imp_mark_of_the_wild">
                                         <span class="material-icons">&#xe5da;</span>
                                         <span>Imp. Mark of the Wild</span>
-                                        <help>5 stats instead of 4</help>
+                                        <help>+{{ $round(motw*0.35) }} stats</help>
                                     </label>
                                 </div>
+                                <template v-if="faction == 'horde'">
+                                    <div class="form-item" v-if="manaSpring">
+                                        <label><input type="checkbox" v-model="config.mana_spring">
+                                            <span>Mana Spring</span>
+                                            <help>{{ manaSpring }} mp2</help>
+                                        </label>
+                                    </div>
+                                    <div class="form-item sub" v-if="manaSpring && config.mana_spring">
+                                        <label><input type="checkbox" v-model="config.imp_mana_spring">
+                                            <span class="material-icons">&#xe5da;</span>
+                                            <span>Imp. Mana Spring</span>
+                                            <help>+{{ $round(manaSpring*0.25) }} mp2</help>
+                                        </label>
+                                    </div>
+                                </template>
                                 <template v-if="faction == 'alliance'">
                                     <div class="form-item">
                                         <label><input type="checkbox" v-model="config.blessing_of_wisdom">
                                             <span>Blessing of Wisdom</span>
-                                            <help>12 mp5</help>
+                                            <help>{{ bow }} mp5</help>
                                         </label>
                                     </div>
                                     <div class="form-item sub" v-if="config.blessing_of_wisdom">
                                         <label><input type="checkbox" v-model="config.imp_blessing_of_wisdom">
                                             <span class="material-icons">&#xe5da;</span>
                                             <span>Imp. Blessing of Wisdom</span>
-                                            <help>15 mp5 instead of 12</help>
+                                            <help>+{{ $round(bow*0.2) }} mp5</help>
                                         </label>
                                     </div>
                                 </template>
@@ -956,10 +983,34 @@
                                     </label>
                                     <input type="text" v-model.number="config.demonic_pact_bonus">
                                 </div>
-                                <div class="form-item" v-if="faction == 'horde'">
+                                <div class="form-item" v-if="faction == 'horde' && !divineSpirit">
                                     <label><input type="checkbox" v-model="config.rising_spirit">
                                         <span>Rising Spirit</span>
                                         <help>25 spirit for 30min. Horde only</help>
+                                    </label>
+                                </div>
+                                <div class="form-item" v-if="lvl >= 50">
+                                    <label><input type="checkbox" v-model="config.songflower">
+                                        <span>Songflower</span>
+                                        <help>5% crit + 15 stats</help>
+                                    </label>
+                                </div>
+                                <div class="form-item" v-if="lvl >= 60">
+                                    <label><input type="checkbox" v-model="config.rallying_cry">
+                                        <span>Rallying Cry of the Dragonslayer</span>
+                                        <help>10% crit</help>
+                                    </label>
+                                </div>
+                                <div class="form-item" v-if="lvl >= 60">
+                                    <label><input type="checkbox" v-model="config.spirit_of_zandalar">
+                                        <span>Spirit of Zandalar</span>
+                                        <help>15% stats</help>
+                                    </label>
+                                </div>
+                                <div class="form-item" v-if="lvl >= 55">
+                                    <label><input type="checkbox" v-model="config.warchiefs_blessing">
+                                        <span>Warchief's Blessing</span>
+                                        <help>10 mp5</help>
                                     </label>
                                 </div>
                                 <div class="form-item">
@@ -983,7 +1034,7 @@
                             </fieldset>
                             <fieldset class="config-consumes">
                                 <legend>Consumes</legend>
-                                <div class="form-item" v-if="false">
+                                <div class="form-item" v-if="lvl >= 60">
                                     <label>Flask</label>
                                     <select v-model="config.flask">
                                         <option :value="flasks.FLASK_NONE">None</option>
@@ -995,22 +1046,28 @@
                                     <label>Food</label>
                                     <select v-model="config.food">
                                         <option :value="foods.FOOD_NONE">None</option>
+                                        <option :value="foods.FOOD_INT10" v-if="lvl >= 45">+12 Intellect</option>
+                                        <option :value="foods.FOOD_SPIRIT12" v-if="lvl >= 35">+12 Spirit/stam</option>
                                         <option :value="foods.FOOD_SPIRIT8">+8 Spirit/stam</option>
                                         <option :value="foods.FOOD_SPIRIT6">+6 Spirit/stam</option>
+                                        <option :value="foods.FOOD_MP8" v-if="lvl >= 35">Nightfin Soup (8 mp5)</option>
+                                        <option :value="foods.FOOD_MP6" v-if="lvl >= 30">Sagefish Delight (6 mp5)</option>
+                                        <option :value="foods.FOOD_MP3">Smoked Sagefish (3 mp5)</option>
                                     </select>
                                 </div>
                                 <div class="form-item">
                                     <label>Weapon oil</label>
                                     <select v-model="config.weapon_oil">
                                         <option :value="weapon_oils.OIL_NONE">None</option>
-                                        <option :value="weapon_oils.OIL_BLACKFATHOM">Blackfathom Oil (12 mp5 / 2% hit)</option>
-                                        <!-- <option :value="weapon_oils.OIL_BRILLIANT_WIZARD">Brilliant Wizard Oil (36 sp / 1% crit)</option> -->
-                                        <!-- <option :value="weapon_oils.OIL_WIZARD">Wizard Oil (24 sp)</option> -->
-                                        <!-- <option :value="weapon_oils.OIL_LESSER_WIZARD">Lesser Wizard Oil (16 sp)</option> -->
-                                        <!-- <option :value="weapon_oils.OIL_MINOR_WIZARD">Minor Wizard Oil (8 sp)</option> -->
-                                        <!-- <option :value="weapon_oils.OIL_BRILLIANT_MANA">Brilliant Mana Oil (12 mp5)</option> -->
-                                        <!-- <option :value="weapon_oils.OIL_LESSER_MANA">Lesser Mana Oil (8 mp5)</option> -->
-                                        <!-- <option :value="weapon_oils.OIL_MINOR_MANA">Minor Mana Oil (4 mp5)</option> -->
+                                        <option :value="weapon_oils.OIL_BLACKFATHOM">Blackfathom Mana Oil (12 mp5 / 2% hit)</option>
+                                        <option :value="weapon_oils.OIL_BLESSED_WIZARD" v-if="lvl >= 50">Blessed Wizard Oil (60 sp to undead)</option>
+                                        <option :value="weapon_oils.OIL_BRILLIANT_WIZARD" v-if="lvl == 60">Brilliant Wizard Oil (36 sp / 1% crit)</option>
+                                        <option :value="weapon_oils.OIL_WIZARD" v-if="lvl >= 40">Wizard Oil (24 sp)</option>
+                                        <option :value="weapon_oils.OIL_LESSER_WIZARD" v-if="lvl >= 30">Lesser Wizard Oil (16 sp)</option>
+                                        <option :value="weapon_oils.OIL_MINOR_WIZARD">Minor Wizard Oil (8 sp)</option>
+                                        <option :value="weapon_oils.OIL_BRILLIANT_MANA" v-if="lvl == 60">Brilliant Mana Oil (12 mp5)</option>
+                                        <option :value="weapon_oils.OIL_LESSER_MANA" v-if="lvl >= 40">Lesser Mana Oil (8 mp5)</option>
+                                        <option :value="weapon_oils.OIL_MINOR_MANA">Minor Mana Oil (4 mp5)</option>
                                     </select>
                                 </div>
                                 <div class="form-item">
@@ -1032,9 +1089,33 @@
                                     </label>
                                 </div>
                                 <div class="form-item">
-                                    <label><input type="checkbox" v-model="config.elixir_firepower">
+                                    <label><input type="checkbox" v-model="config.elixir_firepower" @click="dontStack($event, 'elixir_greater_firepower')">
                                         <span>Elixir of Firepower</span>
                                         <help>10 fire spell power</help>
+                                    </label>
+                                </div>
+                                <div class="form-item" v-if="lvl >= 40" @click="dontStack($event, 'elixir_firepower')">
+                                    <label><input type="checkbox" v-model="config.elixir_greater_firepower">
+                                        <span>Elixir of Greater Firepower</span>
+                                        <help>40 fire spell power</help>
+                                    </label>
+                                </div>
+                                <div class="form-item" v-if="lvl >= 28">
+                                    <label><input type="checkbox" v-model="config.elixir_frost_power">
+                                        <span>Elixir of Frost Power</span>
+                                        <help>15 frost spell power</help>
+                                    </label>
+                                </div>
+                                <div class="form-item" v-if="lvl >= 37" @click="dontStack($event, 'elixir_greater_arcane')">
+                                    <label><input type="checkbox" v-model="config.elixir_arcane">
+                                        <span>Arcane Elixir</span>
+                                        <help>20 spell power</help>
+                                    </label>
+                                </div>
+                                <div class="form-item" v-if="lvl >= 47" @click="dontStack($event, 'elixir_arcane')">
+                                    <label><input type="checkbox" v-model="config.elixir_greater_arcane">
+                                        <span>Greater Arcane Elixir</span>
+                                        <help>35 spell power</help>
                                     </label>
                                 </div>
                             </fieldset>
@@ -1601,19 +1682,27 @@
                 target_resistance: 0,
                 target_level: 27,
                 target_hp: 100,
+                player_level: 25,
                 distance: 20,
                 reaction_time: 300,
                 encounters: false,
 
                 // Buffs
+                divine_spirit: false,
                 mark_of_the_wild: false,
                 imp_mark_of_the_wild: false,
+                mana_spring: false,
+                imp_mana_spring: false,
                 blessing_of_kings: false,
                 blessing_of_wisdom: false,
                 imp_blessing_of_wisdom: false,
                 demonic_pact: false,
                 demonic_pact_bonus: 0,
                 rising_spirit: false,
+                songflower: false,
+                rallying_cry: false,
+                spirit_of_zandalar: false,
+                warchiefs_blessing: false,
                 boon_blackfathom: false,
                 ashenvale_cry: false,
                 dmf_dmg: false,
@@ -1627,6 +1716,10 @@
                 arcane_scroll_power: false,
                 arcane_scroll_recovery: false,
                 elixir_firepower: false,
+                elixir_greater_firepower: false,
+                elixir_frost_power: false,
+                elixir_arcane: false,
+                elixir_greater_arcane: false,
                 weapon_oil: 0,
                 flask: 0,
                 food: 0,
@@ -1924,7 +2017,6 @@
             },
 
             activeItems() {
-                var self = this;
                 var slot = this.equipSlotToItemSlot(this.active_slot);
 
                 var items = this.items.equip[slot];
@@ -1932,10 +2024,15 @@
                 if (!items)
                     return [];
 
-                items = items.filter(function(item) {
+                items = items.filter((item) => {
                     if (!item.hasOwnProperty("faction"))
                         return true;
-                    return self.faction.substr(0, 1) == item.faction;
+                    return this.faction.substr(0, 1) == item.faction;
+                });
+
+                items = items.filter((item) => {
+                    var p = _.get(item, "phase", 1);
+                    return p <= this.lvlPhase;
                 });
 
                 if (this.search_item) {
@@ -2046,7 +2143,14 @@
                 if (!this.items.enchants.hasOwnProperty(slot))
                     return [];
 
-                return this.items.enchants[slot];
+                var enchants = this.items.enchants[slot];
+
+                enchants = enchants.filter((ench) => {
+                    var p = _.get(ench, "phase", 1);
+                    return p <= this.lvlPhase;
+                });
+
+                return enchants;
             },
 
             activeLog() {
@@ -2233,7 +2337,124 @@
                 ];
 
                 return aoe.indexOf(this.config.rotation) != -1;
-            }
+            },
+
+            // Lazy shorthand
+            lvl() {
+                return this.config.player_level;
+            },
+
+            lvlPhase() {
+                if (this.lvl > 50)
+                    return 4;
+                if (this.lvl > 40)
+                    return 3;
+                if (this.lvl > 25)
+                    return 2;
+                return 1;
+            },
+
+            motw() {
+                if (this.lvl >= 60)
+                    return 12;
+                if (this.lvl >= 50)
+                    return 10;
+                if (this.lvl >= 40)
+                    return 8;
+                if (this.lvl >= 30)
+                    return 6;
+                if (this.lvl >= 20)
+                    return 4;
+                if (this.lvl >= 10)
+                    return 2;
+                return 0;
+            },
+
+            arcaneIntellect() {
+                if (this.lvl >= 56)
+                    return 31;
+                if (this.lvl >= 42)
+                    return 22;
+                if (this.lvl >= 28)
+                    return 15;
+                if (this.lvl >= 14)
+                    return 7;
+                return 2;
+            },
+
+            divineSpirit() {
+                if (this.lvl >= 60)
+                    return 40;
+                if (this.lvl >= 50)
+                    return 33;
+                if (this.lvl >= 40)
+                    return 23;
+                if (this.lvl >= 30)
+                    return 17;
+                return 0;
+            },
+
+            bow() {
+                if (this.lvl >= 14)
+                    return 10;
+                if (this.lvl >= 24)
+                    return 15;
+                if (this.lvl >= 34)
+                    return 20;
+                if (this.lvl >= 44)
+                    return 25;
+                if (this.lvl >= 54)
+                    return 30;
+                return 0;
+            },
+
+            manaSpring() {
+                if (this.lvl >= 26)
+                    return 4;
+                if (this.lvl >= 36)
+                    return 6;
+                if (this.lvl >= 46)
+                    return 8;
+                if (this.lvl >= 56)
+                    return 10;
+                return 0;
+            },
+
+            coeDmg() {
+                if (this.lvl >= 56)
+                    return 10;
+                if (this.lvl >= 44)
+                    return 8;
+                if (this.lvl >= 32)
+                    return 6;
+                return 0;
+            },
+
+            coeSpen() {
+                if (this.lvl >= 56)
+                    return 75;
+                if (this.lvl >= 44)
+                    return 60;
+                if (this.lvl >= 32)
+                    return 45;
+                return 0;
+            },
+
+            cosDmg() {
+                if (this.lvl >= 56)
+                    return 10;
+                if (this.lvl >= 44)
+                    return 8;
+                return 0;
+            },
+
+            cosSpen() {
+                if (this.lvl >= 56)
+                    return 75;
+                if (this.lvl >= 44)
+                    return 60;
+                return 0;
+            },
         },
 
         methods: {
@@ -2300,13 +2521,19 @@
 
             timingEnabled(name) {
                 var always = [
-                    // "mana_tide", "power_infusion", "innervate",
-                    // "mana_gem", 
                     "evocation",
                 ];
                 if (always.indexOf(name) != -1)
                     return true;
 
+                if (name == "mana_tide")
+                    return this.lvl >= 40;
+                if (name == "power_infusion")
+                    return this.lvl >= 40;
+                if (name == "innervate")
+                    return this.lvl >= 40;
+                if (name == "mana_gem")
+                    return this.lvl >= 28;
                 if (name == "berserking")
                     return this.config.race == constants.races.RACE_TROLL;
                 if (name == "presence_of_mind")
@@ -2834,7 +3061,7 @@
                     intellect: 53,
                     spirit: 58,
                     mp5: 0,
-                    crit: 0.91,
+                    crit: 0.2,
                     hit: 0,
                     sp: 0,
                     sp_arcane: 0,
@@ -2844,17 +3071,73 @@
                     mana: 0,
                 };
 
-                if (this.config.race == this.races.RACE_TROLL) {
-                    stats.intellect = 51;
-                    stats.spirit = 54;
+                if (this.lvl == 25) {
+                    if (this.config.race == this.races.RACE_TROLL) {
+                        stats.intellect = 51;
+                        stats.spirit = 54;
+                    }
+                    else if (this.config.race == this.races.RACE_GNOME) {
+                        stats.intellect = 61;
+                        stats.spirit = 53;
+                    }
+                    else if (this.config.race == this.races.RACE_HUMAN) {
+                        stats.intellect = 55;
+                        stats.spirit = 57;
+                    }
                 }
-                if (this.config.race == this.races.RACE_GNOME) {
-                    stats.intellect = 61;
-                    stats.spirit = 53;
+                else if (this.lvl == 40) {
+                    if (this.config.race == this.races.RACE_UNDEAD) {
+                        stats.intellect = 79;
+                        stats.spirit = 83;
+                    }
+                    else if (this.config.race == this.races.RACE_TROLL) {
+                        stats.intellect = 77;
+                        stats.spirit = 79;
+                    }
+                    else if (this.config.race == this.races.RACE_GNOME) {
+                        stats.intellect = 88;
+                        stats.spirit = 78;
+                    }
+                    else if (this.config.race == this.races.RACE_HUMAN) {
+                        stats.intellect = 81;
+                        stats.spirit = 81;
+                    }
                 }
-                if (this.config.race == this.races.RACE_HUMAN) {
-                    stats.intellect = 55;
-                    stats.spirit = 57;
+                else if (this.lvl == 50) {
+                    if (this.config.race == this.races.RACE_UNDEAD) {
+                        stats.intellect = 100;
+                        stats.spirit = 103;
+                    }
+                    else if (this.config.race == this.races.RACE_TROLL) {
+                        stats.intellect = 98;
+                        stats.spirit = 99;
+                    }
+                    else if (this.config.race == this.races.RACE_GNOME) {
+                        stats.intellect = 110;
+                        stats.spirit = 98;
+                    }
+                    else if (this.config.race == this.races.RACE_HUMAN) {
+                        stats.intellect = 102;
+                        stats.spirit = 102;
+                    }
+                }
+                else if (this.lvl == 60) {
+                    if (this.config.race == this.races.RACE_UNDEAD) {
+                        stats.intellect = 123;
+                        stats.spirit = 125;
+                    }
+                    else if (this.config.race == this.races.RACE_TROLL) {
+                        stats.intellect = 121;
+                        stats.spirit = 121;
+                    }
+                    else if (this.config.race == this.races.RACE_GNOME) {
+                        stats.intellect = 132;
+                        stats.spirit = 120;
+                    }
+                    else if (this.config.race == this.races.RACE_HUMAN) {
+                        stats.intellect = 125;
+                        stats.spirit = 126;
+                    }
                 }
 
                 return stats;
@@ -2935,6 +3218,7 @@
             },
 
             itemConfig() {
+                var num;
                 this.config.trinket1 = 0;
                 this.config.trinket2 = 0;
                 if (this.isSpecialItem(this.equipped.trinket1))
@@ -2942,6 +3226,8 @@
                 if (this.isSpecialItem(this.equipped.trinket2))
                     this.config.trinket2 = this.equipped.trinket2;
 
+                num = this.numEquippedSet(this.items.ids.UDC_SET) > 2;
+                this.config.udc_3set = num > 2;
             },
 
             simStats() {
@@ -2958,12 +3244,15 @@
                 }
 
                 // Arcane intellect
-                stats.intellect+= 7;
+                stats.intellect+= this.arcaneIntellect;
+
+                if (this.config.divine_spirit)
+                    stats.spirit+= this.divineSpirit;
 
                 if (this.config.mark_of_the_wild) {
-                    x = 4;
+                    x = this.motw;
                     if (this.config.imp_mark_of_the_wild)
-                        x*= 1.35;
+                        x = _.round(x*1.35);
                     stats.intellect+= x;
                     stats.spirit+= x;
                 }
@@ -2975,15 +3264,34 @@
                 // Consumes
                 if (this.config.elixir_firepower)
                     stats.sp_fire+= 10;
-                if (this.config.food == this.foods.FOOD_SPIRIT6)
+                else if (this.config.elixir_greater_firepower && this.lvl >= 40)
+                    stats.sp_fire+= 40;
+                if (this.config.elixir_frost_power && this.lvl >= 28)
+                    stats.sp_frost+= 15;
+                if (this.config.elixir_arcane && this.lvl >= 28)
+                    stats.sp+= 20;
+                else if (this.config.elixir_greater_arcane && this.lvl >= 47)
+                    stats.sp+= 35;
+
+                if (this.config.food == this.foods.FOOD_INT10 && this.lvl >= 45)
+                    stats.intellect+= 10;
+                else if (this.config.food == this.foods.FOOD_SPIRIT6)
                     stats.spirit+= 6;
-                if (this.config.food == this.foods.FOOD_SPIRIT8)
+                else if (this.config.food == this.foods.FOOD_SPIRIT8)
                     stats.spirit+= 8;
+                else if (this.config.food == this.foods.FOOD_SPIRIT12 && this.lvl >= 35)
+                    stats.spirit+= 12;
+                else if (this.config.food == this.foods.FOOD_MP3)
+                    stats.mp5+= 3;
+                else if (this.config.food == this.foods.FOOD_MP6 && this.lvl >= 30)
+                    stats.mp5+= 6;
+                else if (this.config.food == this.foods.FOOD_MP8 && this.lvl >= 35)
+                    stats.mp5+= 8;
 
                 // Flasks
                 if (this.config.flask == this.flasks.FLASK_SUPREME_POWER)
                     stats.sp+= 150;
-                if (this.config.flask == this.flasks.FLASK_DISTILLED_WISDOM)
+                else if (this.config.flask == this.flasks.FLASK_DISTILLED_WISDOM)
                     stats.mana+= 2000;
 
                 // Weapon oils
@@ -2991,21 +3299,23 @@
                     stats.mp5+= 12;
                     stats.hit+= 2;
                 }
-                if (this.config.weapon_oil == this.weapon_oils.OIL_BRILLIANT_WIZARD) {
+                else if (this.config.weapon_oil == this.weapon_oils.OIL_BRILLIANT_WIZARD && this.lvl == 60) {
                     stats.sp+= 36;
                     stats.crit+= 1;
                 }
-                if (this.config.weapon_oil == this.weapon_oils.OIL_WIZARD)
+                else if (this.config.weapon_oil == this.weapon_oils.OIL_BLESSED_WIZARD && this.lvl >= 50)
+                    stats.sp+= 60;
+                else if (this.config.weapon_oil == this.weapon_oils.OIL_WIZARD && this.lvl >= 40)
                     stats.sp+= 24;
-                if (this.config.weapon_oil == this.weapon_oils.OIL_LESSER_WIZARD)
+                else if (this.config.weapon_oil == this.weapon_oils.OIL_LESSER_WIZARD && this.lvl >= 30)
                     stats.sp+= 16;
-                if (this.config.weapon_oil == this.weapon_oils.OIL_MINOR_WIZARD)
+                else if (this.config.weapon_oil == this.weapon_oils.OIL_MINOR_WIZARD)
                     stats.sp+= 8;
-                if (this.config.weapon_oil == this.weapon_oils.OIL_BRILLIANT_MANA)
+                else if (this.config.weapon_oil == this.weapon_oils.OIL_BRILLIANT_MANA && this.lvl == 60)
                     stats.mp5+= 12;
-                if (this.config.weapon_oil == this.weapon_oils.OIL_LESSER_MANA)
+                else if (this.config.weapon_oil == this.weapon_oils.OIL_LESSER_MANA && this.lvl >= 40)
                     stats.mp5+= 8;
-                if (this.config.weapon_oil == this.weapon_oils.OIL_MINOR_MANA)
+                else if (this.config.weapon_oil == this.weapon_oils.OIL_MINOR_MANA)
                     stats.mp5+= 4;
 
                 // Scrolls
@@ -3018,18 +3328,31 @@
 
                 // Mana Restoration
                 if (this.config.blessing_of_wisdom && this.faction == "alliance") {
-                    x = 15;
+                    x = this.bow;
                     if (this.config.imp_blessing_of_wisdom)
-                        x*= 1.2;
+                        x = _.round(x*1.2);
                     stats.mp5+= x;
                 }
 
                 // World buffs
-                if (this.config.rising_spirit && this.faction == "horde")
+                if (this.config.rising_spirit && this.faction == "horde" && !this.divineSpirit)
                     stats.spirit+= 25;
+                if (this.config.songflower && this.lvl >= 50) {
+                    stats.crit+= 5;
+                    stats.intellect+= 15;
+                    stats.spirit+= 15;
+                }
+                if (this.config.rallying_cry && this.lvl >= 60)
+                    stats.crit+= 10;
                 if (this.config.boon_blackfathom) {
                     stats.hit+= 3;
                     stats.sp+= 25;
+                }
+                if (this.config.warchiefs_blessing && this.lvl >= 55)
+                    stats.mp5+= 10;
+                if (this.config.spirit_of_zandalar && this.lvl >= 60) {
+                    stats.intellect*= 1.15;
+                    stats.spirit*= 1.15;
                 }
 
                 // Attribute multipliers
@@ -3048,7 +3371,14 @@
                 stats.crit+= this.config.talents.arcane_instability;
 
                 // Calculate percentages
-                stats.crit+= stats.intellect/19.6; // UNCONFIRMED
+                if (this.lvl == 25)
+                    stats.crit+= stats.intellect/19.6;
+                if (this.lvl == 40)
+                    stats.crit+= stats.intellect/36;
+                if (this.lvl == 50)
+                    stats.crit+= stats.intellect/47.5;
+                if (this.lvl == 60)
+                    stats.crit+= stats.intellect/59.5;
 
                 this.config.stats = stats;
             },
@@ -3062,7 +3392,16 @@
                     stats.sp+= this.config.demonic_pact_bonus;
 
                 // Mana
-                stats.mana+= 493 + stats.intellect*15 - 280;
+                if (this.lvl == 25)
+                    stats.mana+= 481;
+                else if (this.lvl == 40)
+                    stats.mana+= 853;
+                else if (this.lvl == 50)
+                    stats.mana+= 1048;
+                else if (this.lvl == 60)
+                    stats.mana+= 1213;
+
+                stats.mana+= stats.intellect*15 - 280;
 
                 this.display_stats = stats;
             },
@@ -3358,6 +3697,38 @@
 
             onBuildInput() {
                 this.parseTalents();
+            },
+
+            onPlayerLevelInput(e) {
+                var from = this.config.player_level;
+                var to = parseInt(e.target.value);
+                var d = this.config.target_level - from;
+                this.config.target_level = to + d;
+
+                this.$nextTick(() => {
+                    if (to < from) {
+                        this.config.food = 0;
+                        this.config.weapon_oil = 0;
+
+                        for (var slot in this.equipped) {
+                            if (this.equipped[slot]) {
+                                var item = this.getItem(slot, this.equipped[slot]);
+                                if (item && item.phase > this.lvlPhase)
+                                    this.equipped[slot] = null;
+                            }
+                        }
+
+                        for (var slot in this.enchants) {
+                            if (this.enchants[slot]) {
+                                var ench = this.getEnchant(slot, this.enchants[slot]);
+                                if (ench && ench.phase > this.lvlPhase)
+                                    this.enchants[slot] = null;
+                            }
+                        }
+                    }
+
+                    this.saveCurrentProfile();
+                });
             },
 
             resetTalents() {

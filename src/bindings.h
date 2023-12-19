@@ -126,15 +126,20 @@ EMSCRIPTEN_BINDINGS(my_module)
         .property("target_resistance", &Config::target_resistance)
         .property("target_level", &Config::target_level)
         .property("target_hp", &Config::target_hp)
+        .property("player_level", &Config::player_level)
         .property("distance", &Config::distance)
         .property("reaction_time", &Config::reaction_time)
         
+        .property("mana_spring", &Config::mana_spring)
+        .property("imp_mana_spring", &Config::imp_mana_spring)
         .property("curse_of_elements", &Config::curse_of_elements)
         .property("curse_of_shadow", &Config::curse_of_shadow)
         .property("demonic_pact", &Config::demonic_pact)
         .property("demonic_pact_bonus", &Config::demonic_pact_bonus)
         .property("ashenvale_cry", &Config::ashenvale_cry)
         .property("dmf_dmg", &Config::dmf_dmg)
+        
+        .property("udc_3set", &Config::udc_3set)
 
         .property("pre_cast", &Config::pre_cast)
 
