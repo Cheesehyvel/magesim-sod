@@ -82,6 +82,7 @@ var equip = {
         { id: 211468, title: "Frayed Chestnut Mantle", ilvl: 30, int: 6, sp: 5, q: "rare" },
         { id: 12998, title: "Magician's Mantle", ilvl: 25, int: 9, sp: 5, q: "rare" },
         { id: 3748, title: "Feline Mantle", ilvl: 28, int: 10, spi: 3, q: "rare" },
+        { id: 215365, title: "Invoker's Mantle", ilvl: 30, int: 5, sp: 7, q: "uncommon" },
         { id: 3560, title: "Mantle of Honor", ilvl: 35, int: 7, spi: 7, q: "uncommon" },
         { id: 9536, title: "Fairywing Mantle", ilvl: 30, int: 8, q: "uncommon" },
         { id: 7750, title: "Mantle of Woe", ilvl: 33, int: 7, spi: 4, q: "uncommon" },
@@ -164,6 +165,7 @@ var equip = {
     ],
     waist: [
         { id: 209432, title: "Ghamoo-ra's Cinch", ilvl: 30, int: 8, q: "rare" },
+        { id: 215366, title: "Invoker's Cord", ilvl: 30, int: 5, sp: 7, q: "uncommon" },
         { id: "10404:1882", title: "Durable Belt of Fiery Wrath", ilvl: 30, sp_fire: 11, q: "uncommon" },
         { id: "10404:769", title: "Durable Belt of the Owl", ilvl: 30, int: 6, spi: 6, q: "uncommon" },
         { id: 6392, title: "Belt of Arugal", ilvl: 29, int: 10, spi: 3, q: "rare" },
