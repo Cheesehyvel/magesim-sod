@@ -25,7 +25,6 @@ void Unit::reset()
 
     buffs.clear();
     snapshot_buffs.clear();
-    debuffs.clear();
     cooldowns.clear();
 
     buff_stats.intellect = 0;
@@ -197,32 +196,6 @@ void Unit::removeBuffStats(const Stats& _stats, int stacks)
     buff_stats.sp_frost -= _stats.sp_frost * stacks;
     buff_stats.spen -= _stats.spen * stacks;
     buff_stats.mana -= _stats.mana * stacks;
-}
-
-int Unit::debuffStacks(debuff::ID id) const
-{
-    auto const itr = debuffs.find(id);
-    return itr == debuffs.end() ? 0 : itr->second->stacks;
-}
-
-bool Unit::hasDebuff(debuff::ID id) const
-{
-    return debuffs.find(id) != debuffs.end();
-}
-
-int Unit::addDebuff(std::shared_ptr<debuff::Debuff> debuff)
-{
-    if (hasDebuff(debuff->id))
-        return debuffs[debuff->id]->addStack();
-    else
-        debuffs[debuff->id] = debuff;
-
-    return 1;
-}
-
-void Unit::removeDebuff(debuff::ID id)
-{
-    debuffs.erase(id);
 }
 
 void Unit::applyMana(const State& state, double _mana)

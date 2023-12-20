@@ -647,7 +647,7 @@ void Simulation::cast(std::shared_ptr<unit::Unit> unit, std::shared_ptr<spell::S
     else {
         if (!unit->t_oom)
             unit->t_oom = state.t;
-        pushWait(unit, 0.5, "Out of mana", spell);
+        pushWait(unit, 0.5, "Out of mana");
     }
 }
 

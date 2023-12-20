@@ -22,7 +22,6 @@ public:
     unsigned long long healed;
 
     std::unordered_map<spell::ID, SpellStats> spells;
-    std::unordered_map<debuff::ID, std::shared_ptr<debuff::Debuff>> debuffs;
     std::vector<std::shared_ptr<unit::Unit>> units;
     std::vector<std::shared_ptr<target::Target>> targets;
     std::vector<bool> active_interruptions;

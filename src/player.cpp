@@ -17,6 +17,7 @@ Player::Player(const Config& _config, const Stats& _stats, const Talents& _talen
     base_mana = 493; // lvl 25
     name = "Player";
     id = 1;
+    crit_suppression = true;
     used_timings.resize(_config.timings.size());
 }
 
@@ -32,7 +33,6 @@ void Player::reset()
     t_living_bomb = -20;
     ab_streak = 0;
     has_pre_cast = false;
-    crit_suppression = true;
 
     // Enable these as we go up in level
     mana_ruby = false;
@@ -1014,11 +1014,12 @@ action::Action Player::nextAction(const State& state)
         if (runes.living_flame && !hasCooldown(cooldown::LIVING_FLAME)) {
 
             if (runes.arcane_blast) {
+                auto ab = std::make_shared<spell::ArcaneBlast>();
                 int ab_stacks = 3;
                 if (manaPercent() > 20)
                     ab_stacks = 4;
-                if (ab_streak < ab_stacks)
-                    return spellAction<spell::ArcaneBlast>(target);
+                if (ab_streak < ab_stacks && canCast(ab))
+                    return spellAction(ab, target);
                 else
                     return spellAction<spell::LivingFlame>(config.distance);
             }
@@ -1071,7 +1072,7 @@ action::Action Player::nextAction(const State& state)
             if (state.duration - state.t < castTime(scorch) && !hasCooldown(cooldown::FIRE_BLAST))
                 return spellAction<spell::FireBlast>(target);
             if (state.duration - state.t < castTime(main_spell) + travelTime(main_spell))
-                return spellAction<spell::Scorch>(target);
+                return spellAction(scorch, target);
 
             // Moving
             if (state.isMoving()) {

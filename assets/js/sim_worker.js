@@ -11,7 +11,7 @@ onmessage = (event) => {
         .then(m => {
             var config = m.allocConfig();
             for (var key in data.config) {
-                if (key == "timings")
+                if (key == "timings" || key == "interruptions")
                     continue;
                 if (typeof(config[key]) != "undefined")
                     config[key] = data.config[key];

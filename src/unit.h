@@ -45,7 +45,6 @@ public:
     std::unordered_map<cooldown::ID, std::shared_ptr<cooldown::Cooldown>> cooldowns;
     std::unordered_map<buff::ID, std::shared_ptr<buff::Buff>> buffs;
     std::unordered_map<buff::ID, std::shared_ptr<buff::Buff>> snapshot_buffs;
-    std::unordered_map<debuff::ID, std::shared_ptr<debuff::Debuff>> debuffs;
 
     Unit(const Config& config, const Stats& stats);
 
@@ -69,11 +68,6 @@ public:
 
     void addBuffStats(const Stats& _stats, int stacks = 1);
     void removeBuffStats(const Stats& _stats, int stacks = 1);
-
-    int debuffStacks(debuff::ID id) const;
-    bool hasDebuff(debuff::ID id) const;
-    int addDebuff(std::shared_ptr<debuff::Debuff> debuff);
-    void removeDebuff(debuff::ID id);
 
     virtual void applyMana(const State& state, double _mana);
 
