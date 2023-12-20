@@ -27,7 +27,20 @@ enum ID : int
     TEMPORAL_BEACON = 400735,
     TEMPORAL_BEACON_PARTY = 4007350, // Fake id
     TANGLED_CAUSALITY = 432069,
+
+    ESSENCE_OF_SAPPHIRON = 28779,
     MQG = 23723,
+    UNSTABLE_POWER = 24658,
+    ARCANE_POTENCY = 24544,
+    OBSIDIAN_INSIGHT = 26166,
+    BLUE_DRAGON = 23688,
+    NAT_PAGLE = 24610,
+    CHROMATIC_INFUSION = 27675,
+    BURST_OF_KNOWLEDGE = 15646,
+    CHAOS_FIRE = 24389,
+
+    NETHERWIND_FOCUS = 22007,
+    ENIGMAS_ANSWER = 26129,
 };
 
 
@@ -180,11 +193,88 @@ public:
     TangledCausality();
 };
 
+class EssenceOfSapphiron : public Buff
+{
+
+public:
+    EssenceOfSapphiron();
+};
+
 class MindQuickening : public Buff
 {
 
 public:
     MindQuickening();
+};
+
+class UnstablePower : public Buff
+{
+
+public:
+    UnstablePower();
+};
+
+class ArcanePotency : public Buff
+{
+
+public:
+    ArcanePotency();
+};
+
+class ObsidianInsight : public Buff
+{
+
+public:
+    ObsidianInsight();
+};
+
+class BlueDragon : public Buff
+{
+
+public:
+    BlueDragon();
+};
+
+class NatPagle : public Buff
+{
+
+public:
+    NatPagle();
+};
+
+class ChromaticInfusion : public Buff
+{
+
+public:
+    ChromaticInfusion();
+};
+
+class BurstOfKnowledge : public Buff
+{
+
+public:
+    BurstOfKnowledge();
+};
+
+class ChaosFire : public Buff
+{
+
+public:
+    ChaosFire();
+};
+
+class NetherwindFocus : public Buff
+{
+
+public:
+    NetherwindFocus();
+};
+
+class EnigmasAnswer : public Buff
+{
+
+public:
+    EnigmasAnswer();
 };
 
 }

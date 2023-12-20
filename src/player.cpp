@@ -84,6 +84,8 @@ double Player::manaPerSecond(const State& state) const
     double while_casting = 0;
 
 
+    if (config.mage_armor && config.player_level >= 34)
+        while_casting+= 0.3;
     if (talents.arcane_meditation)
         while_casting+= 0.05 * talents.arcane_meditation;
     if (runes.enlightenment && manaPercent() <= 30.0)
@@ -102,6 +104,9 @@ double Player::manaPerSecond(const State& state) const
     }
     if (hasBuff(buff::ARCANE_SURGE)) {
         spi*= 4.0;
+        while_casting = 1;
+    }
+    if (hasBuff(buff::BLUE_DRAGON)) {
         while_casting = 1;
     }
 
@@ -128,8 +133,12 @@ double Player::baseCastTime(std::shared_ptr<spell::Spell> spell) const
         t -= talents.imp_frostbolt * 0.1;
     if (spell->id == spell::FIREBALL && talents.imp_fireball)
         t -= talents.imp_fireball * 0.1;
+    if ((spell->id == spell::FLAMESTRIKE || spell->id == spell::FLAMESTRIKE_DR) && config.set_zg_5p)
+        t -= 0.5;
 
     if (hasBuff(buff::PRESENCE_OF_MIND) && !spell->channeling)
+        t = 0;
+    else if (hasBuff(buff::NETHERWIND_FOCUS) && !spell->channeling)
         t = 0;
 
     return t;
@@ -186,6 +195,9 @@ double Player::critChance(std::shared_ptr<spell::Spell> spell) const
     if (talents.shatter && isFrozen())
         crit += talents.shatter * 10.0;
 
+    if (hasBuff(buff::ARCANE_POTENCY) && spell->isSchool(SCHOOL_ARCANE))
+        crit += 5;
+
     return crit;
 }
 
@@ -198,6 +210,9 @@ double Player::critMultiplierMod(std::shared_ptr<spell::Spell> spell) const
 
     if (spell->isSchool(SCHOOL_FROST) && talents.ice_shards)
         multi += talents.ice_shards * 0.2;
+
+    if (hasBuff(buff::ARCANE_POTENCY) && spell->isSchool(SCHOOL_ARCANE))
+        multi += 0.5;
 
     return multi;
 }
@@ -221,7 +236,7 @@ double Player::buffDmgMultiplier(std::shared_ptr<spell::Spell> spell, const Stat
         multi*= 1.1;
     if (config.ashenvale_cry)
         multi*= 1.05;
-    if (config.udc_3set)
+    if (config.set_udc_3p)
         multi*= 1.02;
 
     if (spell->proc)
@@ -265,6 +280,16 @@ double Player::buffDmgMultiplier(std::shared_ptr<spell::Spell> spell, const Stat
     return multi;
 }
 
+double Player::baseManaCost(std::shared_ptr<spell::Spell> spell) const
+{
+    double cost = Unit::baseManaCost(spell);
+
+    if (hasBuff(buff::BURST_OF_KNOWLEDGE))
+        cost = std::max(cost - 100, 0.0);
+
+    return cost;
+}
+
 double Player::manaCostMultiplier(std::shared_ptr<spell::Spell> spell) const
 {
     double multi = Unit::manaCostMultiplier(spell);
@@ -305,6 +330,16 @@ double Player::getSpellPenetration(School school) const
         pen+= 5.0 * talents.arcane_subtlety;
 
     return pen;
+}
+
+double Player::cooldownMod(const cooldown::Cooldown &cooldown) const
+{
+    double mod = Unit::cooldownMod(cooldown);
+
+    if (config.set_t3_2p && cooldown.id == cooldown::EVOCATION)
+        mod-= 60;
+
+    return mod;
 }
 
 bool Player::shouldConsumeClearcast(std::shared_ptr<spell::Spell> spell) const
@@ -387,6 +422,9 @@ std::vector<action::Action> Player::onCastSuccessProc(const State& state, std::s
         actions.push_back(cooldownAction<cooldown::ArcaneSurge>());
     }
 
+    if (config.set_t2_8p && (spell->id == spell::ARCANE_MISSILES || spell->id == spell::FIREBALL || spell->id == spell::FROSTBOLT))
+        actions.push_back(buffAction<buff::NetherwindFocus>());
+
     if (spell->id == spell::LIVING_BOMB)
         target->t_living_bomb = state.t;
     if (spell->id == spell::FLAMESTRIKE) {
@@ -403,6 +441,8 @@ std::vector<action::Action> Player::onCastSuccessProc(const State& state, std::s
 
     if (hasBuff(buff::PRESENCE_OF_MIND) && spell->cast_time && !spell->channeling)
         actions.push_back(buffExpireAction<buff::PresenceOfMind>());
+    else if (hasBuff(buff::NETHERWIND_FOCUS) && spell->cast_time && !spell->channeling)
+        actions.push_back(buffExpireAction<buff::NetherwindFocus>());
 
     if (hasBuff(buff::CLEARCAST) && shouldConsumeClearcast(spell))
         actions.push_back(buffExpireAction<buff::Clearcast>());
@@ -424,7 +464,16 @@ std::vector<action::Action> Player::onCastSuccessProc(const State& state, std::s
         for (auto& i : onCastOrTick(state, spell, target))
             actions.push_back(std::move(i));
 
-        // Some proc trinkets here
+        if (hasTrinket(TRINKET_BLUE_DRAGON) && random<int>(0, 49) == 0)
+            actions.push_back(buffAction<buff::BlueDragon>());
+    }
+
+    if (is_harmful && hasBuff(buff::UNSTABLE_POWER)) {
+        actions.push_back(buffAction<buff::UnstablePower>());
+    }
+
+    if (is_harmful && hasBuff(buff::CHAOS_FIRE) && spell->isSchool(SCHOOL_FIRE)) {
+        actions.push_back(buffExpireAction<buff::ChaosFire>());
     }
 
     return actions;
@@ -444,6 +493,9 @@ std::vector<action::Action> Player::onSpellImpactProc(const State& state, const 
     if (instance.spell->id == spell::LIVING_BOMB && instance.tick == instance.spell->ticks) {
         actions.push_back(spellAction<spell::LivingBombExplosion>());
     }
+
+    if (instance.result == spell::MISS && config.set_aq40_5p)
+        actions.push_back(buffAction<buff::EnigmasAnswer>());
 
     if (instance.result != spell::MISS) {
         if (talents.imp_scorch && instance.spell->id == spell::SCORCH && (talents.imp_scorch == 3 || random<int>(0, 2) < talents.imp_scorch)) {
@@ -732,12 +784,32 @@ bool Player::isTrinketOnSharedCD(Trinket trinket) const
 
 bool Player::trinketSharesCD(Trinket trinket) const
 {
+    if (trinket == TRINKET_BURST_OF_KNOWLEDGE)
+        return false;
     return true;
 }
 
 bool Player::isUseTrinket(Trinket trinket) const
 {
+    if (trinket == TRINKET_RESTRAINED_ESSENCE)
+        return true;
+    if (trinket == TRINKET_WARMTH_OF_FORGIVENESS)
+        return true;
     if (trinket == TRINKET_MQG)
+        return true;
+    if (trinket == TRINKET_ZHC)
+        return true;
+    if (trinket == TRINKET_HAZZARAH)
+        return true;
+    if (trinket == TRINKET_EYE_OF_MOAM)
+        return true;
+    if (trinket == TRINKET_NAT_PAGLE)
+        return true;
+    if (trinket == TRINKET_DRACONIC_EMBLEM)
+        return true;
+    if (trinket == TRINKET_BURST_OF_KNOWLEDGE)
+        return true;
+    if (trinket == TRINKET_FIRE_RUBY)
         return true;
 
     // Lets not use this trinket automatically
@@ -814,11 +886,46 @@ std::vector<action::Action> Player::useTrinket(Trinket trinket, std::shared_ptr<
 
     cooldown->duration = 120;
 
-    if (trinket == TRINKET_MQG) {
+    if (trinket == TRINKET_RESTRAINED_ESSENCE) {
+        buff = std::make_shared<buff::EssenceOfSapphiron>();
+    }
+    else if (trinket == TRINKET_WARMTH_OF_FORGIVENESS) {
+        actions.push_back(manaAction(500, "Warmth of Forgiveness"));
+        cooldown->duration = 180;
+    }
+    else if (trinket == TRINKET_MQG) {
         buff = std::make_shared<buff::MindQuickening>();
         cooldown->duration = 300;
     }
-    if (trinket == TRINKET_RECOMBO) {
+    else if (trinket == TRINKET_ZHC) {
+        buff = std::make_shared<buff::UnstablePower>();
+    }
+    else if (trinket == TRINKET_HAZZARAH) {
+        buff = std::make_shared<buff::ArcanePotency>();
+        cooldown->duration = 180;
+    }
+    else if (trinket == TRINKET_EYE_OF_MOAM) {
+        buff = std::make_shared<buff::ObsidianInsight>();
+        cooldown->duration = 180;
+    }
+    else if (trinket == TRINKET_NAT_PAGLE) {
+        buff = std::make_shared<buff::NatPagle>();
+        cooldown->duration = 75;
+    }
+    else if (trinket == TRINKET_DRACONIC_EMBLEM) {
+        buff = std::make_shared<buff::ChromaticInfusion>();
+        cooldown->duration = 75;
+    }
+    else if (trinket == TRINKET_BURST_OF_KNOWLEDGE) {
+        buff = std::make_shared<buff::BurstOfKnowledge>();
+        cooldown->duration = 900;
+    }
+    else if (trinket == TRINKET_FIRE_RUBY) {
+        actions.push_back(manaAction((double) random<int>(1, 500), "Fire Ruby"));
+        buff = std::make_shared<buff::ChaosFire>();
+        cooldown->duration = 180;
+    }
+    else if (trinket == TRINKET_RECOMBO) {
         actions.push_back(manaAction((double) random<int>(150, 250), "Minor Recombobulator"));
         cooldown->duration = 300;
     }
@@ -828,7 +935,7 @@ std::vector<action::Action> Player::useTrinket(Trinket trinket, std::shared_ptr<
 
     if (actions.size() > 0) {
         actions.push_back(cooldownAction(cooldown));
-        if (trinketSharesCD(trinket))
+        if (trinketSharesCD(trinket) && buff != nullptr)
             actions.push_back(cooldownAction<cooldown::TrinketShared>(buff->duration));
     }
 
@@ -1076,7 +1183,7 @@ action::Action Player::nextAction(const State& state)
         else
             main_spell = std::make_shared<spell::Scorch>();
 
-        if (!hasBuff(buff::PRESENCE_OF_MIND)) {
+        if (!hasBuff(buff::PRESENCE_OF_MIND) && !hasBuff(buff::NETHERWIND_FOCUS)) {
             // Last second finishers
             auto scorch = std::make_shared<spell::Scorch>();
             if (state.duration - state.t < castTime(scorch) && !hasCooldown(cooldown::FIRE_BLAST))
@@ -1146,7 +1253,7 @@ action::Action Player::nextAction(const State& state)
             return spellAction<spell::FireBlast>(target);
         }
 
-        if (state.isMoving() && !hasBuff(buff::PRESENCE_OF_MIND)) {
+        if (state.isMoving() && !hasBuff(buff::PRESENCE_OF_MIND) && !hasBuff(buff::NETHERWIND_FOCUS)) {
             if (config.targets > 2 && config.distance <= 10) {
                 return spellAction<spell::ArcaneExplosion>();
             }
@@ -1184,7 +1291,7 @@ action::Action Player::nextAction(const State& state)
             return spellAction<spell::FireBlast>(target);
         }
 
-        if (state.isMoving() && !hasBuff(buff::PRESENCE_OF_MIND)) {
+        if (state.isMoving() && !hasBuff(buff::PRESENCE_OF_MIND) && !hasBuff(buff::NETHERWIND_FOCUS)) {
             if (config.targets > 2 && config.distance <= 10) {
                 return spellAction<spell::ArcaneExplosion>();
             }

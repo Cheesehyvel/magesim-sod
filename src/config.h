@@ -22,6 +22,7 @@ struct Config
     int reaction_time = 300;
 
      // Buffs
+    bool mage_armor = false;
     bool mana_spring = false;
     bool imp_mana_spring = false;
     bool curse_of_elements = false;
@@ -32,7 +33,11 @@ struct Config
     bool dmf_dmg = false;
 
     // Enchants / procs / sets
-    bool udc_3set = false;
+    bool set_udc_3p = false;
+    bool set_t3_2p = false;
+    bool set_t2_8p = false;
+    bool set_aq40_5p = false;
+    bool set_zg_5p = false;
 
     bool pre_cast = false;
 

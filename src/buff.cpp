@@ -162,11 +162,100 @@ TangledCausality::TangledCausality()
     duration = 300;
 }
 
+EssenceOfSapphiron::EssenceOfSapphiron()
+{
+    id = ESSENCE_OF_SAPPHIRON;
+    name = "Essence Of Sapphiron";
+    duration = 20;
+    stats.sp = 130;
+}
+
 MindQuickening::MindQuickening()
 {
     id = MQG;
     name = "MQG";
     duration = 20;
+}
+
+UnstablePower::UnstablePower()
+{
+    id = UNSTABLE_POWER;
+    name = "Unstable Power";
+    max_stacks = 12;
+    stack_increment = -1;
+    stack_refresh = false;
+    duration = 20;
+    stats.sp = 17;
+}
+
+ArcanePotency::ArcanePotency()
+{
+    id = ARCANE_POTENCY;
+    name = "Arcane Potency";
+    duration = 20;
+}
+
+ObsidianInsight::ObsidianInsight()
+{
+    id = OBSIDIAN_INSIGHT;
+    name = "Obsidian Insight";
+    duration = 30;
+    stats.sp = 50;
+    stats.spen = 100;
+}
+
+BlueDragon::BlueDragon()
+{
+    id = BLUE_DRAGON;
+    name = "Aura of the Blue Dragon";
+    duration = 15;
+}
+
+NatPagle::NatPagle()
+{
+    id = NAT_PAGLE;
+    name = "Pagle's Broken Reel";
+    duration = 15;
+    stats.hit = 10;
+}
+
+ChromaticInfusion::ChromaticInfusion()
+{
+    id = CHROMATIC_INFUSION;
+    name = "Chromatic Infusion";
+    duration = 15;
+    stats.sp = 100;
+}
+
+BurstOfKnowledge::BurstOfKnowledge()
+{
+    id = BURST_OF_KNOWLEDGE;
+    name = "Burst of Knowledge";
+    duration = 10;
+}
+
+ChaosFire::ChaosFire()
+{
+    id = CHAOS_FIRE;
+    name = "Chaos Fire";
+    duration = 60;
+    stats.sp_fire = 100;
+}
+
+NetherwindFocus::NetherwindFocus()
+{
+    id = NETHERWIND_FOCUS;
+    name = "Netherwind Focus";
+    duration = 10;
+}
+
+EnigmasAnswer::EnigmasAnswer()
+{
+    id = ENIGMAS_ANSWER;
+    name = "Enigma's Answer";
+    duration = 20;
+    max_stacks = 4;
+    stats.hit = 5;
 }
 
 }

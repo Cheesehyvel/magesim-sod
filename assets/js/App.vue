@@ -909,6 +909,12 @@
                             </fieldset>
                             <fieldset class="config-buffs">
                                 <legend>Buffs</legend>
+                                <div class="form-item" v-if="lvl >= 34">
+                                    <label><input type="checkbox" v-model="config.mage_armor">
+                                        <span>Mage Armor</span>
+                                        <help>30% mana regeneration while casting</help>
+                                    </label>
+                                </div>
                                 <div class="form-item">
                                     <label><input type="checkbox" :checked="true" :disabled="true">
                                         <span>Arcane Intellect</span>
@@ -1688,6 +1694,7 @@
                 encounters: false,
 
                 // Buffs
+                mage_armor: false,
                 divine_spirit: false,
                 mark_of_the_wild: false,
                 imp_mark_of_the_wild: false,
@@ -1725,6 +1732,12 @@
                 food: 0,
 
                 pre_cast: false,
+
+                set_udc_3p: false,
+                set_t3_2p: false,
+                set_t2_8p: false,
+                set_aq40_5p: false,
+                set_zg_5p: false,
 
                 trinket1: 0,
                 trinket2: 0,
@@ -1912,7 +1925,7 @@
                 is_running_ep: false,
                 active_tab: "gear",
                 item_source: "wowhead",
-                search_item: this.loadFilters("phase:1")+" ",
+                search_item: this.loadFilters(),
                 search_log: "",
                 log_filter: {
                     "0": true,
@@ -2288,18 +2301,17 @@
                     icon: "https://www.wowhead.com/images/wow/icons/large/spell_frost_wizardmark.jpg",
                 });
 
-                var trinkets = [
-                    {
-                        id: this.items.ids.TRINKET_MQG,
-                        title: "Mind Quickening Gem",
-                        icon: "https://www.wowhead.com/images/wow/icons/large/spell_nature_wispheal.jpg",
-                    },
-                    {
-                        id: this.items.ids.TRINKET_RECOMBO,
-                        title: "Minor Recombobulator",
-                        icon: "https://wow.zamimg.com/images/wow/icons/large/inv_gizmo_07.jpg",
-                    },
-                ];
+                var trinkets = [];
+
+                this.items.equip.trinket.forEach((trinket) => {
+                    if (_.get(trinket, "use") && _.get(trinket, "icon")) {
+                        trinkets.push({
+                            id: trinket.id,
+                            title: trinket.title,
+                            icon: "https://www.wowhead.com/images/wow/icons/large/"+trinket.icon+".jpg",
+                        })
+                    }
+                });
 
                 var slots = ["trinket1", "trinket2"];
                 var timing;
@@ -2896,7 +2908,9 @@
                         str.push(terms[i]);
                 }
 
-                this.search_item = str.join(" ")+" ";
+                this.search_item = str.join(" ");
+                if (this.search_item.length)
+                    this.search_item+= " ";
             },
 
             setActiveSlot(slot) {
@@ -3226,8 +3240,20 @@
                 if (this.isSpecialItem(this.equipped.trinket2))
                     this.config.trinket2 = this.equipped.trinket2;
 
-                num = this.numEquippedSet(this.items.ids.UDC_SET) > 2;
-                this.config.udc_3set = num > 2;
+                num = this.numEquippedSet(this.items.ids.SET_UDC);
+                this.config.set_udc_3p = num > 2;
+
+                num = this.numEquippedSet(this.items.ids.SET_T3);
+                this.config.set_t3_2p = num > 1;
+
+                num = this.numEquippedSet(this.items.ids.SET_T2);
+                this.config.set_t2_8p = num > 7;
+
+                num = this.numEquippedSet(this.items.ids.SET_AQ40);
+                this.config.set_aq40_5p = num > 4;
+
+                num = this.numEquippedSet(this.items.ids.SET_ZG);
+                this.config.set_zg_5p = num > 4;
             },
 
             simStats() {
@@ -4867,6 +4893,8 @@
             },
 
             loadFilters(def) {
+                if (!def)
+                    def = "";
                 var filters = window.localStorage.getItem("magesim_sod_filters");
                 return filters ? filters : def;
             },

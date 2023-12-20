@@ -5,7 +5,7 @@ import pprint
 import re
 import json
 
-def getItem(item_id, phase = 1, faction = None):
+def getItem(item_id, phase = 1, faction = None, pvp = False):
     if item_id[:4] == "http":
         url = item_id + "&xml"
     else:
@@ -105,6 +105,9 @@ def getItem(item_id, phase = 1, faction = None):
     if faction != None:
         stats["faction"] = faction
 
+    if pvp == True:
+        stats["pvp"] = True
+
     # Level req
     if lvlreq > 50 and phase < 4:
         phase = 4
@@ -130,11 +133,12 @@ parser = argparse.ArgumentParser()
 parser.add_argument("item_id", help="Item ID(s)")
 parser.add_argument("-p", help="Phase", type=int, default=1)
 parser.add_argument("-f", help="Faction", type=str, default=None)
+parser.add_argument("-pvp", help="PvP", action="store_true")
 args = parser.parse_args()
 
 ids = args.item_id.split(",")
 
 for index, item_id in enumerate(ids):
-    item = getItem(item_id, args.p, args.f)
+    item = getItem(item_id, args.p, args.f, args.pvp)
     if item != None:
         print(item+",")
