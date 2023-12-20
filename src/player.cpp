@@ -1012,6 +1012,17 @@ action::Action Player::nextAction(const State& state)
         bool multi_target = config.targets > 1;
 
         if (runes.living_flame && !hasCooldown(cooldown::LIVING_FLAME)) {
+
+            if (runes.arcane_blast) {
+                int ab_stacks = 3;
+                if (manaPercent() > 20)
+                    ab_stacks = 4;
+                if (ab_streak < ab_stacks)
+                    return spellAction<spell::ArcaneBlast>(target);
+                else
+                    return spellAction<spell::LivingFlame>(config.distance);
+            }
+
             return spellAction<spell::LivingFlame>(config.distance);
         }
 
@@ -1087,6 +1098,8 @@ action::Action Player::nextAction(const State& state)
     else if (config.rotation == ROTATION_ST_ARCANE) {
         auto ab = std::make_shared<spell::ArcaneBlast>();
         int ab_stacks = config.rot_ab_stacks;
+        if (!runes.arcane_blast)
+            ab_stacks = 0;
 
         if (config.rot_ab_stacks_dec_below >= manaPercent())
             ab_stacks--;
@@ -1101,7 +1114,7 @@ action::Action Player::nextAction(const State& state)
         }
 
         if (runes.living_flame && !hasCooldown(cooldown::LIVING_FLAME)) {
-            if (manaPercent() > 20)
+            if (manaPercent() > 20 && runes.arcane_blast)
                 ab_stacks = 4;
             if (ab_streak < ab_stacks)
                 return spellAction(ab, target);
@@ -1140,7 +1153,7 @@ action::Action Player::nextAction(const State& state)
         
         if (state.duration - state.t < castTime(ab) && !hasCooldown(cooldown::FIRE_BLAST))
             return spellAction<spell::FireBlast>(target);
-        else if (config.rot_ab_spam_above <= manaPercent())
+        else if (config.rot_ab_spam_above <= manaPercent() && runes.arcane_blast)
             return spellAction(ab, target);
         else if (ab_streak >= ab_stacks)
             return spellAction<spell::ArcaneMissiles>(target);
