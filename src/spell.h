@@ -1,8 +1,8 @@
 #pragma once
 
-#include <string>
+#include "common.h"
 
-const double RUNE_SCALE = 0.41667; // lvl 25
+#include <string>
 
 namespace spell
 {
@@ -12,10 +12,10 @@ namespace spell
         ARCANE_SURGE = 425124,
         ARCANE_EXPLOSION = 8437,
         ARCANE_MISSILES = 4145,
-        BLAST_WAVE = 11113, // lvl 30
+        BLAST_WAVE = 11113,
         BLIZZARD = 10,
         COLD_SNAP = 11958,
-        CONE_OF_COLD = 120, // lvl 26
+        CONE_OF_COLD = 120,
         EVOCATION = 12051,
         FLAMESTRIKE = 2121,
         FLAMESTRIKE_DOT = 212100, // Fake id
@@ -124,12 +124,12 @@ namespace spell
 
     struct ArcaneBlast : Spell
     {
-        ArcaneBlast() : Spell(ARCANE_BLAST, "Arcane Blast", SCHOOL_ARCANE)
+        ArcaneBlast(int lvl) : Spell(ARCANE_BLAST, "Arcane Blast", SCHOOL_ARCANE)
         {
             cost_base_mana = true;
             cost = 7;
-            min_dmg = 453.0 * RUNE_SCALE;
-            max_dmg = 527.0 * RUNE_SCALE;
+            min_dmg = 453.0 * runeScale(lvl);
+            max_dmg = 527.0 * runeScale(lvl);
             cast_time = 2.5;
             coeff = 2.5/3.5;
         }
@@ -137,17 +137,17 @@ namespace spell
 
     struct ArcaneSurge : Spell
     {
-        ArcaneSurge() : Spell(ARCANE_SURGE, "Arcane Surge", SCHOOL_ARCANE)
+        ArcaneSurge(int lvl) : Spell(ARCANE_SURGE, "Arcane Surge", SCHOOL_ARCANE)
         {
-            min_dmg = 226.0 * RUNE_SCALE;
-            max_dmg = 264.0 * RUNE_SCALE;
+            min_dmg = 226.0 * runeScale(lvl);
+            max_dmg = 264.0 * runeScale(lvl);
             coeff = 1.5/3.5;
         }
     };
 
     struct ArcaneExplosion : Spell
     {
-        ArcaneExplosion() : Spell(ARCANE_EXPLOSION, "Arcane Explosion", SCHOOL_ARCANE)
+        ArcaneExplosion(int lvl) : Spell(ARCANE_EXPLOSION, "Arcane Explosion", SCHOOL_ARCANE)
         {
             cost = 120;
             min_dmg = 60;
@@ -155,56 +155,127 @@ namespace spell
             cast_time = 0;
             coeff = 0.143;
             aoe = true;
+
+            if (lvl >= 54) {
+                cost = 390;
+                min_dmg = 249;
+                max_dmg = 270;
+            }
+            else if (lvl >= 46) {
+                cost = 315;
+                min_dmg = 191;
+                max_dmg = 208;
+            }
+            else if (lvl >= 38) {
+                cost = 250;
+                min_dmg = 143;
+                max_dmg = 156;
+            }
         }
     };
 
     struct ArcaneMissiles : Spell
     {
-        ArcaneMissiles() : Spell(ARCANE_MISSILES, "Arcane Missiles", SCHOOL_ARCANE)
+        ArcaneMissiles(int lvl) : Spell(ARCANE_MISSILES, "Arcane Missiles", SCHOOL_ARCANE)
         {
             cost = 235;
-            min_dmg = 58;
-            max_dmg = 58;
+            min_dmg = max_dmg = 58;
             cast_time = 5;
             coeff = 0.24;
             channeling = true;
             ticks = 5;
             speed = 20;
+
+            // AQ20 book
+            // if (lvl >= 60) {
+            //     cost = 655;
+            //     min_dmg = 230;
+            //     max_dmg = 230;
+            // }
+            if (lvl >= 56) {
+                cost = 595;
+                min_dmg = max_dmg = 196;
+            }
+            else if (lvl >= 48) {
+                cost = 500;
+                min_dmg = max_dmg = 155;
+            }
+            else if (lvl >= 40) {
+                cost = 410;
+                min_dmg = max_dmg = 118;
+            }
         }
     };
 
     struct Blizzard : Spell
     {
-        Blizzard() : Spell(BLIZZARD, "Blizzard", SCHOOL_FROST)
+        Blizzard(int lvl) : Spell(BLIZZARD, "Blizzard", SCHOOL_FROST)
         {
             cost = 320;
-            min_dmg = 26;
-            max_dmg = 26;
+            min_dmg = max_dmg = 26;
             cast_time = 8;
             coeff = 0.042;
             channeling = true;
             ticks = 8;
             aoe = true;
+
+            if (lvl >= 60) {
+                cost = 1400;
+                min_dmg = max_dmg = 149;
+            }
+            else if (lvl >= 44) {
+                cost = 935;
+                min_dmg = max_dmg = 90;
+            }
+            else if (lvl >= 36) {
+                cost = 720;
+                min_dmg = max_dmg = 65;
+            }
         }
     };
 
     struct Frostbolt : Spell
     {
-        Frostbolt() : Spell(FROSTBOLT, "Frostbolt", SCHOOL_FROST)
+        Frostbolt(int lvl) : Spell(FROSTBOLT, "Frostbolt", SCHOOL_FROST)
         {
             cost = 65;
             min_dmg = 78;
             max_dmg = 87;
-            cast_time = 2.6;
+            cast_time = 3;
             coeff = 0.706; // 2.6 / 3.5 * 0.95
             speed = 28;
             binary = true;
+
+            // AQ20 book
+            // if (lvl >= 60) {
+            //     cost = 290;
+            //     min_dmg = 515;
+            //     max_dmg = 555;
+            // }
+            if (lvl >= 56) {
+                cost = 260;
+                min_dmg = 440;
+                max_dmg = 475;
+            }
+            else if (lvl >= 50) {
+                cost = 225;
+                min_dmg = 363;
+                max_dmg = 394;
+            }
+            else if (lvl >= 38) {
+                cost = 160;
+                min_dmg = 235;
+                max_dmg = 255;
+            }
+            else {
+                cast_time = 2.6;
+            }
         }
     };
 
     struct Fireball : Spell
     {
-        Fireball() : Spell(FIREBALL, "Fireball", SCHOOL_FIRE)
+        Fireball(int lvl) : Spell(FIREBALL, "Fireball", SCHOOL_FIRE)
         {
             cost = 140;
             min_dmg = 146;
@@ -212,12 +283,34 @@ namespace spell
             cast_time = 3.5;
             coeff = 1;
             speed = 24;
+
+            // AQ20 book
+            // if (lvl >= 60) {
+            //     cost = 410;
+            //     min_dmg = 596;
+            //     max_dmg = 760;
+            // }
+            if (lvl >= 60) {
+                cost = 395;
+                min_dmg = 561;
+                max_dmg = 715;
+            }
+            else if (lvl >= 48) {
+                cost = 305;
+                min_dmg = 404;
+                max_dmg = 518;
+            }
+            else if (lvl >= 36) {
+                cost = 220;
+                min_dmg = 264;
+                max_dmg = 345;
+            }
         }
     };
 
     struct FireballDot : Spell
     {
-        FireballDot() : Spell(FIREBALL_DOT, "Fireball", SCHOOL_FIRE)
+        FireballDot(int lvl) : Spell(FIREBALL_DOT, "Fireball", SCHOOL_FIRE)
         {
             dot = true;
             active_use = false;
@@ -225,43 +318,88 @@ namespace spell
             coeff = 0;
             t_interval = 2;
             ticks = 4;
-            min_dmg = 5;
-            max_dmg = 5;
+            min_dmg = max_dmg = 5;
+
+            // AQ20 book
+            // if (lvl >= 60) {
+            //     min_dmg = max_dmg = 19;
+            // }
+            if (lvl >= 60) {
+                min_dmg = max_dmg = 18;
+            }
+            else if (lvl >= 48) {
+                min_dmg = max_dmg = 13;
+            }
+            else if (lvl >= 36) {
+                min_dmg = max_dmg = 8;
+            }
         }
     };
 
     struct Scorch : Spell
     {
-        Scorch() : Spell(SCORCH, "Scorch", SCHOOL_FIRE)
+        Scorch(int lvl) : Spell(SCORCH, "Scorch", SCHOOL_FIRE)
         {
             cost = 50;
             min_dmg = 56;
             max_dmg = 69;
             cast_time = 1.5;
             coeff = 1.5/3.5;
+
+            if (lvl >= 58) {
+                cost = 150;
+                min_dmg = 237;
+                max_dmg = 280;
+            }
+            else if (lvl >= 46) {
+                cost = 115;
+                min_dmg = 168;
+                max_dmg = 199;
+            }
+            else if (lvl >= 40) {
+                cost = 100;
+                min_dmg = 139;
+                max_dmg = 165;
+            }
         }
     };
 
     struct FireBlast : Spell
     {
-        FireBlast() : Spell(FIRE_BLAST, "Fire Blast", SCHOOL_FIRE)
+        FireBlast(int lvl) : Spell(FIRE_BLAST, "Fire Blast", SCHOOL_FIRE)
         {
             cost = 115;
             min_dmg = 110;
             max_dmg = 134;
             cast_time = 0;
             coeff = 1.5/3.5;
+
+            if (lvl >= 54) {
+                cost = 340;
+                min_dmg = 446;
+                max_dmg = 524;
+            }
+            else if (lvl >= 46) {
+                cost = 280;
+                min_dmg = 345;
+                max_dmg = 407;
+            }
+            else if (lvl >= 38) {
+                cost = 220;
+                min_dmg = 253;
+                max_dmg = 301;
+            }
         }
     };
 
     struct IceLance : Spell
     {
-        IceLance() : Spell(ICE_LANCE, "Ice Lance", SCHOOL_FROST)
+        IceLance(int lvl) : Spell(ICE_LANCE, "Ice Lance", SCHOOL_FROST)
         {
             cost_base_mana = true;
             cost = 8;
-            min_dmg = 55.0 * RUNE_SCALE;
-            max_dmg = 65.0 * RUNE_SCALE;
+            min_dmg = 55.0 * runeScale(lvl);
+            max_dmg = 65.0 * runeScale(lvl);
             cast_time = 0;
             coeff = 1.5/3.5/3.0;
             speed = 38;
@@ -270,7 +408,7 @@ namespace spell
 
     struct Pyroblast : Spell
     {
-        Pyroblast() : Spell(PYROBLAST, "Pyroblast", SCHOOL_FIRE)
+        Pyroblast(int lvl) : Spell(PYROBLAST, "Pyroblast", SCHOOL_FIRE)
         {
             cost = 125;
             min_dmg = 148;
@@ -278,26 +416,51 @@ namespace spell
             cast_time = 6;
             coeff = 1;
             speed = 24;
+
+            if (lvl >= 60) {
+                cost = 440;
+                min_dmg = 716;
+                max_dmg = 890;
+            }
+            else if (lvl >= 48) {
+                cost = 335;
+                min_dmg = 525;
+                max_dmg = 654;
+            }
+            else if (lvl >= 36) {
+                cost = 240;
+                min_dmg = 347;
+                max_dmg = 437;
+            }
         }
     };
 
     struct PyroblastDot : Spell
     {
-        PyroblastDot() : Spell(PYROBLAST_DOT, "Pyroblast", SCHOOL_FIRE)
+        PyroblastDot(int lvl) : Spell(PYROBLAST_DOT, "Pyroblast", SCHOOL_FIRE)
         {
             dot = true;
             active_use = false;
             t_interval = 3;
             ticks = 4;
-            min_dmg = 14;
-            max_dmg = 14;
+            min_dmg = max_dmg = 14;
             coeff = 0.15;
+
+            if (lvl >= 60) {
+                min_dmg = max_dmg = 67;
+            }
+            else if (lvl >= 48) {
+                min_dmg = max_dmg = 47;
+            }
+            else if (lvl >= 36) {
+                min_dmg = max_dmg = 31;
+            }
         }
     };
 
     struct Flamestrike : Spell
     {
-        Flamestrike() : Spell(FLAMESTRIKE, "Flamestrike", SCHOOL_FIRE)
+        Flamestrike(int lvl) : Spell(FLAMESTRIKE, "Flamestrike", SCHOOL_FIRE)
         {
             aoe = true;
             cost = 330;
@@ -305,12 +468,28 @@ namespace spell
             max_dmg = 126;
             cast_time = 3;
             coeff = 0.157;
+
+            if (lvl >= 56) {
+                cost = 990;
+                min_dmg = 381;
+                max_dmg = 466;
+            }
+            else if (lvl >= 48) {
+                cost = 815;
+                min_dmg = 298;
+                max_dmg = 367;
+            }
+            else if (lvl >= 40) {
+                cost = 650;
+                min_dmg = 226;
+                max_dmg = 279;
+            }
         }
     };
 
     struct FlamestrikeDot : Spell
     {
-        FlamestrikeDot() : Spell(FLAMESTRIKE_DOT, "Flamestrike", SCHOOL_FIRE)
+        FlamestrikeDot(int lvl) : Spell(FLAMESTRIKE_DOT, "Flamestrike", SCHOOL_FIRE)
         {
             aoe = true;
             aoe_capped = false;
@@ -321,28 +500,56 @@ namespace spell
             dynamic = true;
             t_interval = 2;
             ticks = 4;
-            min_dmg = 22;
-            max_dmg = 22;
+            min_dmg = max_dmg = 22;
             coeff = 0.02;
+
+            if (lvl >= 56) {
+                min_dmg = max_dmg = 85;
+            }
+            else if (lvl >= 48) {
+                min_dmg = max_dmg = 66;
+            }
+            else if (lvl >= 40) {
+                min_dmg = max_dmg = 49;
+            }
         }
     };
 
     struct FlamestrikeDR : Spell
     {
-        FlamestrikeDR() : Spell(FLAMESTRIKE_DR, "Flamestrike (Rank 8)", SCHOOL_FIRE)
+        FlamestrikeDR(int lvl) : Spell(FLAMESTRIKE_DR, "Flamestrike (Downranked)", SCHOOL_FIRE)
         {
             aoe = true;
             cost = 195;
             min_dmg = 55;
             max_dmg = 71;
             cast_time = 3;
-            coeff = 0.134;
+            coeff = 0.157;
+
+             if (lvl >= 56) {
+                cost = 815;
+                min_dmg = 298;
+                max_dmg = 367;
+            }
+            else if (lvl >= 48) {
+                cost = 650;
+                min_dmg = 226;
+                max_dmg = 279;
+            }
+            else if (lvl >= 40) {
+                cost = 490;
+                min_dmg = 159;
+                max_dmg = 197;
+            }
+            else {
+                coeff = 0.134;
+            }
         }
     };
 
     struct FlamestrikeDRDot : Spell
     {
-        FlamestrikeDRDot() : Spell(FLAMESTRIKE_DR_DOT, "Flamestrike (Rank 8)", SCHOOL_FIRE)
+        FlamestrikeDRDot(int lvl) : Spell(FLAMESTRIKE_DR_DOT, "Flamestrike (Downranked)", SCHOOL_FIRE)
         {
             aoe = true;
             aoe_capped = false;
@@ -353,42 +560,54 @@ namespace spell
             dynamic = true;
             t_interval = 2;
             ticks = 4;
-            min_dmg = 12;
-            max_dmg = 12;
+            min_dmg = max_dmg = 12;
             coeff = 0.017;
+
+            if (lvl >= 56) {
+                min_dmg = max_dmg = 66;
+            }
+            else if (lvl >= 48) {
+                min_dmg = max_dmg = 49;
+            }
+            else if (lvl >= 40) {
+                min_dmg = max_dmg = 35;
+            }
+            else {
+                coeff = 0.02;
+            }
         }
     };
 
     struct LivingBomb : Spell
     {
-        LivingBomb() : Spell(LIVING_BOMB, "Living Bomb", SCHOOL_FIRE)
+        LivingBomb(int lvl) : Spell(LIVING_BOMB, "Living Bomb", SCHOOL_FIRE)
         {
             cost_base_mana = true;
             cost = 22;
             dot = true;
             t_interval = 3;
             ticks = 4;
-            min_dmg = 85.0 * RUNE_SCALE;
-            max_dmg = 85.0 * RUNE_SCALE;
+            min_dmg = 85.0 * runeScale(lvl);
+            max_dmg = 85.0 * runeScale(lvl);
             coeff = 0.2;
         }
     };
 
     struct LivingBombExplosion : Spell
     {
-        LivingBombExplosion() : Spell(LIVING_BOMB_EXPLOSION, "Living Bomb", SCHOOL_FIRE)
+        LivingBombExplosion(int lvl) : Spell(LIVING_BOMB_EXPLOSION, "Living Bomb", SCHOOL_FIRE)
         {
             aoe = true;
             active_use = false;
-            min_dmg = 171.0 * RUNE_SCALE;
-            max_dmg = 171.0 * RUNE_SCALE;
+            min_dmg = 171.0 * runeScale(lvl);
+            max_dmg = 171.0 * runeScale(lvl);
             coeff = 0.4;
         }
     };
 
     struct LivingFlame : Spell
     {
-        LivingFlame(double distance) : Spell(LIVING_FLAME, "Living Flame", SCHOOL_SPELLFIRE)
+        LivingFlame(int lvl, double distance) : Spell(LIVING_FLAME, "Living Flame", SCHOOL_SPELLFIRE)
         {
             double diameter = 4;
             double flames_per_second = 2;
@@ -406,15 +625,15 @@ namespace spell
             cost = 11;
             dot = true;
             t_interval = 1;
-            min_dmg = 100.0 * RUNE_SCALE;
-            max_dmg = 100.0 * RUNE_SCALE;
+            min_dmg = 100.0 * runeScale(lvl);
+            max_dmg = 100.0 * runeScale(lvl);
             coeff = 0.143;
         }
     };
 
     struct BlastWave : Spell
     {
-        BlastWave() : Spell(BLAST_WAVE, "Blast Wave", SCHOOL_FIRE)
+        BlastWave(int lvl) : Spell(BLAST_WAVE, "Blast Wave", SCHOOL_FIRE)
         {
             aoe = true;
             cost = 215;
@@ -422,12 +641,28 @@ namespace spell
             max_dmg = 192;
             cast_time = 0;
             coeff = 0.129;
+
+             if (lvl >= 60) {
+                cost = 545;
+                min_dmg = 462;
+                max_dmg = 544;
+            }
+            else if (lvl >= 44) {
+                cost = 355;
+                min_dmg = 285;
+                max_dmg = 338;
+            }
+            else if (lvl >= 36) {
+                cost = 270;
+                min_dmg = 208;
+                max_dmg = 249;
+            }
         }
     };
 
     struct ConeOfCold : Spell
     {
-        ConeOfCold() : Spell(CONE_OF_COLD, "Cone of Cold", SCHOOL_FROST)
+        ConeOfCold(int lvl) : Spell(CONE_OF_COLD, "Cone of Cold", SCHOOL_FROST)
         {
             aoe = true;
             cost = 210;
@@ -435,12 +670,28 @@ namespace spell
             max_dmg = 112;
             cast_time = 0;
             coeff = 0.129;
+
+             if (lvl >= 58) {
+                cost = 555;
+                min_dmg = 338;
+                max_dmg = 368;
+            }
+            else if (lvl >= 50) {
+                cost = 465;
+                min_dmg = 270;
+                max_dmg = 297;
+            }
+            else if (lvl >= 34) {
+                cost = 290;
+                min_dmg = 151;
+                max_dmg = 165;
+            }
         }
     };
 
     struct ColdSnap : Spell
     {
-        ColdSnap() : Spell(COLD_SNAP, "Cold Snap", SCHOOL_FROST)
+        ColdSnap(int lvl) : Spell(COLD_SNAP, "Cold Snap", SCHOOL_FROST)
         {
             cost = 0;
             is_trigger = true;
@@ -450,7 +701,7 @@ namespace spell
 
     struct Ignite : Spell
     {
-        Ignite(double _dmg) : Spell(IGNITE, "Ignite", SCHOOL_FIRE)
+        Ignite(int lvl, double _dmg) : Spell(IGNITE, "Ignite", SCHOOL_FIRE)
         {
             dot = true;
             active_use = false;
@@ -463,7 +714,7 @@ namespace spell
 
     struct ManaGem : Spell
     {
-        ManaGem() : Spell(MANA_GEM, "Mana Gem", SCHOOL_ARCANE)
+        ManaGem(int lvl) : Spell(MANA_GEM, "Mana Gem", SCHOOL_ARCANE)
         {
             is_trigger = true;
             gcd = 0;
@@ -472,7 +723,7 @@ namespace spell
 
     struct Evocation : Spell
     {
-        Evocation() : Spell(EVOCATION, "Evocation", SCHOOL_ARCANE)
+        Evocation(int lvl) : Spell(EVOCATION, "Evocation", SCHOOL_ARCANE)
         {
             is_trigger = true;
             channeling = true;
@@ -483,35 +734,35 @@ namespace spell
 
     struct Regeneration : Spell
     {
-        Regeneration() : Spell(REGENERATION, "Regeneration", SCHOOL_ARCANE)
+        Regeneration(int lvl) : Spell(REGENERATION, "Regeneration", SCHOOL_ARCANE)
         {
             cost_base_mana = true;
             cost = 43;
             channeling = true;
             ticks = 3;
             cast_time = 3;
-            min_heal = 82.0 * RUNE_SCALE;
-            max_heal = 82.0 * RUNE_SCALE;
+            min_heal = 82.0 * runeScale(lvl);
+            max_heal = 82.0 * runeScale(lvl);
         }
     };
 
     struct MassRegeneration : Spell
     {
-        MassRegeneration() : Spell(MASS_REGENERATION, "Mass Regeneration", SCHOOL_ARCANE)
+        MassRegeneration(int lvl) : Spell(MASS_REGENERATION, "Mass Regeneration", SCHOOL_ARCANE)
         {
             cost_base_mana = true;
             cost = 69;
             channeling = true;
             ticks = 3;
             cast_time = 3;
-            min_heal = 42.0 * 5.0 * RUNE_SCALE;
-            max_heal = 42.0 * 5.0 * RUNE_SCALE;
+            min_heal = 42.0 * 5.0 * runeScale(lvl);
+            max_heal = 42.0 * 5.0 * runeScale(lvl);
         }
     };
 
     struct TemporalBeacon : Spell
     {
-        TemporalBeacon(double heal) : Spell(TEMPORAL_BEACON, "Temporal Beacon", SCHOOL_ARCANE)
+        TemporalBeacon(int lvl, double heal) : Spell(TEMPORAL_BEACON, "Temporal Beacon", SCHOOL_ARCANE)
         {
             active_use = false;
             cast_time = 0;

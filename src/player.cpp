@@ -1059,7 +1059,7 @@ bool Player::canBlast(const State& state) const
     if (state.timeRemain() > 30)
         return false;
 
-    auto ab = std::make_shared<spell::ArcaneBlast>();
+    auto ab = std::make_shared<spell::ArcaneBlast>(config.player_level);
     auto const cast_time = 2.5 * castHaste();
     auto const base_cost = baseManaCost(ab);
 
@@ -1086,18 +1086,18 @@ std::shared_ptr<spell::Spell> Player::preCastSpell()
 {
     if (config.rotation == ROTATION_ST_FIRE) {
         if (talents.pyroblast)
-            return std::make_shared<spell::Pyroblast>();
+            return std::make_shared<spell::Pyroblast>(config.player_level);
         else
-            return std::make_shared<spell::Fireball>();
+            return std::make_shared<spell::Fireball>(config.player_level);
     }
     if (config.rotation == ROTATION_ST_ARCANE && runes.arcane_blast)
-        return std::make_shared<spell::ArcaneBlast>();
+        return std::make_shared<spell::ArcaneBlast>(config.player_level);
     if (config.rotation == ROTATION_ST_FROST)
-        return std::make_shared<spell::Frostbolt>();
+        return std::make_shared<spell::Frostbolt>(config.player_level);
     if (config.rotation == ROTATION_ST_FIRE_SC)
-        return std::make_shared<spell::Scorch>();
+        return std::make_shared<spell::Scorch>(config.player_level);
 
-    return std::make_shared<spell::Fireball>();
+    return std::make_shared<spell::Fireball>(config.player_level);
 }
 
 double Player::preCombatDuration(const State& state)
@@ -1165,7 +1165,7 @@ action::Action Player::nextAction(const State& state)
         if (runes.living_flame && !hasCooldown(cooldown::LIVING_FLAME)) {
 
             if (runes.arcane_blast) {
-                auto ab = std::make_shared<spell::ArcaneBlast>();
+                auto ab = std::make_shared<spell::ArcaneBlast>(config.player_level);
                 int ab_stacks = 3;
                 if (manaPercent() > 20)
                     ab_stacks = 4;
@@ -1213,13 +1213,13 @@ action::Action Player::nextAction(const State& state)
 
         std::shared_ptr<spell::Spell> main_spell;
         if (config.rotation == ROTATION_ST_FIRE)
-            main_spell = std::make_shared<spell::Fireball>();
+            main_spell = std::make_shared<spell::Fireball>(config.player_level);
         else
-            main_spell = std::make_shared<spell::Scorch>();
+            main_spell = std::make_shared<spell::Scorch>(config.player_level);
 
         if (!hasBuff(buff::PRESENCE_OF_MIND) && !hasBuff(buff::NETHERWIND_FOCUS)) {
             // Last second finishers
-            auto scorch = std::make_shared<spell::Scorch>();
+            auto scorch = std::make_shared<spell::Scorch>(config.player_level);
             if (state.duration - state.t < castTime(scorch) && !hasCooldown(cooldown::FIRE_BLAST))
                 return spellAction<spell::FireBlast>(target);
             if (state.duration - state.t < castTime(main_spell) + travelTime(main_spell))
@@ -1248,7 +1248,7 @@ action::Action Player::nextAction(const State& state)
 
     // Arcane rotations
     else if (config.rotation == ROTATION_ST_ARCANE) {
-        auto ab = std::make_shared<spell::ArcaneBlast>();
+        auto ab = std::make_shared<spell::ArcaneBlast>(config.player_level);
         int ab_stacks = config.rot_ab_stacks;
         if (!runes.arcane_blast)
             ab_stacks = 0;
@@ -1351,7 +1351,7 @@ action::Action Player::nextAction(const State& state)
 
     // Arcane Explosion + Flamestrike
     else if (config.rotation == ROTATION_AOE_AE_FS) {
-        auto fs = std::make_shared<spell::Flamestrike>();
+        auto fs = std::make_shared<spell::Flamestrike>(config.player_level);
         if (state.isMoving())
             return spellAction<spell::ArcaneExplosion>();
         else if (t_flamestrike + 8.0 - castTime(fs) <= state.t)
@@ -1371,7 +1371,7 @@ action::Action Player::nextAction(const State& state)
 
     // Blizzard + Flamestrike
     else if (config.rotation == ROTATION_AOE_BLIZZ_FS) {
-        auto fs = std::make_shared<spell::Flamestrike>();
+        auto fs = std::make_shared<spell::Flamestrike>(config.player_level);
         if (state.isMoving())
             return spellAction<spell::ArcaneExplosion>();
         else if (t_flamestrike + 8.0 - castTime(fs) <= state.t)
@@ -1384,7 +1384,7 @@ action::Action Player::nextAction(const State& state)
 
     // Flamestrike
     else if (config.rotation == ROTATION_AOE_FS) {
-        auto fs = std::make_shared<spell::Flamestrike>();
+        auto fs = std::make_shared<spell::Flamestrike>(config.player_level);
         double ct = castTime(fs);
         if (t_flamestrike + 8.0 - ct > state.t && t_flamestrike_dr + 8.0 - ct <= state.t && state.t + 8.0 < state.duration)
             return spellAction<spell::FlamestrikeDR>();
@@ -1393,7 +1393,7 @@ action::Action Player::nextAction(const State& state)
 
     // Fire
     else if (config.rotation == ROTATION_AOE_FIRE) {
-        auto fs = std::make_shared<spell::Flamestrike>();
+        auto fs = std::make_shared<spell::Flamestrike>(config.player_level);
 
         // Above aoe cap
         if (config.targets > 12 && !state.isMoving()) {

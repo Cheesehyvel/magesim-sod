@@ -260,7 +260,7 @@ template <typename T, typename... Args>
 action::Action Unit::spellAction(Args... args) const
 {
     action::Action action{ action::TYPE_SPELL };
-    action.spell = std::make_shared<T>(std::forward<Args>(args)...);
+    action.spell = std::make_shared<T>(config.player_level, std::forward<Args>(args)...);
     return action;
 }
 
@@ -268,7 +268,7 @@ template <typename T, typename... Args>
 action::Action Unit::spellAction(std::shared_ptr<target::Target> target, Args... args) const
 {
     action::Action action{ action::TYPE_SPELL };
-    action.spell = std::make_shared<T>(std::forward<Args>(args)...);
+    action.spell = std::make_shared<T>(config.player_level, std::forward<Args>(args)...);
     action.target = target;
     return action;
 }

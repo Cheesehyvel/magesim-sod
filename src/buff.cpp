@@ -165,7 +165,7 @@ TangledCausality::TangledCausality()
 EssenceOfSapphiron::EssenceOfSapphiron()
 {
     id = ESSENCE_OF_SAPPHIRON;
-    name = "Essence Of Sapphiron";
+    name = "Essence of Sapphiron";
     duration = 20;
     stats.sp = 130;
 }

@@ -1069,7 +1069,7 @@
                                     <label>Food</label>
                                     <select v-model="config.food">
                                         <option :value="foods.FOOD_NONE">None</option>
-                                        <option :value="foods.FOOD_INT10" v-if="lvl >= 45">+12 Intellect</option>
+                                        <option :value="foods.FOOD_INT10" v-if="lvl >= 45">+10 Intellect</option>
                                         <option :value="foods.FOOD_SPIRIT12" v-if="lvl >= 35">+12 Spirit/stam</option>
                                         <option :value="foods.FOOD_SPIRIT8">+8 Spirit/stam</option>
                                         <option :value="foods.FOOD_SPIRIT6">+6 Spirit/stam</option>
