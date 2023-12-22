@@ -1049,32 +1049,16 @@ action::Action Player::useCooldown(const State& state)
     else if (!hasCooldown(cooldown::EVOCATION) && useTimingIfPossible("evocation", state, true)) {
         return spellAction<spell::Evocation>();
     }
-
-    return { action::TYPE_NONE };
-}
-
-bool Player::canBlast(const State& state) const
-{
-    // Lets assume we cant blast for 30+ seconds to save computing time
-    if (state.timeRemain() > 30)
-        return false;
-
-    auto ab = std::make_shared<spell::ArcaneBlast>(config.player_level);
-    auto const cast_time = 2.5 * castHaste();
-    auto const base_cost = baseManaCost(ab);
-
-    double cur_mana = mana;
-    int stacks = buffStacks(buff::ARCANE_BLAST);
-
-    for (auto t = state.t; t <= state.duration; t += cast_time) {
-        if (stacks < 4)
-            stacks++;
-        cur_mana -= base_cost * 1.75 * stacks;
-        if (cur_mana < 0)
-            return false;
+    else if (config.item_robe_archmage && maxMana() - mana >= 625.0 && !hasCooldown(cooldown::ROBE_ARCHMAGE)) {
+        action::Action action{ action::TYPE_MANA };
+        action.value = (double) random<int>(375, 625);
+        action.str = "Robe of the Archmage";
+        action.cooldown = std::make_shared<cooldown::Cooldown>(cooldown::ROBE_ARCHMAGE);
+        action.primary_action = true;
+        return action;
     }
 
-    return true;
+    return { action::TYPE_NONE };
 }
 
 bool Player::shouldPreCast() const

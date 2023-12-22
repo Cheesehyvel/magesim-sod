@@ -163,6 +163,7 @@ EMSCRIPTEN_BINDINGS(my_module)
         .property("set_t2_8p", &Config::set_t2_8p)
         .property("set_aq40_5p", &Config::set_aq40_5p)
         .property("set_zg_5p", &Config::set_zg_5p)
+        .property("item_robe_archmage", &Config::item_robe_archmage)
 
         .property("pre_cast", &Config::pre_cast)
 

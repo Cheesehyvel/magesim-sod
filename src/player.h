@@ -146,8 +146,6 @@ public:
 
     action::Action useCooldown(const State& state);
 
-    bool canBlast(const State& state) const;
-
     bool shouldPreCast() const;
 
     std::shared_ptr<spell::Spell> preCastSpell();

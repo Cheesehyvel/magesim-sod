@@ -26,7 +26,9 @@ namespace cooldown
         POWER_INFUSION = 10060,
         MANA_GEM = 42987,
         LIVING_FLAME = 401558,
-        // Trinkets
+
+        // Items
+        ROBE_ARCHMAGE = 18385,
     };
 
 
@@ -228,6 +230,18 @@ namespace cooldown
         {
             id = MANA_GEM;
             duration = 120;
+        }
+
+    };
+
+    class RobeArchmage : public Cooldown
+    {
+
+    public:
+        RobeArchmage()
+        {
+            id = ROBE_ARCHMAGE;
+            duration = 300;
         }
 
     };

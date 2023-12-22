@@ -43,6 +43,7 @@ struct Config
     bool set_t2_8p = false;
     bool set_aq40_5p = false;
     bool set_zg_5p = false;
+    bool item_robe_archmage = false;
 
     bool pre_cast = false;
 

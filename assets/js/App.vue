@@ -1759,6 +1759,7 @@
                 set_t2_8p: false,
                 set_aq40_5p: false,
                 set_zg_5p: false,
+                item_robe_archmage: false,
 
                 trinket1: 0,
                 trinket2: 0,
@@ -3275,6 +3276,8 @@
 
                 num = this.numEquippedSet(this.items.ids.SET_ZG);
                 this.config.set_zg_5p = num > 4;
+
+                this.config.item_robe_archmage = this.isEquipped("chest", this.items.ids.ROBE_ARCHMAGE);
             },
 
             simStats() {
@@ -3640,6 +3643,21 @@
 
             numProfs() {
                 var num = 0;
+
+                // Alchemy
+                if (this.isEquipped("trinket", this.items.ids.TRINKET_ALCHEMIST_STONE))
+                    num++;
+
+                // Tailoring
+                if (this.isEquipped("chest", this.items.ids.ROBE_ARCHMAGE))
+                    num++;
+
+                // Engineering
+                if (this.equipped.head) {
+                    var head = this.getItem("head", this.equipped.head);
+                    if (head.title.indexOf("Goggles") != -1)
+                        num++;
+                }
 
                 return num;
             },

@@ -80,7 +80,8 @@
                     { title: "Enigma's Answer", color: "#44d" },
                 ],
                 mana_gains: [
-                    { title: "Mana Gem", color: "rgba(85,255,85)" },
+                    { title: "Mana Gem", color: "#5f5" },
+                    { title: "Robe of the Archmage", color: "#b0b" },
                     { title: "Mana Potion", color: "#00d" },
                 ]
             }

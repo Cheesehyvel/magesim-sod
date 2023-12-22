@@ -122,7 +122,7 @@ def getItem(item_id, phase = 1, faction = None, pvp = False):
 
     # Convert to item string
     output = json.dumps(stats)
-    p = re.compile("\"([a-z0-9]+)\":")
+    p = re.compile("\"([a-z0-9_]+)\":")
     output = p.sub(r"\1:", output)
     output = output[:1]+" "+output[1:]
     output = output[:-1]+" "+output[-1:]
