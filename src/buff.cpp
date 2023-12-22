@@ -173,7 +173,7 @@ EssenceOfSapphiron::EssenceOfSapphiron()
 MindQuickening::MindQuickening()
 {
     id = MQG;
-    name = "MQG";
+    name = "Mind Quickening";
     duration = 20;
 }
 

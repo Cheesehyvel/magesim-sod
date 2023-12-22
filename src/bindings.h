@@ -107,8 +107,13 @@ EMSCRIPTEN_BINDINGS(my_module)
         .value("TRINKET_RECOMBO", TRINKET_RECOMBO)
         ;
 
-    emscripten::enum_<Enchant>("Enchant")
-        .value("ENCHANT_NONE", ENCHANT_NONE)
+    emscripten::enum_<Potion>("Potion")
+        .value("POTION_NONE", POTION_NONE)
+        .value("POTION_LESSER_MANA", POTION_LESSER_MANA)
+        .value("POTION_MANA", POTION_MANA)
+        .value("POTION_GREATER_MANA", POTION_GREATER_MANA)
+        .value("POTION_SUPERIOR_MANA", POTION_SUPERIOR_MANA)
+        .value("POTION_MAJOR_MANA", POTION_MAJOR_MANA)
         ;
 
     emscripten::enum_<LogType>("LogType")
@@ -143,10 +148,13 @@ EMSCRIPTEN_BINDINGS(my_module)
         .property("mage_armor", &Config::mage_armor)
         .property("mana_spring", &Config::mana_spring)
         .property("imp_mana_spring", &Config::imp_mana_spring)
-        .property("curse_of_elements", &Config::curse_of_elements)
-        .property("curse_of_shadow", &Config::curse_of_shadow)
         .property("demonic_pact", &Config::demonic_pact)
         .property("demonic_pact_bonus", &Config::demonic_pact_bonus)
+
+        .property("curse_of_elements", &Config::curse_of_elements)
+        .property("curse_of_shadow", &Config::curse_of_shadow)
+        .property("judgement_of_wisdom", &Config::judgement_of_wisdom)
+
         .property("ashenvale_cry", &Config::ashenvale_cry)
         .property("dmf_dmg", &Config::dmf_dmg)
         
@@ -157,6 +165,8 @@ EMSCRIPTEN_BINDINGS(my_module)
         .property("set_zg_5p", &Config::set_zg_5p)
 
         .property("pre_cast", &Config::pre_cast)
+
+        .property("potion", &Config::potion)
 
         .property("trinket1", &Config::trinket1)
         .property("trinket2", &Config::trinket2)

@@ -18,6 +18,8 @@ onmessage = (event) => {
             }
             if (m.Rotation.values.hasOwnProperty(data.config.rotation))
                 config.rotation = m.Rotation.values[data.config.rotation];
+            if (m.Potion.values.hasOwnProperty(data.config.potion))
+                config.potion = m.Potion.values[data.config.potion];
             if (m.Trinket.values.hasOwnProperty(data.config.trinket1))
                 config.trinket1 = m.Trinket.values[data.config.trinket1];
             if (m.Trinket.values.hasOwnProperty(data.config.trinket2))

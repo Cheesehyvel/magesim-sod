@@ -25,10 +25,15 @@ struct Config
     bool mage_armor = false;
     bool mana_spring = false;
     bool imp_mana_spring = false;
-    bool curse_of_elements = false;
-    bool curse_of_shadow = false;
     bool demonic_pact = false;
     double demonic_pact_bonus = 0;
+
+    // Debuffs
+    bool curse_of_elements = false;
+    bool curse_of_shadow = false;
+    bool judgement_of_wisdom = false;
+
+    // World buffs
     bool ashenvale_cry = false;
     bool dmf_dmg = false;
 
@@ -40,6 +45,8 @@ struct Config
     bool set_zg_5p = false;
 
     bool pre_cast = false;
+
+    Potion potion = POTION_NONE;
 
     Trinket trinket1 = TRINKET_NONE;
     Trinket trinket2 = TRINKET_NONE;

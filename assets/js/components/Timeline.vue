@@ -66,7 +66,18 @@
                     { title: "Power Infusion", color: "#dd0" },
                 ],
                 trinkets: [
-                    //
+                    { title: "Essence of Sapphiron", color: "#fe9" },
+                    { title: "Mind Quickening", color: "#fe9" },
+                    { title: "Unstable Power", color: "#fe9" },
+                    { title: "Arcane Potency", color: "#fe9" },
+                    { title: "Obsidian Insight", color: "#fe9" },
+                    { title: "Aura of the Blue Dragon", color: "#a08" },
+                    { title: "Pagle's Broken Reel", color: "#fe9" },
+                    { title: "Chromatic Infusion", color: "#fe9" },
+                    { title: "Burst of Knowledge", color: "#fe9" },
+                    { title: "Chaos Fire", color: "#f33" },
+                    { title: "Netherwind Focus", color: "#44d" },
+                    { title: "Enigma's Answer", color: "#44d" },
                 ],
                 mana_gains: [
                     { title: "Mana Gem", color: "rgba(85,255,85)" },

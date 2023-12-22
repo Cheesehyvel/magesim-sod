@@ -32,6 +32,14 @@ export default {
         FLASK_SUPREME_POWER: 13512,
         FLASK_DISTILLED_WISDOM: 13511,
     },
+    potions: {
+        POTION_NONE: 0,
+        POTION_LESSER_MANA: 3385,
+        POTION_MANA: 3327,
+        POTION_GREATER_MANA: 6149,
+        POTION_SUPERIOR_MANA: 13443,
+        POTION_MAJOR_MANA: 13444,
+    },
     weapon_oils: {
         OIL_NONE: 0,
         OIL_BLESSED_WIZARD: 23123,

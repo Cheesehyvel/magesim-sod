@@ -42,11 +42,10 @@ void Player::reset()
     ab_streak = 0;
     has_pre_cast = false;
 
-    // Enable these as we go up in level
-    mana_ruby = false;
-    mana_citrine = false;
-    mana_jade = false;
-    mana_agate = false;
+    mana_ruby = config.player_level >= 58;
+    mana_citrine = config.player_level >= 48;
+    mana_jade = config.player_level >= 38;
+    mana_agate = config.player_level >= 28;
 
     std::fill(used_timings.begin(), used_timings.end(), false);
 }
@@ -521,18 +520,20 @@ std::vector<action::Action> Player::onSpellImpactProc(const State& state, const 
                     actions.push_back(buffAction<buff::Clearcast>());
             }
 
-            // 50% chance, no icd ? unconfirmed
-            // if (config.judgement_of_wisdom) {
-            //     double chance = 25;
-            //     if (instance.spell->actual_cast_time > 0)
-            //         chance*= instance.spell->actual_cast_time;
-            //     else
-            //         chance*= 0.75;
-            //     if (instance.spell->channeling)
-            //         chance/= (double) instance.spell->ticks;
-            //     if (random<double>(0, 100) < chance)
-            //         actions.push_back(manaAction(33.0, "Judgement of Wisdom"));
-            // }
+            if (config.judgement_of_wisdom && config.player_level >= 38 && faction() == FACTION_ALLIANCE) {
+                double chance = 50;
+                // Less chance per tick for channelled spells
+                if (instance.spell->channeling)
+                    chance/= (double) instance.spell->ticks;
+                if (random<double>(0, 100) < chance) {
+                    double m = 33.0;
+                    if (config.player_level >= 58)
+                        m = 59.0;
+                    else if (config.player_level >= 48)
+                        m = 46.0;
+                    actions.push_back(manaAction(m, "Judgement of Wisdom"));
+                }
+            }
 
             if (hasBuff(buff::COMBUSTION) && instance.spell->isSchool(SCHOOL_FIRE)) {
                 if (instance.result == spell::CRIT)
@@ -650,7 +651,7 @@ double Player::manaGemMax() const
 
 bool Player::shouldUseManaGem(const State& state)
 {
-    if (hasCooldown(cooldown::MANA_GEM) || !hasManaGem())
+    if (!hasManaPotion() || hasCooldown(cooldown::MANA_GEM) || !hasManaGem())
         return false;
 
     // Check for planned mana gem timings
@@ -667,9 +668,36 @@ bool Player::shouldUseManaGem(const State& state)
     return Unit::maxMana() - mana >= max;
 }
 
+bool Player::hasManaPotion() const
+{
+    // All pots are mana pots atm
+    return config.potion != POTION_NONE;
+}
+
+double Player::manaPotionMax() const
+{
+    double max = 0;
+
+    if (config.potion == POTION_LESSER_MANA)
+        max = 360;
+    else if (config.potion == POTION_MANA)
+        max = 585;
+    else if (config.potion == POTION_GREATER_MANA)
+        max = 900;
+    else if (config.potion == POTION_SUPERIOR_MANA)
+        max = 1500;
+    else if (config.potion == POTION_MAJOR_MANA)
+        max = 2250;
+
+    if (hasTrinket(TRINKET_ALCHEMIST_STONE))
+        max *= 1.33;
+
+    return max;
+}
+
 bool Player::shouldUseManaPotion(const State& state)
 {
-    if (hasCooldown(cooldown::POTION))
+    if (hasCooldown(cooldown::POTION) || hasBuff(buff::INNERVATE) || !hasManaPotion())
         return false;
 
     // Check for planned potions timings
@@ -677,13 +705,7 @@ bool Player::shouldUseManaPotion(const State& state)
     if (timing)
         return false;
 
-    if (hasBuff(buff::INNERVATE))
-        return false;
-
-    double max = 360;
-
-    if (hasTrinket(TRINKET_ALCHEMIST_STONE))
-        max *= 1.33;
+    double max = manaPotionMax();
 
     // If tide is running, add a tick as buffer
     if (hasBuff(buff::MANA_TIDE))
@@ -757,20 +779,32 @@ std::vector<action::Action> Player::useManaGem()
     return actions;
 }
 
-
-
 std::vector<action::Action> Player::usePotion()
 {
     std::vector<action::Action> actions = Unit::usePotion();
 
-    double duration = 120;
-    double mana = round(random<double>(280, 360));
+    if (hasManaPotion()) {
+        double mana = 0;
 
-    if (hasTrinket(TRINKET_ALCHEMIST_STONE))
-        mana *= 1.33;
+        if (config.potion == POTION_LESSER_MANA)
+            mana = random<double>(280, 360);
+        else if (config.potion == POTION_MANA)
+            mana = random<double>(455, 585);
+        else if (config.potion == POTION_GREATER_MANA)
+            mana = random<double>(700, 900);
+        else if (config.potion == POTION_SUPERIOR_MANA)
+            mana = random<double>(900, 1500);
+        else if (config.potion == POTION_MAJOR_MANA)
+            mana = random<double>(1350, 2250);
 
-    actions.push_back(manaAction(mana, "Mana Potion"));
-    actions.push_back(cooldownAction<cooldown::Potion>(duration));
+        if (hasTrinket(TRINKET_ALCHEMIST_STONE))
+            mana *= 1.33;
+
+        mana = round(mana);
+
+        actions.push_back(manaAction(mana, "Mana Potion"));
+        actions.push_back(cooldownAction<cooldown::Potion>(120));
+    }
 
     return actions;
 }

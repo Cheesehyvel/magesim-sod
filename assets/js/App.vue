@@ -906,6 +906,12 @@
                                         <help>{{ cosDmg }}% arcane dmg, -{{ cosSpen }} resistance</help>
                                     </label>
                                 </div>
+                                <div class="form-item" v-if="faction == 'alliance' && lvl >= 38">
+                                    <label><input type="checkbox" v-model="config.judgement_of_wisdom">
+                                        <span>Judgement of Wisdom</span>
+                                        <help>50% chance of restoring mana</help>
+                                    </label>
+                                </div>
                             </fieldset>
                             <fieldset class="config-buffs">
                                 <legend>Buffs</legend>
@@ -1046,6 +1052,17 @@
                                         <option :value="flasks.FLASK_NONE">None</option>
                                         <option :value="flasks.FLASK_SUPREME_POWER">Supreme Power (150 sp)</option>
                                         <option :value="flasks.FLASK_DISTILLED_WISDOM">Distilled Wisdom (2000 mana)</option>
+                                    </select>
+                                </div>
+                                <div class="form-item">
+                                    <label>Potion</label>
+                                    <select v-model="config.potion">
+                                        <option :value="potions.POTION_NONE">None</option>
+                                        <option :value="potions.POTION_MAJOR_MANA" v-if="lvl >= 49">Major Mana Potion</option>
+                                        <option :value="potions.POTION_SUPERIOR_MANA" v-if="lvl >= 41">Superior Mana Potion</option>
+                                        <option :value="potions.POTION_GREATER_MANA" v-if="lvl >= 31">Greater Mana Potion</option>
+                                        <option :value="potions.POTION_MANA">Mana Potion</option>
+                                        <option :value="potions.POTION_LESSER_MANA">Lesser Mana Potion</option>
                                     </select>
                                 </div>
                                 <div class="form-item">
@@ -1705,6 +1722,13 @@
                 imp_blessing_of_wisdom: false,
                 demonic_pact: false,
                 demonic_pact_bonus: 0,
+
+                // Debuffs
+                curse_of_elements: false,
+                curse_of_shadow: false,
+                judgement_of_wisdom: false,
+
+                // World buffs
                 rising_spirit: false,
                 songflower: false,
                 rallying_cry: false,
@@ -1713,10 +1737,6 @@
                 boon_blackfathom: false,
                 ashenvale_cry: false,
                 dmf_dmg: false,
-
-                // Debuffs
-                curse_of_elements: false,
-                curse_of_shadow: false,
 
                 // Consumes
                 arcane_scroll_accuracy: false,
@@ -1729,6 +1749,7 @@
                 elixir_greater_arcane: false,
                 weapon_oil: 0,
                 flask: 0,
+                potion: 3385,
                 food: 0,
 
                 pre_cast: false,
@@ -3730,6 +3751,17 @@
                 var to = parseInt(e.target.value);
                 var d = this.config.target_level - from;
                 this.config.target_level = to + d;
+
+                if (this.config.potion) {
+                    if (to >= 49)
+                        this.config.potion = this.potions.POTION_MAJOR_MANA;
+                    else if (to >= 41)
+                        this.config.potion = this.potions.POTION_SUPERIOR_MANA;
+                    else if (to >= 31)
+                        this.config.potion = this.potions.POTION_GREATER_MANA;
+                    else
+                        this.config.potion = this.potions.POTION_LESSER_MANA;
+                }
 
                 this.$nextTick(() => {
                     if (to < from) {

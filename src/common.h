@@ -44,11 +44,6 @@ enum School : int
     SCHOOL_HOLY,
 };
 
-enum Enchant : int
-{
-    ENCHANT_NONE = 0,
-};
-
 enum Trinket : int
 {
     TRINKET_NONE = 0,
@@ -65,6 +60,16 @@ enum Trinket : int
     TRINKET_BURST_OF_KNOWLEDGE = 11832,
     TRINKET_FIRE_RUBY = 20036,
     TRINKET_RECOMBO = 4381,
+};
+
+enum Potion : int
+{
+    POTION_NONE = 0,
+    POTION_LESSER_MANA = 3385,
+    POTION_MANA = 3327,
+    POTION_GREATER_MANA = 6149,
+    POTION_SUPERIOR_MANA = 13443,
+    POTION_MAJOR_MANA = 13444,
 };
 
 enum EventType : int

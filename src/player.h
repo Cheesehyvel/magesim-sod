@@ -118,6 +118,10 @@ public:
 
     bool shouldUseManaGem(const State& state);
 
+    bool hasManaPotion() const;
+
+    double manaPotionMax() const;
+
     bool shouldUseManaPotion(const State& state);
 
     bool shouldEvocate(const State& state);
