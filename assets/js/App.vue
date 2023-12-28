@@ -427,7 +427,7 @@
                                                 </td>
                                                 <td>{{ $get(item, "ilvl", "") }}</td>
                                                 <td>{{ $get(item, "phase", 1) }}</td>
-                                                <td>{{ formatSP(item) }}</td>
+                                                <td><spell-power :item="item" /></td>
                                                 <td>{{ $get(item, "crit", "") }}</td>
                                                 <td>{{ $get(item, "hit", "") }}</td>
                                                 <td>{{ $get(item, "int", "") }}</td>
@@ -994,6 +994,18 @@
                                         <help>10% of the Warlocks spell power or level/2.</help>
                                     </label>
                                     <input type="text" v-model.number="config.demonic_pact_bonus">
+                                </div>
+                                <div class="form-item" v-if="lvl >= 60">
+                                    <label><input type="checkbox" v-model="config.atiesh_mage">
+                                        <span>Mage Atiesh Aura</span>
+                                        <help>Another mage in your group with Atiesh</help>
+                                    </label>
+                                </div>
+                                <div class="form-item" v-if="lvl >= 60">
+                                    <label><input type="checkbox" v-model="config.atiesh_warlock">
+                                        <span>Warlock Atiesh Aura</span>
+                                        <help>A warlock in your group with Atiesh</help>
+                                    </label>
                                 </div>
                                 <div class="form-item" v-if="faction == 'horde' && !divineSpirit">
                                     <label><input type="checkbox" v-model="config.rising_spirit">
@@ -1722,6 +1734,8 @@
                 imp_blessing_of_wisdom: false,
                 demonic_pact: false,
                 demonic_pact_bonus: 0,
+                atiesh_mage: false,
+                atiesh_warlock: false,
 
                 // Debuffs
                 curse_of_elements: false,
@@ -1760,6 +1774,7 @@
                 set_aq40_5p: false,
                 set_zg_5p: false,
                 item_robe_archmage: false,
+                item_celestial_orb: false,
 
                 trinket1: 0,
                 trinket2: 0,
@@ -3278,6 +3293,7 @@
                 this.config.set_zg_5p = num > 4;
 
                 this.config.item_robe_archmage = this.isEquipped("chest", this.items.ids.ROBE_ARCHMAGE);
+                this.config.item_celestial_orb = this.isEquipped("off_hand", this.items.ids.CELESTIAL_ORB);
             },
 
             simStats() {
@@ -3383,6 +3399,12 @@
                         x = _.round(x*1.2);
                     stats.mp5+= x;
                 }
+
+                // Special buffs
+                if (this.config.atiesh_mage && !this.isEquipped("weapon", this.items.ids.ATIESH))
+                    stats.crit+= 2;
+                if (this.config.atiesh_warlock)
+                    stats.sp+= 33;
 
                 // World buffs
                 if (this.config.rising_spirit && this.faction == "horde" && !this.divineSpirit)

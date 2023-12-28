@@ -29,6 +29,7 @@ namespace cooldown
 
         // Items
         ROBE_ARCHMAGE = 18385,
+        CELESTIAL_ORB = 9253,
     };
 
 
@@ -242,6 +243,18 @@ namespace cooldown
         {
             id = ROBE_ARCHMAGE;
             duration = 300;
+        }
+
+    };
+
+    class CelestialOrb : public Cooldown
+    {
+
+    public:
+        CelestialOrb()
+        {
+            id = CELESTIAL_ORB;
+            duration = 1800;
         }
 
     };

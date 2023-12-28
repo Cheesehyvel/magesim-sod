@@ -1053,7 +1053,15 @@ action::Action Player::useCooldown(const State& state)
         action::Action action{ action::TYPE_MANA };
         action.value = (double) random<int>(375, 625);
         action.str = "Robe of the Archmage";
-        action.cooldown = std::make_shared<cooldown::Cooldown>(cooldown::ROBE_ARCHMAGE);
+        action.cooldown = std::make_shared<cooldown::RobeArchmage>();
+        action.primary_action = true;
+        return action;
+    }
+    else if (config.item_celestial_orb && maxMana() - mana >= 1200.0 && !hasCooldown(cooldown::CELESTIAL_ORB)) {
+        action::Action action{ action::TYPE_MANA };
+        action.value = (double) random<int>(400, 1200);
+        action.str = "Celestial Orb";
+        action.cooldown = std::make_shared<cooldown::CelestialOrb>();
         action.primary_action = true;
         return action;
     }

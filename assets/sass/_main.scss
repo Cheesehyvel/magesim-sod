@@ -405,16 +405,10 @@ table {
     }
 }
 
-.gem-color {
-    &.color-m { color: #aaa; }
-    &.color-b { color: #3b9ac7; }
-    &.color-r { color: #f00; }
-    &.color-y { color: #ff0; }
-    &.color-o { color: #f80; }
-    &.color-p { color: #f0f; }
-    &.color-g { color: #0f0; }
-
-    a { color: inherit; }
+.spell-power {
+    .sp-arcane { color: #b67aff; }
+    .sp-fire { color: #ff4734; }
+    .sp-frost { color: #5f96ff; }
 }
 
 .quality {
@@ -813,23 +807,6 @@ table {
                             color: #f00;
                         }
 
-                        tr.active .socket-bonus {
-                            color: #bbe8ba;
-                        }
-
-                        .sockets {
-                            @include clearfix();
-
-                            .socket {
-                                float: left;
-                                width: 32%;
-
-                                &:nth-child(n+2) {
-                                    margin-left: 2%;
-                                }
-                            }
-                        }
-
                         span.link {
                             color: #888;
 
@@ -930,17 +907,6 @@ table {
 
                                 .paperenchant {
                                     background-image: url("https://wow.zamimg.com/images/wow/icons/large/inventoryslot_enchant.jpg");
-                                }
-
-                                .papersocket {
-                                    background-image: url("https://wow.zamimg.com/images/Icon/small/socket/background.jpg");
-                                    background-size: auto 18px;
-
-                                    &.papersocket-color-m { border-color: rgba(255,255,255,0.4); background-position: -1 0; }
-                                    &.papersocket-color-r { border-color: rgba(255,0,0,0.4); background-position: -19px 0; }
-                                    &.papersocket-color-y { border-color: rgba(255,255,0,0.4); background-position: -37px 0; }
-                                    &.papersocket-color-b { border-color: rgba(0,0,255,0.4); background-position: -55px 0; }
-                                    &.papersocket-color-a { border-color: rgba(255,255,255,0.4); background-position: -73px 0; }
                                 }
 
                                 &.head .paperitem { background-image: url("https://wow.zamimg.com/images/wow/icons/large/inventoryslot_head.jpg"); }

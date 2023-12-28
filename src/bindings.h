@@ -164,6 +164,7 @@ EMSCRIPTEN_BINDINGS(my_module)
         .property("set_aq40_5p", &Config::set_aq40_5p)
         .property("set_zg_5p", &Config::set_zg_5p)
         .property("item_robe_archmage", &Config::item_robe_archmage)
+        .property("item_celestial_orb", &Config::item_celestial_orb)
 
         .property("pre_cast", &Config::pre_cast)
 

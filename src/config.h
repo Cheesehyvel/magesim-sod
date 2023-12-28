@@ -44,6 +44,7 @@ struct Config
     bool set_aq40_5p = false;
     bool set_zg_5p = false;
     bool item_robe_archmage = false;
+    bool item_celestial_orb = false;
 
     bool pre_cast = false;
 
