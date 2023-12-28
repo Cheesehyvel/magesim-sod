@@ -169,6 +169,8 @@ public:
 
     void onWait(std::shared_ptr<unit::Unit> unit, std::shared_ptr<spell::Spell> spell = NULL, std::shared_ptr<target::Target> target = NULL);
 
+    void interrupt(std::shared_ptr<unit::Unit> unit);
+
     void onInterruption(int index);
 
     void onInterruptionEnd(int index);

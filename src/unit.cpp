@@ -415,7 +415,7 @@ double Unit::cooldownMod(const cooldown::Cooldown &cooldown) const
     return 0;
 }
 
-void Unit::interrupt(const Interruption& interruption)
+void Unit::interrupt()
 {
     is_channeling = false;
 }

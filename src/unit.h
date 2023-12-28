@@ -141,7 +141,7 @@ public:
 
     virtual double cooldownMod(const cooldown::Cooldown &cooldown) const;
 
-    virtual void interrupt(const Interruption& interruption);
+    virtual void interrupt();
 
     virtual std::vector<action::Action> onBuffGain(const State &state, std::shared_ptr<buff::Buff> buff);
 

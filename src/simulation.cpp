@@ -931,6 +931,10 @@ void Simulation::onManaGain(std::shared_ptr<unit::Unit> unit, double mana, const
 {
     unit->applyMana(state, mana);
     logManaGain(unit, mana, source);
+
+    // Evocation
+    if (unit->id == player->id && unit->hasBuff(buff::EVOCATION) && unit->manaPercent() > 90.0)
+        interrupt(unit);
 }
 
 void Simulation::onWait(std::shared_ptr<unit::Unit> unit, std::shared_ptr<spell::Spell> spell, std::shared_ptr<target::Target> target)
@@ -946,17 +950,38 @@ void Simulation::onWait(std::shared_ptr<unit::Unit> unit, std::shared_ptr<spell:
         nextAction(unit);
 }
 
+void Simulation::interrupt(std::shared_ptr<unit::Unit> unit)
+{
+    unit->interrupt();
+
+    if (unit->hasBuff(buff::EVOCATION))
+        onBuffExpire(unit, std::make_shared<buff::Evocation>());
+
+    for (auto i = queue.begin(); i != queue.end();) {
+        if ((i->type == EVENT_CAST_FINISH || i->type == EVENT_SPELL_TICK || i->type == EVENT_WAIT) && i->unit->id == unit->id)
+            i = queue.erase(i);
+        else
+            ++i;
+    }
+
+    if (state.t > 0)
+        nextAction(unit);
+}
+
 void Simulation::onInterruption(int index)
 {
     logInterruption(&config.interruptions[index]);
 
     state.activateInterruption(index);
 
-    player->interrupt(config.interruptions[index]);
+    player->interrupt();
+
+    if (player->hasBuff(buff::EVOCATION))
+        onBuffExpire(player, std::make_shared<buff::Evocation>());
 
     if (config.interruptions[index].affects_all) {
         for (auto i = state.units.begin(); i != state.units.end(); ++i)
-            (*i)->interrupt(config.interruptions[index]);
+            (*i)->interrupt();
     }
 
     for (auto i = queue.begin(); i != queue.end();) {
