@@ -55,4 +55,15 @@ struct Runes
     bool icy_veins = false;
     bool living_flame = false;
     bool mass_regeneration = false;
+
+    // Waist
+    bool hot_streak = false;
+    bool missile_barrage = false;
+    bool frostfire_bolt = false;
+    bool spellfrost_bolt = false;
+
+    // Feet
+    bool brain_freeze = false;
+    bool spell_power = false;
+    bool chronostatic_preservation = false;
 };

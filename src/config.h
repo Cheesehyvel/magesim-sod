@@ -43,6 +43,8 @@ struct Config
     bool set_t2_8p = false;
     bool set_aq40_5p = false;
     bool set_zg_5p = false;
+    bool set_hyperconductive_wizard_3p = false;
+    bool item_gneuro_linked_monocle = false;
     bool item_robe_archmage = false;
     bool item_celestial_orb = false;
 
@@ -62,6 +64,7 @@ struct Config
     int rot_ab_stacks = 3;
     double rot_ab_spam_above = 100;
     double rot_ab_stacks_dec_below = 0;
+    double rot_mb_mana = 0;
 
     std::vector<Timing> timings;
     std::vector<Interruption> interruptions;

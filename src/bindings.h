@@ -163,6 +163,8 @@ EMSCRIPTEN_BINDINGS(my_module)
         .property("set_t2_8p", &Config::set_t2_8p)
         .property("set_aq40_5p", &Config::set_aq40_5p)
         .property("set_zg_5p", &Config::set_zg_5p)
+        .property("set_hyperconductive_wizard_3p", &Config::set_hyperconductive_wizard_3p)
+        .property("item_gneuro_linked_monocle", &Config::item_gneuro_linked_monocle)
         .property("item_robe_archmage", &Config::item_robe_archmage)
         .property("item_celestial_orb", &Config::item_celestial_orb)
 
@@ -181,6 +183,7 @@ EMSCRIPTEN_BINDINGS(my_module)
         .property("rot_ab_stacks", &Config::rot_ab_stacks)
         .property("rot_ab_spam_above", &Config::rot_ab_spam_above)
         .property("rot_ab_stacks_dec_below", &Config::rot_ab_stacks_dec_below)
+        .property("rot_mb_mana", &Config::rot_mb_mana)
         ;
 
     emscripten::function("allocConfig", &allocConfig);
@@ -249,6 +252,13 @@ EMSCRIPTEN_BINDINGS(my_module)
         .field("icy_veins", &Runes::icy_veins)
         .field("living_flame", &Runes::living_flame)
         .field("mass_regeneration", &Runes::mass_regeneration)
+        .field("hot_streak", &Runes::hot_streak)
+        .field("missile_barrage", &Runes::missile_barrage)
+        .field("frostfire_bolt", &Runes::frostfire_bolt)
+        .field("spellfrost_bolt", &Runes::spellfrost_bolt)
+        .field("brain_freeze", &Runes::brain_freeze)
+        .field("spell_power", &Runes::spell_power)
+        .field("chronostatic_preservation", &Runes::chronostatic_preservation)
         ;
 
     emscripten::class_<unit::Player>("Player")

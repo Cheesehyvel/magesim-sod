@@ -21,9 +21,11 @@ enum ID : int
     CLEARCAST = 12536,
     MANA_TIDE = 39609,
     BERSERKING = 20554,
-    BRAIN_FREEZE = 57761,
-    FINGERS_OF_FROST = 44544,
+    HOT_STREAK = 400624,
+    FINGERS_OF_FROST = 400647,
     GHOST_FINGERS = 4454411,
+    MISSILE_BARRAGE = 400588,
+    BRAIN_FREEZE = 400731,
     TEMPORAL_BEACON = 400735,
     TEMPORAL_BEACON_PARTY = 4007350, // Fake id
     TANGLED_CAUSALITY = 432069,
@@ -41,6 +43,8 @@ enum ID : int
 
     NETHERWIND_FOCUS = 22007,
     ENIGMAS_ANSWER = 26129,
+    ENERGIZED_HYPERCONDUCTOR = 435978,
+    CHARGED_INSPIRATION = 437327,
 };
 
 
@@ -158,6 +162,13 @@ public:
     Berserking();
 };
 
+class HotStreak : public Buff
+{
+
+public:
+    HotStreak();
+};
+
 class FingersOfFrost : public Buff
 {
 
@@ -170,6 +181,20 @@ class GhostFingers : public Buff
 
 public:
     GhostFingers();
+};
+
+class MissileBarrage : public Buff
+{
+
+public:
+    MissileBarrage();
+};
+
+class BrainFreeze : public Buff
+{
+
+public:
+    BrainFreeze();
 };
 
 class TemporalBeacon : public Buff
@@ -275,6 +300,20 @@ class EnigmasAnswer : public Buff
 
 public:
     EnigmasAnswer();
+};
+
+class EnergizedHyperconductor : public Buff
+{
+
+public:
+    EnergizedHyperconductor();
+};
+
+class ChargedInspiration : public Buff
+{
+
+public:
+    ChargedInspiration();
 };
 
 }

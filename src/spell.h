@@ -23,6 +23,10 @@ namespace spell
         FLAMESTRIKE_DR_DOT = 212000, // Fake id
         FIREBALL = 8400,
         FIREBALL_DOT = 840000, // fake id
+        FROSTFIRE_BOLT = 401502,
+        FROSTFIRE_BOLT_DOT = 4015020, // fake id
+        SPELLFROST_BOLT = 415734,
+        SCORCH = 2948,
         FIRE_BLAST = 2138,
         FROSTBOLT = 7322,
         ICE_LANCE = 400640,
@@ -37,7 +41,6 @@ namespace spell
         REGENERATION = 401417,
         REWIND_TIME = 401462,
         TEMPORAL_BEACON = 400735,
-        SCORCH = 2948,
     };
 
     enum Result : int
@@ -333,6 +336,48 @@ namespace spell
             else if (lvl >= 36) {
                 min_dmg = max_dmg = 8;
             }
+        }
+    };
+
+    struct FrostfireBolt : Spell
+    {
+        FrostfireBolt(int lvl) : Spell(FROSTFIRE_BOLT, "Frostfire Bolt", SCHOOL_FROSTFIRE)
+        {
+            cost = 14;
+            cost_base_mana = true;
+            min_dmg = 258 * runeScale(lvl);
+            max_dmg = 300 * runeScale(lvl);
+            cast_time = 3;
+            coeff = 3/3.5;
+            speed = 28;
+        }
+    };
+
+    struct FrostfireBoltDot : Spell
+    {
+        FrostfireBoltDot(int lvl) : Spell(FROSTFIRE_BOLT_DOT, "Frostfire Bolt", SCHOOL_FROSTFIRE)
+        {
+            dot = true;
+            active_use = false;
+            can_proc = false;
+            t_interval = 3;
+            ticks = 3;
+            coeff = 0;
+            min_dmg = max_dmg = 8 * runeScale(lvl);
+        }
+    };
+
+    struct SpellfrostBolt : Spell
+    {
+        SpellfrostBolt(int lvl) : Spell(SPELLFROST_BOLT, "SpellfrostBolt", SCHOOL_SPELLFROST)
+        {
+            cost = 12;
+            cost_base_mana = true;
+            min_dmg = 203 * runeScale(lvl);
+            max_dmg = 237 * runeScale(lvl);
+            cast_time = 3;
+            coeff = 2.5/3.5;
+            speed = 28;
         }
     };
 

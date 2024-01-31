@@ -6,6 +6,10 @@ bool isSchool(School var, School cmp)
 {
     if ((cmp == SCHOOL_ARCANE || cmp == SCHOOL_FIRE) && var == SCHOOL_SPELLFIRE)
         return true;
+    if ((cmp == SCHOOL_FROST || cmp == SCHOOL_FIRE) && var == SCHOOL_FROSTFIRE)
+        return true;
+    if ((cmp == SCHOOL_FROST || cmp == SCHOOL_ARCANE) && var == SCHOOL_SPELLFROST)
+        return true;
     return var == cmp;
 }
 

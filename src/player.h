@@ -23,6 +23,9 @@ public:
 
     int combustion;
     int fingers_of_frost;
+    bool heating_up;
+    int hotstreak_crits;
+    int hotstreak_hits;
     double t_flamestrike;
     double t_flamestrike_dr;
     double t_scorch;

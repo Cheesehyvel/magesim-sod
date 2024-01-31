@@ -26,8 +26,10 @@ namespace cooldown
         POWER_INFUSION = 10060,
         MANA_GEM = 42987,
         LIVING_FLAME = 401558,
+        BRAIN_FREEZE = 400731,
 
         // Items
+        CHARGED_INSPIRATION = 437327,
         ROBE_ARCHMAGE = 18385,
         CELESTIAL_ORB = 9253,
     };
@@ -211,6 +213,18 @@ namespace cooldown
 
     };
 
+    class BrainFreeze : public Cooldown
+    {
+
+    public:
+        BrainFreeze()
+        {
+            id = BRAIN_FREEZE;
+            duration = 2;
+        }
+
+    };
+
     class PowerInfusion : public Cooldown
     {
 
@@ -231,6 +245,18 @@ namespace cooldown
         {
             id = MANA_GEM;
             duration = 120;
+        }
+
+    };
+
+    class ChargedInspiration : public Cooldown
+    {
+
+    public:
+        ChargedInspiration()
+        {
+            id = CHARGED_INSPIRATION;
+            duration = 600;
         }
 
     };

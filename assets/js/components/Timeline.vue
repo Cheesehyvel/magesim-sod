@@ -64,6 +64,8 @@
                     { title: "Arcane Surge", color: "#8210bc" },
                     { title: "Combustion", color: "#f84" },
                     { title: "Power Infusion", color: "#dd0" },
+                    { title: "Energized Hyperconductor", color: "#66f" },
+                    { title: "Charged Inspiration", color: "#f66" },
                 ],
                 trinkets: [
                     { title: "Essence of Sapphiron", color: "#fe9" },

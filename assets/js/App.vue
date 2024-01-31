@@ -883,6 +883,13 @@
                                         </label>
                                         <input type="text" v-model.number="config.rot_ab_stacks_dec_below">
                                     </div>
+                                    <div class="form-item" v-if="config.runes.missile_barrage">
+                                        <label>
+                                            <span>Use Missile Barrage ASAP below mana %</span>
+                                            <help>This can be useful to conserve mana</help>
+                                        </label>
+                                        <input type="text" v-model.number="config.rot_mb_mana">
+                                    </div>
                                 </template>
                                 <template v-if="config.rotation == rotations.ROTATION_ST_FROST">
                                     <div class="form-item" v-if="config.runes.ice_lance && config.runes.fingers_of_frost">
@@ -1210,7 +1217,7 @@
                                             <template v-for="timing in timings">
                                                 <div v-if="timingEnabled(timing.name)" @click="addTiming(timing.name)">
                                                     <img :src="timing.icon">
-                                                    <tooltip>{{ timing.title }}</tooltip>
+                                                    <tooltip position="l">{{ timing.title }}</tooltip>
                                                 </div>
                                             </template>
                                         </div>
@@ -1338,12 +1345,6 @@
                 <div class="inner">
                     <div class="title">BETA</div>
                     <div class="text">This sim is under construction. Results may not be accurate as we discover more things in the SoD.</div>
-                    <div class="text left mt-2">
-                        <ul>
-                            <li>Rotations are very basic and not optimized</li>
-                            <li>Imports might be buggy</li>
-                        </ul>
-                    </div>
                     <div class="btn mt-2" @click="closeBetaWarning(true)">I understand</div>
                 </div>
             </div>
@@ -1773,6 +1774,8 @@
                 set_t2_8p: false,
                 set_aq40_5p: false,
                 set_zg_5p: false,
+                set_hyperconductive_wizard_3p: false,
+                item_gneuro_linked_monocle: false,
                 item_robe_archmage: false,
                 item_celestial_orb: false,
 
@@ -1787,6 +1790,7 @@
                 rot_ab_stacks: 3,
                 rot_ab_spam_above: 100,
                 rot_ab_stacks_dec_below: 0,
+                rot_mb_mana: 0,
 
                 timings: Array(),
                 interruptions: Array(),
@@ -1857,18 +1861,28 @@
                 },
 
                 runes: {
+                    // Chest
                     burnout: false,
                     enlightenment: false,
                     fingers_of_frost: false,
                     regeneration: false,
+                    // Hands
                     arcane_blast: false,
                     ice_lance: false,
                     living_bomb: false,
                     rewind_time: false,
+                    // Legs
                     arcane_surge: false,
                     icy_veins: false,
                     living_flame: false,
                     mass_regeneration: false,
+                    // Waist
+                    frostfire_bolt: false,
+                    missile_barrage: false,
+                    // Feet
+                    brain_freeze: false,
+                    spell_power: false,
+                    chronostatic_preservation: false,
                 },
 
                 tooltips: false,
@@ -2337,6 +2351,11 @@
                     title: "Cold Snap",
                     icon: "https://www.wowhead.com/images/wow/icons/large/spell_frost_wizardmark.jpg",
                 });
+                timings.push({
+                    name: "gneuro_linked_monocle",
+                    title: "Gneuro-Linked Arcano-Filament Monocle",
+                    icon: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_enggizmos_27.jpg",
+                });
 
                 var trinkets = [];
 
@@ -2595,6 +2614,8 @@
                     return this.config.runes.icy_veins > 0;
                 if (name == "cold_snap")
                     return this.config.talents.cold_snap > 0;
+                if (name == "gneuro_linked_monocle")
+                    return this.equipped.head == this.items.ids.GNEURO_LINKED_MONOCLE;
                 if (name == "trinket1")
                     return this.equipped.trinket1 && _.get(this.equippedItem("trinket1"), "use");
                 if (name == "trinket2")
@@ -3292,6 +3313,10 @@
                 num = this.numEquippedSet(this.items.ids.SET_ZG);
                 this.config.set_zg_5p = num > 4;
 
+                num = this.numEquippedSet(this.items.ids.SET_HYPERCONDUCTIVE_WIZARD);
+                this.config.set_hyperconductive_wizard_3p = num > 2;
+
+                this.config.item_gneuro_linked_monocle = this.isEquipped("head", this.items.ids.GNEURO_LINKED_MONOCLE);
                 this.config.item_robe_archmage = this.isEquipped("chest", this.items.ids.ROBE_ARCHMAGE);
                 this.config.item_celestial_orb = this.isEquipped("off_hand", this.items.ids.CELESTIAL_ORB);
             },
@@ -3880,8 +3905,16 @@
                         rune = _.find(runes, {id: id});
                         if (rune) {
                             key = rune.name.replace(/ /g, "_").toLowerCase();
-                            if (this.config.runes.hasOwnProperty(key))
+                            if (this.config.runes.hasOwnProperty(key)) {
                                 this.config.runes[key] = true;
+                                console.log("Equipped rune: "+key);
+                            }
+                            else {
+                                console.log("Rune "+i+" could not be found");
+                            }
+                        }
+                        else {
+                            console.log("Rune "+i+" could not be found");
                         }
                     }
                 }

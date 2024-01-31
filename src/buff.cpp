@@ -126,6 +126,13 @@ Berserking::Berserking()
     duration = 10;
 }
 
+HotStreak::HotStreak()
+{
+    id = HOT_STREAK;
+    name = "Hot Streak";
+    duration = 10;
+}
+
 FingersOfFrost::FingersOfFrost()
 {
     id = FINGERS_OF_FROST;
@@ -139,6 +146,20 @@ GhostFingers::GhostFingers()
     name = "Fingers of Frost (Ghost proc)";
     duration = 0.01;
     hidden = true;
+}
+
+MissileBarrage::MissileBarrage()
+{
+    id = MISSILE_BARRAGE;
+    name = "Missile Barrage";
+    duration = 15;
+}
+
+BrainFreeze::BrainFreeze()
+{
+    id = BRAIN_FREEZE;
+    name = "Brain Freeze";
+    duration = 15;
 }
 
 TemporalBeacon::TemporalBeacon()
@@ -256,6 +277,21 @@ EnigmasAnswer::EnigmasAnswer()
     duration = 20;
     max_stacks = 4;
     stats.hit = 5;
+}
+
+EnergizedHyperconductor::EnergizedHyperconductor()
+{
+    id = ENERGIZED_HYPERCONDUCTOR;
+    name = "Energized Hyperconductor";
+    duration = 10;
+    stats.sp = 40;
+}
+
+ChargedInspiration::ChargedInspiration()
+{
+    id = CHARGED_INSPIRATION;
+    name = "Charged Inspiration";
+    duration = 12;
 }
 
 }
