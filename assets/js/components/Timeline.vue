@@ -66,6 +66,8 @@
                     { title: "Power Infusion", color: "#dd0" },
                     { title: "Energized Hyperconductor", color: "#66f" },
                     { title: "Charged Inspiration", color: "#f66" },
+                    { title: "Coin Flip: Heads", color: "#aaa" },
+                    { title: "Coin Flip: Tails", color: "#aaa" },
                 ],
                 trinkets: [
                     { title: "Essence of Sapphiron", color: "#fe9" },

@@ -44,6 +44,7 @@ var ids = {
 
     // Other items
     GNEURO_LINKED_MONOCLE: 215111,
+    HYPERCONDUCTIVE_GOLDWRAP: 215115,
     ATIESH: 22589,
     ROBE_ARCHMAGE: 14152,
     CELESTIAL_ORB: 7515,
@@ -843,6 +844,7 @@ var equip = {
         { id: 14454, title: "Highborne Cord", ilvl: 53, int: 12, q: "uncommon", phase: 3 },
         { id: 14143, title: "Ghostweave Belt", ilvl: 53, int: 8, mp5: 6, q: "uncommon", phase: 3 },
 
+        { id: ids.HYPERCONDUCTIVE_GOLDWRAP, title: "Hyperconductive Goldwrap", ilvl: 45, crit: 1, hit: 1, phase: 2 },
         { id: 213321, title: "Volatile Concoction Belt", ilvl: 45, sp: 12, hit: 1, q: "rare", phase: 2 },
         { id: 213414, title: "Mech-Mender's Sash", ilvl: 45, int: 6, spi: 6, mp5: 4, q: "rare", phase: 2 },
         { id: 4117, title: "Scorching Sash", ilvl: 44, spi: 9, sp_fire: 13, q: "uncommon", phase: 2 },

@@ -294,4 +294,19 @@ ChargedInspiration::ChargedInspiration()
     duration = 12;
 }
 
+CoinFlipHeads::CoinFlipHeads()
+{
+    id = COIN_FLIP_HEADS;
+    name = "Coin Flip: Heads";
+    duration = 30;
+    stats.crit = 3;
+}
+
+CoinFlipTails::CoinFlipTails()
+{
+    id = COIN_FLIP_TAILS;
+    name = "Coin Flip: Tails";
+    duration = 30;
+}
+
 }

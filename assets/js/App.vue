@@ -1783,6 +1783,7 @@
                 set_zg_5p: false,
                 set_hyperconductive_wizard_3p: false,
                 item_gneuro_linked_monocle: false,
+                item_hyperconductive_goldwrap: false,
                 item_robe_archmage: false,
                 item_celestial_orb: false,
 
@@ -2362,6 +2363,11 @@
                     title: "Gneuro-Linked Arcano-Filament Monocle",
                     icon: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_enggizmos_27.jpg",
                 });
+                timings.push({
+                    name: "hyperconductive_goldwrap",
+                    title: "HHyperconductive Goldwrap",
+                    icon: "https://wow.zamimg.com/images/wow/icons/large/inv_belt_32.jpg",
+                });
 
                 var trinkets = [];
 
@@ -2622,6 +2628,8 @@
                     return this.config.talents.cold_snap > 0;
                 if (name == "gneuro_linked_monocle")
                     return this.equipped.head == this.items.ids.GNEURO_LINKED_MONOCLE;
+                if (name == "hyperconductive_goldwrap")
+                    return this.equipped.waist == this.items.ids.HYPERCONDUCTIVE_GOLDWRAP;
                 if (name == "trinket1")
                     return this.equipped.trinket1 && _.get(this.equippedItem("trinket1"), "use");
                 if (name == "trinket2")
@@ -3323,6 +3331,7 @@
                 this.config.set_hyperconductive_wizard_3p = num > 2;
 
                 this.config.item_gneuro_linked_monocle = this.isEquipped("head", this.items.ids.GNEURO_LINKED_MONOCLE);
+                this.config.item_hyperconductive_goldwrap = this.isEquipped("waist", this.items.ids.HYPERCONDUCTIVE_GOLDWRAP);
                 this.config.item_robe_archmage = this.isEquipped("chest", this.items.ids.ROBE_ARCHMAGE);
                 this.config.item_celestial_orb = this.isEquipped("off_hand", this.items.ids.CELESTIAL_ORB);
             },

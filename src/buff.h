@@ -45,6 +45,8 @@ enum ID : int
     ENIGMAS_ANSWER = 26129,
     ENERGIZED_HYPERCONDUCTOR = 435978,
     CHARGED_INSPIRATION = 437327,
+    COIN_FLIP_HEADS = 437698,
+    COIN_FLIP_TAILS = 437699,
 };
 
 
@@ -314,6 +316,20 @@ class ChargedInspiration : public Buff
 
 public:
     ChargedInspiration();
+};
+
+class CoinFlipHeads : public Buff
+{
+
+public:
+    CoinFlipHeads();
+};
+
+class CoinFlipTails : public Buff
+{
+
+public:
+    CoinFlipTails();
 };
 
 }

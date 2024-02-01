@@ -1103,6 +1103,12 @@ action::Action Player::useCooldown(const State& state)
     else if (config.item_gneuro_linked_monocle && !hasCooldown(cooldown::CHARGED_INSPIRATION) && useTimingIfPossible("gneuro_linked_monocle", state)) {
         return buffCooldownAction<buff::ChargedInspiration, cooldown::ChargedInspiration>(true);
     }
+    else if (config.item_hyperconductive_goldwrap && !hasCooldown(cooldown::COIN_FLIP) && useTimingIfPossible("hyperconductive_goldwrap", state)) {
+        if (random<int>(0, 1) == 0)
+            return buffCooldownAction<buff::CoinFlipHeads, cooldown::CoinFlip>(true);
+        else
+            return buffCooldownAction<buff::CoinFlipTails, cooldown::CoinFlip>(true);
+    }
     else if (!hasCooldown(cooldown::POTION) && useTimingIfPossible("potion", state, true)) {
         action::Action action { action::TYPE_POTION };
         action.primary_action = true;

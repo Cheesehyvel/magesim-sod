@@ -30,6 +30,7 @@ namespace cooldown
 
         // Items
         CHARGED_INSPIRATION = 437327,
+        COIN_FLIP = 437368,
         ROBE_ARCHMAGE = 18385,
         CELESTIAL_ORB = 9253,
     };
@@ -257,6 +258,18 @@ namespace cooldown
         {
             id = CHARGED_INSPIRATION;
             duration = 600;
+        }
+
+    };
+
+    class CoinFlip : public Cooldown
+    {
+
+    public:
+        CoinFlip()
+        {
+            id = COIN_FLIP;
+            duration = 900;
         }
 
     };
