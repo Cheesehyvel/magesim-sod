@@ -114,6 +114,7 @@ EMSCRIPTEN_BINDINGS(my_module)
         .value("POTION_GREATER_MANA", POTION_GREATER_MANA)
         .value("POTION_SUPERIOR_MANA", POTION_SUPERIOR_MANA)
         .value("POTION_MAJOR_MANA", POTION_MAJOR_MANA)
+        .value("POTION_MILDY_IRRATIATED", POTION_MILDY_IRRATIATED)
         ;
 
     emscripten::enum_<LogType>("LogType")

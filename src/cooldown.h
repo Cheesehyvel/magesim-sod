@@ -62,7 +62,7 @@ namespace cooldown
     {
 
     public:
-        Potion(double _duration = 60)
+        Potion(double _duration = 120)
         {
             id = POTION;
             duration = _duration;

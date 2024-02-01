@@ -47,6 +47,7 @@ enum ID : int
     CHARGED_INSPIRATION = 437327,
     COIN_FLIP_HEADS = 437698,
     COIN_FLIP_TAILS = 437699,
+    MILDLY_IRRADIATED = 435973,
 };
 
 
@@ -330,6 +331,13 @@ class CoinFlipTails : public Buff
 
 public:
     CoinFlipTails();
+};
+
+class MildlyIrradiated : public Buff
+{
+
+public:
+    MildlyIrradiated();
 };
 
 }

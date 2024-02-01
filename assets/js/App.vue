@@ -1083,6 +1083,7 @@
                                     <label>Potion</label>
                                     <select v-model="config.potion">
                                         <option :value="potions.POTION_NONE">None</option>
+                                        <option :value="potions.POTION_MILDY_IRRATIATED" v-if="lvl >= 35">Mildly Irradiated Rejuvenation Potion</option>
                                         <option :value="potions.POTION_MAJOR_MANA" v-if="lvl >= 49">Major Mana Potion</option>
                                         <option :value="potions.POTION_SUPERIOR_MANA" v-if="lvl >= 41">Superior Mana Potion</option>
                                         <option :value="potions.POTION_GREATER_MANA" v-if="lvl >= 31">Greater Mana Potion</option>
@@ -2365,9 +2366,17 @@
                 });
                 timings.push({
                     name: "hyperconductive_goldwrap",
-                    title: "HHyperconductive Goldwrap",
+                    title: "Hyperconductive Goldwrap",
                     icon: "https://wow.zamimg.com/images/wow/icons/large/inv_belt_32.jpg",
                 });
+
+                if (this.config.potion == constants.potions.POTION_MILDY_IRRATIATED) {
+                    timings.push({
+                        name: "potion",
+                        title: "Mildly Irradiated Rejuvenation Potion",
+                        icon: "https://wow.zamimg.com/images/wow/icons/large/inv_alchemy_elixir_03.jpg",
+                    });
+                }
 
                 var trinkets = [];
 
@@ -2634,6 +2643,8 @@
                     return this.equipped.trinket1 && _.get(this.equippedItem("trinket1"), "use");
                 if (name == "trinket2")
                     return this.equipped.trinket2 && _.get(this.equippedItem("trinket2"), "use");
+                if (name == "potion")
+                    return this.config.potion == constants.potions.POTION_MILDY_IRRATIATED;
 
                 return false;
             },
@@ -3837,14 +3848,20 @@
                 this.config.target_level = to + d;
 
                 if (this.config.potion) {
-                    if (to >= 49)
-                        this.config.potion = this.potions.POTION_MAJOR_MANA;
-                    else if (to >= 41)
-                        this.config.potion = this.potions.POTION_SUPERIOR_MANA;
-                    else if (to >= 31)
-                        this.config.potion = this.potions.POTION_GREATER_MANA;
-                    else
-                        this.config.potion = this.potions.POTION_LESSER_MANA;
+                    if (this.config.potion == this.potions.POTION_MILDY_IRRATIATED) {
+                        if (this.to < 31)
+                            this.config.potion = this.potions.POTION_LESSER_MANA;
+                    }
+                    else {
+                        if (to >= 49)
+                            this.config.potion = this.potions.POTION_MAJOR_MANA;
+                        else if (to >= 41)
+                            this.config.potion = this.potions.POTION_SUPERIOR_MANA;
+                        else if (to >= 31)
+                            this.config.potion = this.potions.POTION_GREATER_MANA;
+                        else
+                            this.config.potion = this.potions.POTION_LESSER_MANA;
+                    }
                 }
 
                 this.$nextTick(() => {

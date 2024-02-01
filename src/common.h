@@ -72,6 +72,7 @@ enum Potion : int
     POTION_GREATER_MANA = 6149,
     POTION_SUPERIOR_MANA = 13443,
     POTION_MAJOR_MANA = 13444,
+    POTION_MILDY_IRRATIATED = 215162,
 };
 
 enum EventType : int

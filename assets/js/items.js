@@ -1181,6 +1181,7 @@ var equip = {
 var enchants = {
     weapon: [
         { id: 22749, enchantmentId: 2504, title: "Spell Power", sp: 30, phase: 3 },
+        { id: 435481, enchantmentId: 7210, title: "Dismantle", sp: 25, phase: 2 },
         { id: 21931, enchantmentId: 2443, title: "Winter's Might", sp_frost: 7, phase: 2 },
         { id: 23804, enchantmentId: 2568, title: "Mighty Intellect", int: 22, phase: 3 },
         { id: 20036, enchantmentId: 1904, title: "Major Intellect", int: 9, twohand: true, phase: 3 },

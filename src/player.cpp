@@ -766,7 +766,9 @@ bool Player::shouldUseManaGem(const State& state)
 
 bool Player::hasManaPotion() const
 {
-    // All pots are mana pots atm
+    if (config.potion == POTION_MILDY_IRRATIATED)
+        return false;
+
     return config.potion != POTION_NONE;
 }
 
@@ -899,6 +901,18 @@ std::vector<action::Action> Player::usePotion()
         mana = round(mana);
 
         actions.push_back(manaAction(mana, "Mana Potion"));
+        actions.push_back(cooldownAction<cooldown::Potion>(120));
+    }
+    else if (config.potion == POTION_MILDY_IRRATIATED) {
+        double mana = random<double>(262, 438);
+
+        if (hasTrinket(TRINKET_ALCHEMIST_STONE))
+            mana *= 1.33;
+
+        mana = round(mana);
+
+        actions.push_back(manaAction(mana, "Mana Potion"));
+        actions.push_back(buffAction<buff::MildlyIrradiated>());
         actions.push_back(cooldownAction<cooldown::Potion>(120));
     }
 
@@ -1109,7 +1123,12 @@ action::Action Player::useCooldown(const State& state)
         else
             return buffCooldownAction<buff::CoinFlipTails, cooldown::CoinFlip>(true);
     }
-    else if (!hasCooldown(cooldown::POTION) && useTimingIfPossible("potion", state, true)) {
+    else if (config.potion != POTION_NONE && !hasCooldown(cooldown::POTION) && !hasManaPotion() && useTimingIfPossible("potion", state)) {
+        action::Action action { action::TYPE_POTION };
+        action.primary_action = true;
+        return action;
+    }
+    else if (!hasCooldown(cooldown::POTION) && hasManaPotion() && useTimingIfPossible("potion", state, true)) {
         action::Action action { action::TYPE_POTION };
         action.primary_action = true;
         return action;

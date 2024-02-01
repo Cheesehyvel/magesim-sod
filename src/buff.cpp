@@ -309,4 +309,12 @@ CoinFlipTails::CoinFlipTails()
     duration = 30;
 }
 
+MildlyIrradiated::MildlyIrradiated()
+{
+    id = MILDLY_IRRADIATED;
+    name = "Mildly Irradiated";
+    duration = 15;
+    stats.sp = 35;
+}
+
 }

@@ -39,6 +39,7 @@ export default {
         POTION_GREATER_MANA: 6149,
         POTION_SUPERIOR_MANA: 13443,
         POTION_MAJOR_MANA: 13444,
+        POTION_MILDY_IRRATIATED: 215162,
     },
     weapon_oils: {
         OIL_NONE: 0,

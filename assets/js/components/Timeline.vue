@@ -68,6 +68,7 @@
                     { title: "Charged Inspiration", color: "#f66" },
                     { title: "Coin Flip: Heads", color: "#aaa" },
                     { title: "Coin Flip: Tails", color: "#aaa" },
+                    { title: "Mildly Irradiated", color: "#6f6" },
                 ],
                 trinkets: [
                     { title: "Essence of Sapphiron", color: "#fe9" },
