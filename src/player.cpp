@@ -1280,6 +1280,11 @@ action::Action Player::nextAction(const State& state)
                     return spellAction<spell::LivingFlame>(config.distance);
             }
 
+            if (config.maintain_imp_scorch && talents.imp_scorch) {
+                if (std::fmod(state.timeRemain(), 60.0) > 21.0 && target->debuffStacks(debuff::IMPROVED_SCORCH) < 5)
+                    return spellAction<spell::Scorch>(target);
+            }
+
             return spellAction<spell::LivingFlame>(config.distance);
         }
 
@@ -1364,7 +1369,7 @@ action::Action Player::nextAction(const State& state)
     else if (config.rotation == ROTATION_ST_ARCANE) {
         auto ab = std::make_shared<spell::ArcaneBlast>(config.player_level);
         int ab_stacks = 0;
-        
+
         if (runes.arcane_blast) {
             ab_stacks = config.rot_ab_stacks;
             if (config.rot_ab_stacks_dec_below >= manaPercent())
