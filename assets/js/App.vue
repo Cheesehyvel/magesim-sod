@@ -1045,6 +1045,12 @@
                                     </label>
                                 </div>
                                 <div class="form-item">
+                                    <label><input type="checkbox" v-model="config.spark_of_inspiration">
+                                        <span>Spark of Inspiration</span>
+                                        <help>4% crit + 42 sp</help>
+                                    </label>
+                                </div>
+                                <div class="form-item">
                                     <label><input type="checkbox" v-model="config.boon_blackfathom">
                                         <span>Boon of Blackfathom</span>
                                         <help>3% hit + 25 sp</help>
@@ -1749,6 +1755,7 @@
                 rallying_cry: false,
                 spirit_of_zandalar: false,
                 warchiefs_blessing: false,
+                spark_of_inspiration: false,
                 boon_blackfathom: false,
                 ashenvale_cry: false,
                 dmf_dmg: false,
@@ -3441,6 +3448,10 @@
                 }
                 if (this.config.rallying_cry && this.lvl >= 60)
                     stats.crit+= 10;
+                if (this.config.spark_of_inspiration) {
+                    stats.crit+= 4;
+                    stats.sp+= 42;
+                }
                 if (this.config.boon_blackfathom) {
                     stats.hit+= 3;
                     stats.sp+= 25;
