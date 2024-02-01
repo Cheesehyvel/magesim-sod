@@ -1082,9 +1082,7 @@ action::Action Player::useCooldown(const State& state)
     }
 
     if (talents.arcane_power && !hasCooldown(cooldown::ARCANE_POWER) && useTimingIfPossible("arcane_power", state)) {
-        auto action = buffAction<buff::ArcanePower>();
-        action.cooldown = std::make_shared<cooldown::ArcanePower>();
-        return action;
+        return buffCooldownAction<buff::ArcanePower, cooldown::ArcanePower>(true);
     }
     else if (talents.combustion && !hasCooldown(cooldown::COMBUSTION) && !hasBuff(buff::COMBUSTION) && useTimingIfPossible("combustion", state)) {
         combustion = 0;

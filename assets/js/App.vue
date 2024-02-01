@@ -2031,11 +2031,10 @@
             data.talent_map[0][5] = "clearcast";
             data.talent_map[0][7] = "imp_arcane_explosion";
             data.talent_map[0][11] = "arcane_meditation";
-            data.talent_map[0][13] = "torment_of_the_weak";
-            data.talent_map[0][14] = "presence_of_mind";
-            data.talent_map[0][15] = "arcane_mind";
-            data.talent_map[0][16] = "arcane_instability";
-            data.talent_map[0][17] = "arcane_power";
+            data.talent_map[0][12] = "presence_of_mind";
+            data.talent_map[0][13] = "arcane_mind";
+            data.talent_map[0][14] = "arcane_instability";
+            data.talent_map[0][15] = "arcane_power";
 
             data.talent_map[1][0] = "imp_fireball";
             data.talent_map[1][2] = "ignite";
@@ -3907,6 +3906,8 @@
                         talent++;
                     }
                 }
+
+                console.log(this.config.talents);
 
                 if (has_runes) {
                     var g = arr[1];
