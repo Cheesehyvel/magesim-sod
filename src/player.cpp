@@ -1281,6 +1281,11 @@ action::Action Player::nextAction(const State& state)
         auto pyroblast = std::make_shared<spell::Pyroblast>(config.player_level);
         bool pyro_will_land = travelTime(pyroblast) <= state.duration - state.t;
 
+        if (config.maintain_imp_scorch && talents.imp_scorch) {
+            if (target->debuffStacks(debuff::IMPROVED_SCORCH) < 5 || state.t - t_scorch >= 15.0 + talents.imp_scorch * 4.0)
+                return spellAction<spell::Scorch>(target);
+        }
+
         // Pyroblast - first check
         if (hot_streak && pyro_will_land && (multi_target || heating_up)) {
             if (multi_target && !config.only_main_dmg) {
@@ -1334,11 +1339,6 @@ action::Action Player::nextAction(const State& state)
             if (state.duration - state.t < castTime(main_spell) + travelTime(main_spell) || target->t_living_bomb + 12.0 < state.t + Unit::gcd()) {
                 return spellAction(pyroblast, target);
             }
-        }
-
-        if (config.maintain_imp_scorch && talents.imp_scorch) {
-            if (target->debuffStacks(debuff::IMPROVED_SCORCH) < 5 || state.t - t_scorch >= 15.0 + talents.imp_scorch * 4.0)
-                return spellAction<spell::Scorch>(target);
         }
 
         if (!multi_target || config.only_main_dmg) {

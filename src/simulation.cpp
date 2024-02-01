@@ -748,7 +748,7 @@ void Simulation::onCastSuccess(std::shared_ptr<unit::Unit> unit, std::shared_ptr
             if (spell->channeling && spell->actual_cast_time > 0)
                 pushWait(unit, spell->actual_cast_time);
             else
-                nextAction(unit);
+                pushWait(unit, 0);
         }
     }
 }
