@@ -1888,6 +1888,8 @@
                     // Waist
                     frostfire_bolt: false,
                     missile_barrage: false,
+                    hot_streak: false,
+                    spellfrost_bolt: false,
                     // Feet
                     brain_freeze: false,
                     spell_power: false,
