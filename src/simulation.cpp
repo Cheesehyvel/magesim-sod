@@ -736,12 +736,12 @@ void Simulation::onCastSuccess(std::shared_ptr<unit::Unit> unit, std::shared_ptr
                 pushSpellImpact(unit, spell, target, unit->travelTime(spell));
             }
         }
-
-        if (spell->active_use)
-            onCastSuccessProc(unit, spell, target);
-        if (spell->proc)
-            onProcSuccess(unit, spell, target);
     }
+
+    if (spell->active_use)
+        onCastSuccessProc(unit, spell, target);
+    if (spell->proc)
+        onProcSuccess(unit, spell, target);
 
     if (spell->active_use) {
         if (state.inCombat()) {

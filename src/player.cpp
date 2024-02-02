@@ -1282,7 +1282,7 @@ action::Action Player::nextAction(const State& state)
         bool pyro_will_land = travelTime(pyroblast) <= state.duration - state.t;
 
         if (config.maintain_imp_scorch && talents.imp_scorch) {
-            if (target->debuffStacks(debuff::IMPROVED_SCORCH) < 5 || state.t - t_scorch >= 15.0 + talents.imp_scorch * 4.0)
+            if (target->debuffStacks(debuff::IMPROVED_SCORCH) < 5 || state.t - t_scorch >= 10.0 + talents.imp_scorch * 4.0)
                 return spellAction<spell::Scorch>(target);
         }
 
@@ -1308,11 +1308,6 @@ action::Action Player::nextAction(const State& state)
                     return spellAction(ab, target);
                 else
                     return spellAction<spell::LivingFlame>(config.distance);
-            }
-
-            if (config.maintain_imp_scorch && talents.imp_scorch) {
-                if (std::fmod(state.timeRemain(), 60.0) > 21.0 && target->debuffStacks(debuff::IMPROVED_SCORCH) < 5)
-                    return spellAction<spell::Scorch>(target);
             }
 
             return spellAction<spell::LivingFlame>(config.distance);
