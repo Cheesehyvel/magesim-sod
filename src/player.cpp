@@ -1335,12 +1335,10 @@ action::Action Player::nextAction(const State& state)
             main_spell = std::make_shared<spell::Fireball>(config.player_level);
 
         // Pyroblast - second check
-        if (hot_streak && pyro_will_land) {
-            if (state.duration - state.t < castTime(main_spell) + travelTime(main_spell) || target->t_living_bomb + 12.0 < state.t + Unit::gcd()) {
-                return spellAction(pyroblast, target);
-            }
-        }
+        if (hot_streak && pyro_will_land)
+            return spellAction(pyroblast, target);
 
+        // Fire blast weave
         if (!multi_target || config.only_main_dmg) {
             double t_explosion = state.targets[0]->t_living_bomb + 12.0 - state.t;
 

@@ -3935,8 +3935,6 @@
                     }
                 }
 
-                console.log(this.config.talents);
-
                 if (has_runes) {
                     var g = arr[1];
                     var id, key, rune;
@@ -3945,13 +3943,10 @@
                         rune = _.find(runes, {id: id});
                         if (rune) {
                             key = rune.name.replace(/ /g, "_").toLowerCase();
-                            if (this.config.runes.hasOwnProperty(key)) {
+                            if (this.config.runes.hasOwnProperty(key))
                                 this.config.runes[key] = true;
-                                console.log("Equipped rune: "+key);
-                            }
-                            else {
+                            else
                                 console.log("Rune "+i+" could not be found");
-                            }
                         }
                         else {
                             console.log("Rune "+i+" could not be found");
