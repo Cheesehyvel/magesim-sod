@@ -2260,6 +2260,8 @@
                 // Alchemy
                 if (this.isEquipped("trinket", this.items.ids.TRINKET_ALCHEMIST_STONE))
                     arr.push("Alchemist: Alchemist Stone equipped (Trinket)");
+                else if (this.config.potion == constants.potions.POTION_MILDY_IRRATIATED)
+                    arr.push("Alchemist: Mildly Irradiated Rejuvenation Potion selected");
 
                 // Tailoring
                 if (this.isEquipped("chest", this.items.ids.ROBE_ARCHMAGE))

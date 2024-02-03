@@ -144,7 +144,8 @@ struct SimulationsResult
 bool isSchool(School var, School cmp);
 bool isSchool(School var, School cmp1, School cmp2);
 
-double runeScale(int level);
+double defaultRuneScale(int level);
+double defaultHealingRuneScale(int level);
 
 // Global rng generator
 extern thread_local std::mt19937 g_rng;

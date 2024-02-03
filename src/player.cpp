@@ -1313,6 +1313,9 @@ action::Action Player::nextAction(const State& state)
             return spellAction<spell::LivingFlame>(config.distance);
         }
 
+        if (runes.missile_barrage && canReactTo(buff::MISSILE_BARRAGE, state.t))
+            return spellAction<spell::ArcaneMissiles>(target);
+
         // Check for Living Bomb targets
         if (runes.living_bomb && state.timeRemain() >= 12.0) {
             for (auto const& tar : state.targets) {

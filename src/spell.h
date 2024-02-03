@@ -131,8 +131,8 @@ namespace spell
         {
             cost_base_mana = true;
             cost = 7;
-            min_dmg = 453.0 * runeScale(lvl);
-            max_dmg = 527.0 * runeScale(lvl);
+            min_dmg = 453.0 * defaultRuneScale(lvl);
+            max_dmg = 527.0 * defaultRuneScale(lvl);
             cast_time = 2.5;
             coeff = 2.5/3.5;
         }
@@ -142,8 +142,9 @@ namespace spell
     {
         ArcaneSurge(int lvl) : Spell(ARCANE_SURGE, "Arcane Surge", SCHOOL_ARCANE)
         {
-            min_dmg = 226.0 * runeScale(lvl);
-            max_dmg = 264.0 * runeScale(lvl);
+            min_dmg = 226.0 * defaultRuneScale(lvl);
+            max_dmg = 264.0 * defaultRuneScale(lvl);
+
             coeff = 1.5/3.5;
         }
     };
@@ -345,8 +346,8 @@ namespace spell
         {
             cost = 14;
             cost_base_mana = true;
-            min_dmg = 258 * runeScale(lvl);
-            max_dmg = 300 * runeScale(lvl);
+            min_dmg = 258 * defaultRuneScale(lvl);
+            max_dmg = 300 * defaultRuneScale(lvl);
             cast_time = 3;
             coeff = 3/3.5;
             speed = 28;
@@ -363,7 +364,7 @@ namespace spell
             t_interval = 3;
             ticks = 3;
             coeff = 0;
-            min_dmg = max_dmg = 8 * runeScale(lvl);
+            min_dmg = max_dmg = 8 * defaultRuneScale(lvl);
         }
     };
 
@@ -373,8 +374,8 @@ namespace spell
         {
             cost = 12;
             cost_base_mana = true;
-            min_dmg = 203 * runeScale(lvl);
-            max_dmg = 237 * runeScale(lvl);
+            min_dmg = 203 * defaultRuneScale(lvl);
+            max_dmg = 237 * defaultRuneScale(lvl);
             cast_time = 3;
             coeff = 2.5/3.5;
             speed = 28;
@@ -443,8 +444,8 @@ namespace spell
         {
             cost_base_mana = true;
             cost = 8;
-            min_dmg = 55.0 * runeScale(lvl);
-            max_dmg = 65.0 * runeScale(lvl);
+            min_dmg = 55.0 * defaultRuneScale(lvl);
+            max_dmg = 65.0 * defaultRuneScale(lvl);
             cast_time = 0;
             coeff = 1.5/3.5/3.0;
             speed = 38;
@@ -632,8 +633,7 @@ namespace spell
             dot = true;
             t_interval = 3;
             ticks = 4;
-            min_dmg = 85.0 * runeScale(lvl);
-            max_dmg = 85.0 * runeScale(lvl);
+            min_dmg = max_dmg = 85.0 * defaultRuneScale(lvl);
             coeff = 0.2;
         }
     };
@@ -644,8 +644,8 @@ namespace spell
         {
             aoe = true;
             active_use = false;
-            min_dmg = 171.0 * runeScale(lvl);
-            max_dmg = 171.0 * runeScale(lvl);
+            min_dmg = 171.0 * defaultRuneScale(lvl);
+            max_dmg = 171.0 * defaultRuneScale(lvl);
             coeff = 0.4;
         }
     };
@@ -670,8 +670,8 @@ namespace spell
             cost = 11;
             dot = true;
             t_interval = 1;
-            min_dmg = 100.0 * runeScale(lvl);
-            max_dmg = 100.0 * runeScale(lvl);
+            min_dmg = 100.0 * defaultRuneScale(lvl);
+            max_dmg = 100.0 * defaultRuneScale(lvl);
             coeff = 0.143;
         }
     };
@@ -786,8 +786,8 @@ namespace spell
             channeling = true;
             ticks = 3;
             cast_time = 3;
-            min_heal = 82.0 * runeScale(lvl);
-            max_heal = 82.0 * runeScale(lvl);
+            min_heal = 82.0 * defaultHealingRuneScale(lvl);
+            max_heal = 82.0 * defaultHealingRuneScale(lvl);
         }
     };
 
@@ -800,8 +800,8 @@ namespace spell
             channeling = true;
             ticks = 3;
             cast_time = 3;
-            min_heal = 42.0 * 5.0 * runeScale(lvl);
-            max_heal = 42.0 * 5.0 * runeScale(lvl);
+            min_heal = 42.0 * 5.0 * defaultHealingRuneScale(lvl);
+            max_heal = 42.0 * 5.0 * defaultHealingRuneScale(lvl);
         }
     };
 

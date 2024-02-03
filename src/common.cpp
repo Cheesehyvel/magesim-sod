@@ -18,9 +18,18 @@ bool isSchool(School var, School cmp1, School cmp2)
     return isSchool(var, cmp1) || isSchool(var, cmp2);
 }
 
-double runeScale(int level)
+double defaultRuneScale(int level)
 {
-    return ((double) level) / 60.0;
+    double lvl = (double) level;
+
+    return (13.828124 + 0.018012 * lvl + 0.044141 * lvl * lvl) / 100.0;
+}
+
+double defaultHealingRuneScale(int level)
+{
+    double lvl = (double) level;
+    
+    return (38.258376 + 0.904195 * lvl + 0.161311 * lvl * lvl) / 100.0;
 }
 
 thread_local std::mt19937 g_rng(std::random_device{}());
