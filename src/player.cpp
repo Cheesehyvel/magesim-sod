@@ -1206,12 +1206,16 @@ std::shared_ptr<spell::Spell> Player::preCastSpell()
         else
             return std::make_shared<spell::Fireball>(config.player_level);
     }
+    if (config.rotation == ROTATION_ST_FIRE_SC) {
+        if (talents.pyroblast)
+            return std::make_shared<spell::Pyroblast>(config.player_level);
+        else
+            return std::make_shared<spell::Scorch>(config.player_level);
+    }
     if (config.rotation == ROTATION_ST_ARCANE && runes.arcane_blast)
         return std::make_shared<spell::ArcaneBlast>(config.player_level);
     if (config.rotation == ROTATION_ST_FROST)
         return std::make_shared<spell::Frostbolt>(config.player_level);
-    if (config.rotation == ROTATION_ST_FIRE_SC)
-        return std::make_shared<spell::Scorch>(config.player_level);
 
     return std::make_shared<spell::Fireball>(config.player_level);
 }
