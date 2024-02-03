@@ -292,6 +292,7 @@ ChargedInspiration::ChargedInspiration()
     id = CHARGED_INSPIRATION;
     name = "Charged Inspiration";
     duration = 12;
+    stats.sp = 50;
 }
 
 CoinFlipHeads::CoinFlipHeads()
@@ -299,7 +300,7 @@ CoinFlipHeads::CoinFlipHeads()
     id = COIN_FLIP_HEADS;
     name = "Coin Flip: Heads";
     duration = 30;
-    stats.crit = 3;
+    stats.crit = 10;
 }
 
 CoinFlipTails::CoinFlipTails()

@@ -257,9 +257,12 @@
                     </template>
 
                     <div class="warnings mt-2">
-                        <div class="warning" v-if="numProfs() > 2">
+                        <div class="warning" v-if="activeProfessions.length > 2">
                             <span class="material-icons">&#xe002;</span>
-                            <tooltip position="right">You have selected bonuses from {{ numProfs() }} professions</tooltip>
+                            <tooltip position="right">
+                                <div>You have selected bonuses from {{ activeProfessions.length }} professions.</div>
+                                <div v-for="prof in activeProfessions">{{ prof }}</div>
+                            </tooltip>
                         </div>
                     </div>
                 </div>
@@ -1068,6 +1071,12 @@
                                         <help>10% dmg from Darkmoon Faire</help>
                                     </label>
                                 </div>
+                                <div class="form-item">
+                                    <label><input type="checkbox" v-model="config.enchanted_sigil_innovation">
+                                        <span>Enchanted Sigil: Innovation</span>
+                                        <help>+20 sp, enchanter only</help>
+                                    </label>
+                                </div>
                             </fieldset>
                             <fieldset class="config-consumes">
                                 <legend>Consumes</legend>
@@ -1760,6 +1769,7 @@
                 boon_blackfathom: false,
                 ashenvale_cry: false,
                 dmf_dmg: false,
+                enchanted_sigil_innovation: false,
 
                 // Consumes
                 arcane_scroll_accuracy: false,
@@ -2242,6 +2252,35 @@
                 log = log.filter(l => this.log_filter[l.type]);
 
                 return log;
+            },
+
+            activeProfessions() {
+                var arr = [];
+
+                // Alchemy
+                if (this.isEquipped("trinket", this.items.ids.TRINKET_ALCHEMIST_STONE))
+                    arr.push("Alchemist: Alchemist Stone equipped (Trinket)");
+
+                // Tailoring
+                if (this.isEquipped("chest", this.items.ids.ROBE_ARCHMAGE))
+                    arr.push("Tailoring: Robe of the Archmage equipped (Chest)");
+                else if (this.isEquipped("head", this.items.ids.GNEURO_LINKED_MONOCLE))
+                    arr.push("Tailoring: Gneuro-Linked Arcano-Filament Monocle equipped (Head)");
+
+                if (this.config.enchanted_sigil_innovation)
+                    arr.push("Enchanting: Enchanted Sigil: Innovation selected");
+
+                // Engineering
+                if (this.isEquipped("waist", this.items.ids.HYPERCONDUCTIVE_GOLDWRAP)) {
+                    arr.push("Engineering: Hyperconductive Goldwrap equipped (Waist)");
+                }
+                else if (this.equipped.head) {
+                    var head = this.getItem("head", this.equipped.head);
+                    if (head.title.indexOf("Goggles") != -1)
+                        arr.push("Engineering: "+head.title+" equipped (Waist)");
+                }
+
+                return arr;
             },
 
             hasComparisons() {
@@ -3484,6 +3523,10 @@
                     stats.spirit*= 1.15;
                 }
 
+                // Profs
+                if (this.config.enchanted_sigil_innovation)
+                    stats.sp+= 20;
+
                 // Attribute multipliers
                 if (this.config.race == this.races.RACE_GNOME)
                     stats.intellect*= 1.05;
@@ -3718,27 +3761,6 @@
                     return this.isEnchanted(slot+"1") || this.isEnchanted(slot+"2");
 
                 return _.get(this.enchants, slot) == id;
-            },
-
-            numProfs() {
-                var num = 0;
-
-                // Alchemy
-                if (this.isEquipped("trinket", this.items.ids.TRINKET_ALCHEMIST_STONE))
-                    num++;
-
-                // Tailoring
-                if (this.isEquipped("chest", this.items.ids.ROBE_ARCHMAGE))
-                    num++;
-
-                // Engineering
-                if (this.equipped.head) {
-                    var head = this.getItem("head", this.equipped.head);
-                    if (head.title.indexOf("Goggles") != -1)
-                        num++;
-                }
-
-                return num;
             },
 
             hasUseTrinket(nr) {
