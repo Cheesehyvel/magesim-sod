@@ -61,6 +61,7 @@ struct Config
     bool maintain_imp_scorch = false;
     int scorching_mages = 0;
     bool rot_fire_blast_weave = false;
+    bool rot_combustion_fb = false;
     bool rot_ice_lance = false;
     int rot_ab_stacks = 3;
     double rot_ab_spam_above = 100;

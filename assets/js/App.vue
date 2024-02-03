@@ -867,6 +867,13 @@
                                         <span>Fire Blast Weave</span>
                                     </label>
                                 </div>
+                                <template v-if="config.rotation == rotations.ROTATION_ST_FIRE_SC">
+                                    <div class="form-item">
+                                        <label><input type="checkbox" v-model="config.rot_combustion_fb">
+                                            <span>Cast Fireball during Combustion</span>
+                                        </label>
+                                    </div>
+                                </template>
                                 <template v-if="config.rotation == rotations.ROTATION_ST_ARCANE && config.runes.arcane_blast">
                                     <div class="form-item">
                                         <label>
@@ -1805,6 +1812,7 @@
                 maintain_imp_scorch: false,
                 scorching_mages: 0,
                 rot_fire_blast_weave: false,
+                rot_combustion_fb: false,
                 rot_ice_lance: false,
                 rot_ab_stacks: 3,
                 rot_ab_spam_above: 100,

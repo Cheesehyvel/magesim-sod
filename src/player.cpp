@@ -1281,7 +1281,7 @@ action::Action Player::nextAction(const State& state)
         auto pyroblast = std::make_shared<spell::Pyroblast>(config.player_level);
         bool pyro_will_land = travelTime(pyroblast) <= state.duration - state.t;
 
-        if (config.maintain_imp_scorch && talents.imp_scorch) {
+        if (config.maintain_imp_scorch && talents.imp_scorch && !state.isMoving()) {
             if (target->debuffStacks(debuff::IMPROVED_SCORCH) < 5 || state.t - t_scorch >= 10.0 + talents.imp_scorch * 4.0)
                 return spellAction<spell::Scorch>(target);
         }
@@ -1313,7 +1313,7 @@ action::Action Player::nextAction(const State& state)
             return spellAction<spell::LivingFlame>(config.distance);
         }
 
-        if (runes.missile_barrage && canReactTo(buff::MISSILE_BARRAGE, state.t))
+        if (runes.missile_barrage && canReactTo(buff::MISSILE_BARRAGE, state.t) && !state.isMoving())
             return spellAction<spell::ArcaneMissiles>(target);
 
         // Check for Living Bomb targets
@@ -1383,6 +1383,9 @@ action::Action Player::nextAction(const State& state)
             }
         }
 
+        if (config.rotation == ROTATION_ST_FIRE_SC && config.rot_combustion_fb && hasBuff(buff::COMBUSTION))
+            return spellAction<spell::Fireball>(target);
+
         return spellAction(main_spell, target);
     }
 
@@ -1429,9 +1432,8 @@ action::Action Player::nextAction(const State& state)
             return spellAction<spell::ArcaneSurge>();
         }
 
-        if (config.rot_fire_blast_weave && !hasCooldown(cooldown::FIRE_BLAST)) {
+        if (config.rot_fire_blast_weave && !hasCooldown(cooldown::FIRE_BLAST))
             return spellAction<spell::FireBlast>(target);
-        }
 
         if (state.isMoving() && !hasBuff(buff::PRESENCE_OF_MIND) && !hasBuff(buff::NETHERWIND_FOCUS)) {
             if (config.targets > 2 && config.distance <= 10) {
