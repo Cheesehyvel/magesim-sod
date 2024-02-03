@@ -1125,14 +1125,14 @@
                                     <select v-model="config.weapon_oil">
                                         <option :value="weapon_oils.OIL_NONE">None</option>
                                         <option :value="weapon_oils.OIL_BLACKFATHOM">Blackfathom Mana Oil (12 mp5 / 2% hit)</option>
-                                        <option :value="weapon_oils.OIL_BLESSED_WIZARD" v-if="lvl >= 50">Blessed Wizard Oil (60 sp to undead)</option>
-                                        <option :value="weapon_oils.OIL_BRILLIANT_WIZARD" v-if="lvl == 60">Brilliant Wizard Oil (36 sp / 1% crit)</option>
-                                        <option :value="weapon_oils.OIL_WIZARD" v-if="lvl >= 40">Wizard Oil (24 sp)</option>
-                                        <option :value="weapon_oils.OIL_LESSER_WIZARD" v-if="lvl >= 30">Lesser Wizard Oil (16 sp)</option>
-                                        <option :value="weapon_oils.OIL_MINOR_WIZARD">Minor Wizard Oil (8 sp)</option>
-                                        <option :value="weapon_oils.OIL_BRILLIANT_MANA" v-if="lvl == 60">Brilliant Mana Oil (12 mp5)</option>
-                                        <option :value="weapon_oils.OIL_LESSER_MANA" v-if="lvl >= 40">Lesser Mana Oil (8 mp5)</option>
-                                        <option :value="weapon_oils.OIL_MINOR_MANA">Minor Mana Oil (4 mp5)</option>
+                                        <option :value="weapon_oils.OIL_BLESSED_WIZARD" v-if="lvl >= 50 && lvlPhase == 4">Blessed Wizard Oil (60 sp to undead)</option>
+                                        <option :value="weapon_oils.OIL_BRILLIANT_WIZARD" v-if="lvl == 60 && lvlPhase == 4">Brilliant Wizard Oil (36 sp / 1% crit)</option>
+                                        <option :value="weapon_oils.OIL_WIZARD" v-if="lvl >= 40 && lvlPhase == 4">Wizard Oil (24 sp)</option>
+                                        <option :value="weapon_oils.OIL_LESSER_WIZARD" v-if="lvl >= 30 && lvlPhase == 4">Lesser Wizard Oil (16 sp)</option>
+                                        <option :value="weapon_oils.OIL_MINOR_WIZARD" v-if="lvlPhase == 4">Minor Wizard Oil (8 sp)</option>
+                                        <option :value="weapon_oils.OIL_BRILLIANT_MANA" v-if="lvl == 60 && lvlPhase == 4">Brilliant Mana Oil (12 mp5)</option>
+                                        <option :value="weapon_oils.OIL_LESSER_MANA" v-if="lvl >= 40 && lvlPhase == 4">Lesser Mana Oil (8 mp5)</option>
+                                        <option :value="weapon_oils.OIL_MINOR_MANA" v-if="lvlPhase == 4">Minor Mana Oil (4 mp5)</option>
                                     </select>
                                 </div>
                                 <div class="form-item">
@@ -1159,7 +1159,7 @@
                                         <help>10 fire spell power</help>
                                     </label>
                                 </div>
-                                <div class="form-item" v-if="lvl >= 40" @click="dontStack($event, 'elixir_firepower')">
+                                <div class="form-item" v-if="lvl >= 40 && lvlPhase >= 3" @click="dontStack($event, 'elixir_firepower')">
                                     <label><input type="checkbox" v-model="config.elixir_greater_firepower">
                                         <span>Elixir of Greater Firepower</span>
                                         <help>40 fire spell power</help>
@@ -1177,7 +1177,7 @@
                                         <help>14 spell power</help>
                                     </label>
                                 </div>
-                                <div class="form-item" v-if="lvl >= 37" @click="dontStack($event, ['elixir_lesser_arcane', 'elixir_greater_arcane'])">
+                                <div class="form-item" v-if="lvl >= 37 && lvlPhase >= 3" @click="dontStack($event, ['elixir_lesser_arcane', 'elixir_greater_arcane'])">
                                     <label><input type="checkbox" v-model="config.elixir_arcane">
                                         <span>Arcane Elixir</span>
                                         <help>20 spell power</help>
@@ -3445,9 +3445,9 @@
                     stats.sp_frost+= 15;
                 if (this.config.elixir_lesser_arcane && this.lvl >= 28)
                     stats.sp+= 14;
-                else if (this.config.elixir_arcane && this.lvl >= 37)
+                else if (this.config.elixir_arcane && this.lvl >= 37 && this.lvlPhase >= 3)
                     stats.sp+= 20;
-                else if (this.config.elixir_greater_arcane && this.lvl >= 47)
+                else if (this.config.elixir_greater_arcane && this.lvl >= 47 && this.lvlPhase >= 3)
                     stats.sp+= 35;
 
                 if (this.config.food == this.foods.FOOD_INT10 && this.lvl >= 45)
@@ -3466,34 +3466,38 @@
                     stats.mp5+= 8;
 
                 // Flasks
-                if (this.config.flask == this.flasks.FLASK_SUPREME_POWER)
-                    stats.sp+= 150;
-                else if (this.config.flask == this.flasks.FLASK_DISTILLED_WISDOM)
-                    stats.mana+= 2000;
+                if (this.lvlPhase == 4) {
+                    if (this.config.flask == this.flasks.FLASK_SUPREME_POWER)
+                        stats.sp+= 150;
+                    else if (this.config.flask == this.flasks.FLASK_DISTILLED_WISDOM)
+                        stats.mana+= 2000;
+                }
 
                 // Weapon oils
                 if (this.config.weapon_oil == this.weapon_oils.OIL_BLACKFATHOM) {
                     stats.mp5+= 12;
                     stats.hit+= 2;
                 }
-                else if (this.config.weapon_oil == this.weapon_oils.OIL_BRILLIANT_WIZARD && this.lvl == 60) {
-                    stats.sp+= 36;
-                    stats.crit+= 1;
+                else if (this.lvlPhase == 4) {
+                    if (this.config.weapon_oil == this.weapon_oils.OIL_BRILLIANT_WIZARD && this.lvl == 60) {
+                        stats.sp+= 36;
+                        stats.crit+= 1;
+                    }
+                    else if (this.config.weapon_oil == this.weapon_oils.OIL_BLESSED_WIZARD && this.lvl >= 50)
+                        stats.sp+= 60;
+                    else if (this.config.weapon_oil == this.weapon_oils.OIL_WIZARD && this.lvl >= 40)
+                        stats.sp+= 24;
+                    else if (this.config.weapon_oil == this.weapon_oils.OIL_LESSER_WIZARD && this.lvl >= 30)
+                        stats.sp+= 16;
+                    else if (this.config.weapon_oil == this.weapon_oils.OIL_MINOR_WIZARD)
+                        stats.sp+= 8;
+                    else if (this.config.weapon_oil == this.weapon_oils.OIL_BRILLIANT_MANA && this.lvl == 60)
+                        stats.mp5+= 12;
+                    else if (this.config.weapon_oil == this.weapon_oils.OIL_LESSER_MANA && this.lvl >= 40)
+                        stats.mp5+= 8;
+                    else if (this.config.weapon_oil == this.weapon_oils.OIL_MINOR_MANA)
+                        stats.mp5+= 4;
                 }
-                else if (this.config.weapon_oil == this.weapon_oils.OIL_BLESSED_WIZARD && this.lvl >= 50)
-                    stats.sp+= 60;
-                else if (this.config.weapon_oil == this.weapon_oils.OIL_WIZARD && this.lvl >= 40)
-                    stats.sp+= 24;
-                else if (this.config.weapon_oil == this.weapon_oils.OIL_LESSER_WIZARD && this.lvl >= 30)
-                    stats.sp+= 16;
-                else if (this.config.weapon_oil == this.weapon_oils.OIL_MINOR_WIZARD)
-                    stats.sp+= 8;
-                else if (this.config.weapon_oil == this.weapon_oils.OIL_BRILLIANT_MANA && this.lvl == 60)
-                    stats.mp5+= 12;
-                else if (this.config.weapon_oil == this.weapon_oils.OIL_LESSER_MANA && this.lvl >= 40)
-                    stats.mp5+= 8;
-                else if (this.config.weapon_oil == this.weapon_oils.OIL_MINOR_MANA)
-                    stats.mp5+= 4;
 
                 // Scrolls
                 if (this.config.arcane_scroll_accuracy)
@@ -3512,10 +3516,12 @@
                 }
 
                 // Special buffs
-                if (this.config.atiesh_mage && !this.isEquipped("weapon", this.items.ids.ATIESH))
-                    stats.crit+= 2;
-                if (this.config.atiesh_warlock)
-                    stats.sp+= 33;
+                if (this.lvlPhase == 4) {
+                    if (this.config.atiesh_mage && !this.isEquipped("weapon", this.items.ids.ATIESH))
+                        stats.crit+= 2;
+                    if (this.config.atiesh_warlock)
+                        stats.sp+= 33;
+                }
 
                 // World buffs
                 if (this.config.rising_spirit && this.faction == "horde" && !this.divineSpirit)
