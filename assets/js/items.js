@@ -533,7 +533,6 @@ var equip = {
         { id: 8216, title: "Big Voodoo Cloak", ilvl: 48, int: 9, spi: 5, q: "uncommon", phase: 3 },
 
         { id: 213306, title: "Ingenuity's Cover", ilvl: 45, int: 9, sp: 9, q: "rare", phase: 2 },
-        { id: 213307, title: "Drape of Dismantling", ilvl: 45, hit: 1, q: "rare", phase: 2 },
         { id: 213309, title: "Cloak of Invention", ilvl: 45, int: 7, spi: 6, mp5: 2, q: "rare", phase: 2 },
         { id: 217005, title: "Repairman's Cape", ilvl: 40, int: 3, spi: 12, q: "rare" },
         { id: 217293, title: "Silky Spider Cape", ilvl: 42, sp: 6, q: "rare", phase: 2 },
