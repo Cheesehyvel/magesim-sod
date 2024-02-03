@@ -1171,13 +1171,19 @@
                                         <help>15 frost spell power</help>
                                     </label>
                                 </div>
-                                <div class="form-item" v-if="lvl >= 37" @click="dontStack($event, 'elixir_greater_arcane')">
+                                <div class="form-item" v-if="lvl >= 28" @click="dontStack($event, ['elixir_arcane', 'elixir_greater_arcane'])">
+                                    <label><input type="checkbox" v-model="config.elixir_lesser_arcane">
+                                        <span>Lesser Arcane Elixir</span>
+                                        <help>14 spell power</help>
+                                    </label>
+                                </div>
+                                <div class="form-item" v-if="lvl >= 37" @click="dontStack($event, ['elixir_lesser_arcane', 'elixir_greater_arcane'])">
                                     <label><input type="checkbox" v-model="config.elixir_arcane">
                                         <span>Arcane Elixir</span>
                                         <help>20 spell power</help>
                                     </label>
                                 </div>
-                                <div class="form-item" v-if="lvl >= 47" @click="dontStack($event, 'elixir_arcane')">
+                                <div class="form-item" v-if="lvl >= 47" @click="dontStack($event, ['elixir_arcane', 'elixir_lesser_arcane'])">
                                     <label><input type="checkbox" v-model="config.elixir_greater_arcane">
                                         <span>Greater Arcane Elixir</span>
                                         <help>35 spell power</help>
@@ -1785,6 +1791,7 @@
                 elixir_firepower: false,
                 elixir_greater_firepower: false,
                 elixir_frost_power: false,
+                elixir_lesser_arcane: false,
                 elixir_arcane: false,
                 elixir_greater_arcane: false,
                 weapon_oil: 0,
@@ -3436,7 +3443,9 @@
                     stats.sp_fire+= 40;
                 if (this.config.elixir_frost_power && this.lvl >= 28)
                     stats.sp_frost+= 15;
-                if (this.config.elixir_arcane && this.lvl >= 28)
+                if (this.config.elixir_lesser_arcane && this.lvl >= 28)
+                    stats.sp+= 14;
+                else if (this.config.elixir_arcane && this.lvl >= 37)
                     stats.sp+= 20;
                 else if (this.config.elixir_greater_arcane && this.lvl >= 47)
                     stats.sp+= 35;
