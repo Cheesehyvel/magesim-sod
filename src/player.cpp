@@ -1458,7 +1458,7 @@ action::Action Player::nextAction(const State& state)
         if (state.duration - state.t < castTime(ab) && !hasCooldown(cooldown::FIRE_BLAST))
             return spellAction<spell::FireBlast>(target);
         // Spam AB above certain mana %
-        else if (config.rot_ab_spam_above <= manaPercent() && runes.arcane_blast)
+        else if (config.rot_ab_spam_above < manaPercent() && runes.arcane_blast)
             return spellAction(ab, target);
         else if (ab_streak >= ab_stacks)
             return spellAction<spell::ArcaneMissiles>(target);

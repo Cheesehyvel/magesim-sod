@@ -1376,7 +1376,7 @@ double Simulation::spellDmgResist(std::shared_ptr<unit::Unit> unit, const spell:
     // Dots only use 10% of the resistance
     // But only if the dot has no initial damage (like fireball, pyroblast)
     // Unconfirmed for ignite/living bomb/living flame
-    if (instance.spell->dot && (instance.spell->id != spell::FIREBALL_DOT || instance.spell->id != spell::PYROBLAST_DOT))
+    if (instance.spell->dot && (instance.spell->id != spell::FIREBALL_DOT || instance.spell->id != spell::PYROBLAST_DOT || instance.spell->id != spell::FROSTFIRE_BOLT_DOT))
         res_score*= 0.1;
 
     double cap = config.player_level * 5.0;
