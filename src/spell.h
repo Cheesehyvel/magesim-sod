@@ -26,6 +26,8 @@ namespace spell
         FROSTFIRE_BOLT = 401502,
         FROSTFIRE_BOLT_DOT = 4015020, // fake id
         SPELLFROST_BOLT = 415734,
+        BALEFIRE_BOLT = 428878,
+        DEEP_FREEZE = 428739,
         SCORCH = 2948,
         FIRE_BLAST = 2138,
         FROSTBOLT = 7322,
@@ -370,15 +372,41 @@ namespace spell
 
     struct SpellfrostBolt : Spell
     {
-        SpellfrostBolt(int lvl) : Spell(SPELLFROST_BOLT, "SpellfrostBolt", SCHOOL_SPELLFROST)
+        SpellfrostBolt(int lvl) : Spell(SPELLFROST_BOLT, "Spellfrost Bolt", SCHOOL_SPELLFROST)
         {
             cost = 12;
             cost_base_mana = true;
             min_dmg = 203 * defaultRuneScale(lvl);
             max_dmg = 237 * defaultRuneScale(lvl);
-            cast_time = 3;
+            cast_time = 2.5;
             coeff = 2.5/3.5;
             speed = 28;
+        }
+    };
+
+    struct BalefireBolt : Spell
+    {
+        BalefireBolt(int lvl) : Spell(BALEFIRE_BOLT, "Balefire Bolt", SCHOOL_SPELLFIRE)
+        {
+            cost = 20;
+            cost_base_mana = true;
+            min_dmg = 280 * defaultRuneScale(lvl);
+            max_dmg = 420 * defaultRuneScale(lvl);
+            cast_time = 2.5;
+            coeff = 3/3.5;
+            speed = 28;
+        }
+    };
+
+    struct DeepFreeze : Spell
+    {
+        DeepFreeze(int lvl) : Spell(DEEP_FREEZE, "Deep Freeze", SCHOOL_FROST)
+        {
+            cost = 9;
+            cost_base_mana = true;
+            min_dmg = 462 * defaultRuneScale(lvl);
+            max_dmg = 538 * defaultRuneScale(lvl);
+            coeff = 2.5;
         }
     };
 

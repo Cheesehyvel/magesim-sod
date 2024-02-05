@@ -276,6 +276,9 @@ double Player::buffDmgMultiplier(std::shared_ptr<spell::Spell> spell, const Stat
     if (spell->id == spell::ICE_LANCE && isFrozen())
         multi *= 3;
 
+    if (spell->id == spell::BALEFIRE_BOLT)
+        multi *= (1.0 + buffStacks(buff::BALEFIRE_BOLT) * 0.1);
+
     // Additive category
     additive = 1;
 
@@ -338,6 +341,17 @@ double Player::manaCostMod(std::shared_ptr<spell::Spell> spell, double mana_cost
     }
 
     return mod;
+}
+
+double Player::getSpirit() const
+{
+    double spirit = Unit::getSpirit();
+
+    double stacks = (double) buffStacks(buff::BALEFIRE_BOLT);
+    if (stacks)
+        spirit-= spirit * (stacks / 10.0);
+
+    return spirit;
 }
 
 double Player::getSpellPenetration(School school) const
@@ -431,6 +445,8 @@ std::vector<action::Action> Player::onCastSuccessProc(const State& state, std::s
         actions.push_back(cooldownAction<cooldown::ConeOfCold>());
     if (spell->id == spell::LIVING_FLAME)
         actions.push_back(cooldownAction<cooldown::LivingFlame>());
+    if (spell->id == spell::DEEP_FREEZE)
+        actions.push_back(cooldownAction<cooldown::DeepFreeze>());
     if (spell->id == spell::EVOCATION) {
         actions.push_back(cooldownAction<cooldown::Evocation>());
         actions.push_back(buffAction<buff::Evocation>());
@@ -474,6 +490,9 @@ std::vector<action::Action> Player::onCastSuccessProc(const State& state, std::s
         actions.push_back(buffAction<buff::ArcaneBlast>());
     else if (hasBuff(buff::ARCANE_BLAST) && spell->isSchool(SCHOOL_ARCANE) && spell->min_dmg > 0)
         actions.push_back(buffExpireAction<buff::ArcaneBlast>());
+
+    if (spell->id == spell::BALEFIRE_BOLT)
+        actions.push_back(buffAction<buff::BalefireBolt>());
 
     if (spell->id == spell::ARCANE_MISSILES && hasBuff(buff::MISSILE_BARRAGE))
         actions.push_back(buffExpireAction<buff::MissileBarrage>());
@@ -1256,6 +1275,14 @@ action::Action Player::nextAction(const State& state)
     if (gcd.type != action::TYPE_NONE)
         return gcd;
 
+    if (buffStacks(buff::BALEFIRE_BOLT) >= 10) {
+        action::Action action{ action::TYPE_WAIT };
+        action.primary_action = true;
+        action.value = state.t + 10.0;
+        action.str = "Dead";
+        return action;
+    }
+
     auto cd = useCooldown(state);
 
     if (cd.type != action::TYPE_NONE)
@@ -1279,6 +1306,9 @@ action::Action Player::nextAction(const State& state)
 
     // Fire rotations
     if (config.rotation == ROTATION_ST_FIRE || config.rotation == ROTATION_ST_FIRE_SC) {
+
+        if (hasBuff(buff::GHOST_FINGERS) && runes.deep_freeze && !hasCooldown(cooldown::DEEP_FREEZE))
+            return spellAction<spell::DeepFreeze>(target);
 
         bool hot_streak = canReactTo(buff::HOT_STREAK, state.t) && talents.pyroblast;
         bool multi_target = config.targets > 1;
@@ -1329,7 +1359,9 @@ action::Action Player::nextAction(const State& state)
         }
 
         std::shared_ptr<spell::Spell> main_spell;
-        if (config.rotation == ROTATION_ST_FIRE_SC)
+        if (runes.balefire_bolt && buffStacks(buff::BALEFIRE_BOLT) < 9)
+            main_spell = std::make_shared<spell::BalefireBolt>(config.player_level);
+        else if (config.rotation == ROTATION_ST_FIRE_SC)
             main_spell = std::make_shared<spell::Scorch>(config.player_level);
         else if (runes.frostfire_bolt)
             main_spell = std::make_shared<spell::FrostfireBolt>(config.player_level);
@@ -1387,7 +1419,7 @@ action::Action Player::nextAction(const State& state)
             }
         }
 
-        if (config.rotation == ROTATION_ST_FIRE_SC && config.rot_combustion_fb && hasBuff(buff::COMBUSTION))
+        if (main_spell->id == spell::SCORCH && config.rot_combustion_fb && hasBuff(buff::COMBUSTION))
             return spellAction<spell::Fireball>(target);
 
         return spellAction(main_spell, target);
@@ -1474,8 +1506,12 @@ action::Action Player::nextAction(const State& state)
     // Frost
     else if (config.rotation == ROTATION_ST_FROST) {
 
-        if (hasBuff(buff::GHOST_FINGERS) && config.rot_ice_lance)
-            return spellAction<spell::IceLance>(target);
+        if (hasBuff(buff::GHOST_FINGERS)) {
+            if (runes.deep_freeze && !hasCooldown(cooldown::DEEP_FREEZE))
+                return spellAction<spell::DeepFreeze>(target);
+            if (config.rot_ice_lance)
+                return spellAction<spell::IceLance>(target);
+        }
 
         if (canReactTo(buff::BRAIN_FREEZE, state.t)) {
             if (runes.frostfire_bolt)

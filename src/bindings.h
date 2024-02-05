@@ -263,6 +263,11 @@ EMSCRIPTEN_BINDINGS(my_module)
         .field("brain_freeze", &Runes::brain_freeze)
         .field("spell_power", &Runes::spell_power)
         .field("chronostatic_preservation", &Runes::chronostatic_preservation)
+        .field("molten_armor", &Runes::molten_armor)
+        .field("balefire_bolt", &Runes::balefire_bolt)
+        .field("displacement", &Runes::displacement)
+        .field("deep_freeze", &Runes::deep_freeze)
+        .field("temporal_anomaly", &Runes::temporal_anomaly)
         ;
 
     emscripten::class_<unit::Player>("Player")

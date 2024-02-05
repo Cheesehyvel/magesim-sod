@@ -162,6 +162,14 @@ BrainFreeze::BrainFreeze()
     duration = 15;
 }
 
+BalefireBolt::BalefireBolt()
+{
+    id = BALEFIRE_BOLT;
+    name = "Balefire Bolt";
+    duration = 30;
+    max_stacks = 10;
+}
+
 TemporalBeacon::TemporalBeacon()
 {
     id = TEMPORAL_BEACON;

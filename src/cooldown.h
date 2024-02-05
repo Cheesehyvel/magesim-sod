@@ -27,6 +27,7 @@ namespace cooldown
         MANA_GEM = 42987,
         LIVING_FLAME = 401558,
         BRAIN_FREEZE = 400731,
+        DEEP_FREEZE = 428739,
 
         // Items
         CHARGED_INSPIRATION = 437327,
@@ -222,6 +223,18 @@ namespace cooldown
         {
             id = BRAIN_FREEZE;
             duration = 2;
+        }
+
+    };
+
+    class DeepFreeze : public Cooldown
+    {
+
+    public:
+        DeepFreeze()
+        {
+            id = DEEP_FREEZE;
+            duration = 30;
         }
 
     };

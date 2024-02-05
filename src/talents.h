@@ -66,4 +66,13 @@ struct Runes
     bool brain_freeze = false;
     bool spell_power = false;
     bool chronostatic_preservation = false;
+
+    // Wrist
+    bool molten_armor = false;
+    bool balefire_bolt = false;
+    bool displacement = false;
+
+    // Head
+    bool deep_freeze = false;
+    bool temporal_anomaly = false;
 };

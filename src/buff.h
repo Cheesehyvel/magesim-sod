@@ -26,6 +26,7 @@ enum ID : int
     GHOST_FINGERS = 4454411,
     MISSILE_BARRAGE = 400588,
     BRAIN_FREEZE = 400731,
+    BALEFIRE_BOLT = 428878,
     TEMPORAL_BEACON = 400735,
     TEMPORAL_BEACON_PARTY = 4007350, // Fake id
     TANGLED_CAUSALITY = 432069,
@@ -198,6 +199,13 @@ class BrainFreeze : public Buff
 
 public:
     BrainFreeze();
+};
+
+class BalefireBolt : public Buff
+{
+
+public:
+    BalefireBolt();
 };
 
 class TemporalBeacon : public Buff

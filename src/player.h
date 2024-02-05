@@ -89,6 +89,8 @@ public:
 
     double manaCostMultiplier(std::shared_ptr<spell::Spell> spell) const;
 
+    double getSpirit() const;
+
     double getSpellPenetration(School school) const;
 
     double cooldownMod(const cooldown::Cooldown &cooldown) const;

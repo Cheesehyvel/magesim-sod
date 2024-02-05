@@ -939,9 +939,15 @@
                             <fieldset class="config-buffs">
                                 <legend>Buffs</legend>
                                 <div class="form-item" v-if="lvl >= 34">
-                                    <label><input type="checkbox" v-model="config.mage_armor">
+                                    <label><input type="checkbox" v-model="config.mage_armor" @click="dontStack($event, 'molten_armor')">
                                         <span>Mage Armor</span>
                                         <help>30% mana regeneration while casting</help>
+                                    </label>
+                                </div>
+                                <div class="form-item" v-if="config.runes.molten_armor" @click="dontStack($event, 'mage_armor')">
+                                    <label><input type="checkbox" v-model="config.molten_armor">
+                                        <span>Molten Armor</span>
+                                        <help>5% crit</help>
                                     </label>
                                 </div>
                                 <div class="form-item">
@@ -1760,6 +1766,7 @@
 
                 // Buffs
                 mage_armor: false,
+                molten_armor: false,
                 divine_spirit: false,
                 mark_of_the_wild: false,
                 imp_mark_of_the_wild: false,
@@ -1925,6 +1932,13 @@
                     brain_freeze: false,
                     spell_power: false,
                     chronostatic_preservation: false,
+                    // Wrist
+                    molten_armor: false,
+                    balefire_bolt: false,
+                    displacement: false,
+                    // Head
+                    deep_freeze: false,
+                    temporal_anomaly: false,
                 },
 
                 tooltips: false,
@@ -3441,6 +3455,8 @@
                 // Runes
                 if (this.config.runes.burnout)
                     stats.crit+= 15;
+                if (this.config.runes.molten_armor && this.config.molten_armor)
+                    stats.crit+= 5;
 
                 // Consumes
                 if (this.config.elixir_firepower)
@@ -3999,10 +4015,10 @@
                             if (this.config.runes.hasOwnProperty(key))
                                 this.config.runes[key] = true;
                             else
-                                console.log("Rune "+i+" could not be found");
+                                console.log("Rune "+((i-1)/4+1)+" could not be found.");
                         }
                         else {
-                            console.log("Rune "+i+" could not be found");
+                            console.log("Rune "+((i-1)/4+1)+" could not be found.");
                         }
                     }
                 }
