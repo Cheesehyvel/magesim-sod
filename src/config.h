@@ -32,6 +32,7 @@ struct Config
     bool curse_of_elements = false;
     bool curse_of_shadow = false;
     bool judgement_of_wisdom = false;
+    bool mekkatorques_arcano_shredder = false;
 
     // World buffs
     bool ashenvale_cry = false;

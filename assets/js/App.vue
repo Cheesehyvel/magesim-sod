@@ -923,6 +923,12 @@
                                         <help>{{ cosDmg }}% arcane dmg, -{{ cosSpen }} resistance</help>
                                     </label>
                                 </div>
+                                <div class="form-item" v-if="lvlPhase >= 2">
+                                    <label><input type="checkbox" v-model="config.mekkatorques_arcano_shredder">
+                                        <span>Mekkatorque's Arcano-Shredder</span>
+                                        <help>6% spell dmg, -45 resistance</help>
+                                    </label>
+                                </div>
                                 <div class="form-item" v-if="faction == 'alliance' && lvl >= 38">
                                     <label><input type="checkbox" v-model="config.judgement_of_wisdom">
                                         <span>Judgement of Wisdom</span>

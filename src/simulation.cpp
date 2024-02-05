@@ -1293,7 +1293,7 @@ double Simulation::debuffDmgMultiplier(std::shared_ptr<unit::Unit> unit, std::sh
     if (target->hasDebuff(debuff::IMPROVED_SCORCH) && spell->isSchool(SCHOOL_FIRE))
         multi *= 1 + (0.03 * target->debuffStacks(debuff::IMPROVED_SCORCH));
 
-    if (config.curse_of_shadow && spell->isSchool(SCHOOL_ARCANE)) {
+    if (config.curse_of_shadow && spell->isSchool(SCHOOL_ARCANE, SCHOOL_SHADOW)) {
         if (config.player_level >= 56)
             multi *= 1.1;
         else if (config.player_level >= 44)
@@ -1306,6 +1306,9 @@ double Simulation::debuffDmgMultiplier(std::shared_ptr<unit::Unit> unit, std::sh
             multi *= 1.08;
         else if (config.player_level >= 32)
             multi *= 1.06;
+    }
+    else if (config.mekkatorques_arcano_shredder) {
+        multi*= 1.06;
     }
 
     return multi;
@@ -1431,7 +1434,7 @@ double Simulation::resistScore(std::shared_ptr<unit::Unit> unit, std::shared_ptr
     double res_score = config.target_resistance;
     res_score-= unit->getSpellPenetration(spell->school);
 
-    if (config.curse_of_shadow && spell->isSchool(SCHOOL_ARCANE)) {
+    if (config.curse_of_shadow && spell->isSchool(SCHOOL_ARCANE, SCHOOL_SHADOW)) {
         if (config.player_level >= 56)
             res_score-= 75.0;
         else if (config.player_level >= 44)
@@ -1444,6 +1447,9 @@ double Simulation::resistScore(std::shared_ptr<unit::Unit> unit, std::shared_ptr
             res_score-= 60.0;
         else if (config.player_level >= 32)
             res_score-= 45.0;
+    }
+    else if (config.mekkatorques_arcano_shredder) {
+        res_score-= 45.0;
     }
 
     res_score = std::max(res_score, 0.0);

@@ -155,6 +155,7 @@ EMSCRIPTEN_BINDINGS(my_module)
         .property("curse_of_elements", &Config::curse_of_elements)
         .property("curse_of_shadow", &Config::curse_of_shadow)
         .property("judgement_of_wisdom", &Config::judgement_of_wisdom)
+        .property("mekkatorques_arcano_shredder", &Config::mekkatorques_arcano_shredder)
 
         .property("ashenvale_cry", &Config::ashenvale_cry)
         .property("dmf_dmg", &Config::dmf_dmg)
