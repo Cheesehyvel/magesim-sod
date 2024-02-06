@@ -709,7 +709,7 @@
                                 </div>
                                 <div class="form-item">
                                     <label>Player level</label>
-                                    <select v-model="config.player_level" @input="onPlayerLevelInput">
+                                    <select :value="config.player_level" @change="onPlayerLevelInput">
                                         <option :value="25">25</option>
                                         <option :value="40">40</option>
                                         <option :value="50">50</option>
@@ -3916,6 +3916,7 @@
                 var from = this.config.player_level;
                 var to = parseInt(e.target.value);
                 var d = this.config.target_level - from;
+                this.config.player_level = to;
                 this.config.target_level = to + d;
 
                 if (this.config.potion) {
