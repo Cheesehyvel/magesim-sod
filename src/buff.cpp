@@ -308,7 +308,7 @@ CoinFlipHeads::CoinFlipHeads()
     id = COIN_FLIP_HEADS;
     name = "Coin Flip: Heads";
     duration = 30;
-    stats.crit = 10;
+    stats.crit = 3;
 }
 
 CoinFlipTails::CoinFlipTails()
