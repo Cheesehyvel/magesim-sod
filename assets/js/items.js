@@ -45,6 +45,7 @@ var ids = {
     // Other items
     GNEURO_LINKED_MONOCLE: 215111,
     HYPERCONDUCTIVE_GOLDWRAP: 215115,
+    ELECTROMAGNETIC_GIGAFLUX_REACTIVATOR: 213281,
     ATIESH: 22589,
     ROBE_ARCHMAGE: 14152,
     CELESTIAL_ORB: 7515,
@@ -347,6 +348,7 @@ var equip = {
         { id: 10782, title: "Hakkari Shroud", ilvl: 55, int: 15, q: "uncommon", phase: 3 },
 
         { id: ids.GNEURO_LINKED_MONOCLE, title: "Gneuro-Linked Arcano-Filament Monocle", ilvl: 45, int: 11, sp: 22, mp5: 4, phase: 2 },
+        { id: ids.ELECTROMAGNETIC_GIGAFLUX_REACTIVATOR, title: "Electromagnetic Hyperflux Reactivator", ilvl: 48, int: 15, spi: 12, sp: 16, q: "rare", phase: 2 },
         { id: 10751, title: "Gemburst Circlet", ilvl: 54, int: 17, spi: 18, q: "rare", phase: 2 },
         { id: 217294, title: "Embalmed Shroud", ilvl: 35, int: 11, spi: 12, sp: 8, q: "rare", phase: 2 },
         // { id: 7691, title: "Embalmed Shroud", ilvl: 35, int: 11, spi: 12, q: "rare", phase: 2 },

@@ -1822,6 +1822,7 @@
                 set_hyperconductive_wizard_3p: false,
                 item_gneuro_linked_monocle: false,
                 item_hyperconductive_goldwrap: false,
+                item_electromagnetic_hyperflux_reactivator: false,
                 item_robe_archmage: false,
                 item_celestial_orb: false,
 
@@ -2443,6 +2444,11 @@
                     icon: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_enggizmos_27.jpg",
                 });
                 timings.push({
+                    name: "electromagnetic_hyperflux_reactivator",
+                    title: "Electromagnetic Hyperflux Reactivator",
+                    icon: "https://wow.zamimg.com/images/wow/icons/large/inv_gizmo_01.jpg",
+                });
+                timings.push({
                     name: "hyperconductive_goldwrap",
                     title: "Hyperconductive Goldwrap",
                     icon: "https://wow.zamimg.com/images/wow/icons/large/inv_belt_32.jpg",
@@ -2715,6 +2721,8 @@
                     return this.config.talents.cold_snap > 0;
                 if (name == "gneuro_linked_monocle")
                     return this.equipped.head == this.items.ids.GNEURO_LINKED_MONOCLE;
+                if (name == "electromagnetic_hyperflux_reactivator")
+                    return this.equipped.head == this.items.ids.ELECTROMAGNETIC_GIGAFLUX_REACTIVATOR;
                 if (name == "hyperconductive_goldwrap")
                     return this.equipped.waist == this.items.ids.HYPERCONDUCTIVE_GOLDWRAP;
                 if (name == "trinket1")
@@ -3421,6 +3429,7 @@
 
                 this.config.item_gneuro_linked_monocle = this.isEquipped("head", this.items.ids.GNEURO_LINKED_MONOCLE);
                 this.config.item_hyperconductive_goldwrap = this.isEquipped("waist", this.items.ids.HYPERCONDUCTIVE_GOLDWRAP);
+                this.config.item_electromagnetic_hyperflux_reactivator = this.isEquipped("head", this.items.ids.ELECTROMAGNETIC_GIGAFLUX_REACTIVATOR);
                 this.config.item_robe_archmage = this.isEquipped("chest", this.items.ids.ROBE_ARCHMAGE);
                 this.config.item_celestial_orb = this.isEquipped("off_hand", this.items.ids.CELESTIAL_ORB);
             },

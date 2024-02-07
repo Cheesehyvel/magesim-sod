@@ -168,6 +168,7 @@ EMSCRIPTEN_BINDINGS(my_module)
         .property("set_hyperconductive_wizard_3p", &Config::set_hyperconductive_wizard_3p)
         .property("item_gneuro_linked_monocle", &Config::item_gneuro_linked_monocle)
         .property("item_hyperconductive_goldwrap", &Config::item_hyperconductive_goldwrap)
+        .property("item_electromagnetic_hyperflux_reactivator", &Config::item_electromagnetic_hyperflux_reactivator)
         .property("item_robe_archmage", &Config::item_robe_archmage)
         .property("item_celestial_orb", &Config::item_celestial_orb)
 

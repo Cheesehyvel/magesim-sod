@@ -32,6 +32,7 @@ namespace cooldown
         // Items
         CHARGED_INSPIRATION = 437327,
         COIN_FLIP = 437368,
+        ELECTROMAGNETIC_GIGAFLUX_REACTIVATOR = 11826,
         ROBE_ARCHMAGE = 18385,
         CELESTIAL_ORB = 9253,
     };
@@ -283,6 +284,18 @@ namespace cooldown
         {
             id = COIN_FLIP;
             duration = 900;
+        }
+
+    };
+
+    class ElectromagneticGigafluxReactivator : public Cooldown
+    {
+
+    public:
+        ElectromagneticGigafluxReactivator()
+        {
+            id = ELECTROMAGNETIC_GIGAFLUX_REACTIVATOR;
+            duration = 1800;
         }
 
     };

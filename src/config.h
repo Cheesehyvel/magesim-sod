@@ -47,6 +47,7 @@ struct Config
     bool set_hyperconductive_wizard_3p = false;
     bool item_gneuro_linked_monocle = false;
     bool item_hyperconductive_goldwrap = false;
+    bool item_electromagnetic_hyperflux_reactivator = false;
     bool item_robe_archmage = false;
     bool item_celestial_orb = false;
 

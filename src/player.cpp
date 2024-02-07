@@ -1136,6 +1136,9 @@ action::Action Player::useCooldown(const State& state)
     else if (config.item_gneuro_linked_monocle && !hasCooldown(cooldown::CHARGED_INSPIRATION) && useTimingIfPossible("gneuro_linked_monocle", state)) {
         return buffCooldownAction<buff::ChargedInspiration, cooldown::ChargedInspiration>(true);
     }
+    else if (config.item_electromagnetic_hyperflux_reactivator && !hasCooldown(cooldown::ELECTROMAGNETIC_GIGAFLUX_REACTIVATOR) && useTimingIfPossible("electromagnetic_hyperflux_reactivator", state)) {
+        return spellCooldownAction<spell::ElectromagneticGigafluxReactivator, cooldown::ElectromagneticGigafluxReactivator>();
+    }
     else if (config.item_hyperconductive_goldwrap && !hasCooldown(cooldown::COIN_FLIP) && useTimingIfPossible("hyperconductive_goldwrap", state)) {
         if (random<int>(0, 1) == 0)
             return buffCooldownAction<buff::CoinFlipHeads, cooldown::CoinFlip>(true);

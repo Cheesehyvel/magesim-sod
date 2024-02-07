@@ -43,6 +43,7 @@ namespace spell
         REGENERATION = 401417,
         REWIND_TIME = 401462,
         TEMPORAL_BEACON = 400735,
+        ELECTROMAGNETIC_GIGAFLUX_REACTIVATOR = 11826,
     };
 
     enum Result : int
@@ -842,6 +843,17 @@ namespace spell
             min_heal = heal;
             max_heal = heal;
             coeff = 0;
+        }
+    };
+
+    struct ElectromagneticGigafluxReactivator : Spell
+    {
+        ElectromagneticGigafluxReactivator(int lvl) : Spell(ELECTROMAGNETIC_GIGAFLUX_REACTIVATOR, "Electromagnetic Gigaflux Reactivator", SCHOOL_NATURE)
+        {
+            aoe = true;
+            min_dmg = 152;
+            max_dmg = 172;
+            gcd = 0;
         }
     };
 
