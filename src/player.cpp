@@ -1523,6 +1523,33 @@ action::Action Player::nextAction(const State& state)
                 return spellAction<spell::Fireball>(target);
         }
 
+        if (runes.living_flame && !hasCooldown(cooldown::LIVING_FLAME)) {
+
+            if (runes.arcane_blast && state.timeRemain() > 20.0) {
+                auto ab = std::make_shared<spell::ArcaneBlast>(config.player_level);
+                int ab_stacks = 3;
+                if (manaPercent() > 20)
+                    ab_stacks = 4;
+                if (ab_streak < ab_stacks && canCast(ab))
+                    return spellAction(ab, target);
+                else
+                    return spellAction<spell::LivingFlame>(config.distance);
+            }
+
+            return spellAction<spell::LivingFlame>(config.distance);
+        }
+
+        if (runes.missile_barrage && canReactTo(buff::MISSILE_BARRAGE, state.t) && !state.isMoving())
+            return spellAction<spell::ArcaneMissiles>(target);
+
+        // Check for Living Bomb targets
+        if (runes.living_bomb && state.timeRemain() >= 12.0) {
+            for (auto const& tar : state.targets) {
+                if (tar->t_living_bomb + 12.0 < state.t && tar->id <= config.dot_targets)
+                    return spellAction<spell::LivingBomb>(tar);
+            }
+        }
+
         if (config.rot_fire_blast_weave && !hasCooldown(cooldown::FIRE_BLAST))
             return spellAction<spell::FireBlast>(target);
 
@@ -1544,6 +1571,8 @@ action::Action Player::nextAction(const State& state)
 
         if (runes.frostfire_bolt)
             return spellAction<spell::FrostfireBolt>(target);
+        if (runes.spellfrost_bolt)
+            return spellAction<spell::SpellfrostBolt>(target);
 
         return spellAction<spell::Frostbolt>(target);
     }

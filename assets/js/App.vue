@@ -678,7 +678,6 @@
                                     <span class="btn secondary" @click="setSpec('arcane')">Arcane</span>
                                     <span class="btn secondary" @click="setSpec('fire')">Fire</span>
                                     <span class="btn secondary" @click="setSpec('frost')">Frost</span>
-                                    <span class="btn secondary" @click="setSpec('arcane_heal')">Healing</span>
                                 </div>
                                 <div class="form-item">
                                     <label>Race</label>
@@ -3898,20 +3897,25 @@
 
             setSpec(spec) {
                 if (spec == "arcane") {
-                    this.config.build = "https://www.wowhead.com/classic/talent-calc/mage/250025001001_156j976jha6j8";
                     this.config.rotation = constants.rotations.ROTATION_ST_ARCANE;
-                }
-                else if (spec == "arcane_heal") {
-                    this.config.build = "https://www.wowhead.com/classic/talent-calc/mage/250025001001_156jg76rfa6j8";
-                    this.config.rotation = constants.rotations.ROTATION_ST_ARCANE;
+                    if (this.config.player_level == 40)
+                        this.config.build = "https://www.wowhead.com/classic/talent-calc/mage/2500052310031531_156ra66jd76jh86r9a6j8";
+                    else
+                        this.config.build = "https://www.wowhead.com/classic/talent-calc/mage/250025001001_156j976jha6j8";
                 }
                 else if (spec == "fire") {
-                    this.config.build = "https://www.wowhead.com/classic/talent-calc/mage/-5050220101_156j976jha6rb";
                     this.config.rotation = constants.rotations.ROTATION_ST_FIRE;
+                    if (this.config.player_level == 40)
+                        this.config.build = "https://www.wowhead.com/classic/talent-calc/mage/-5050020123033151_156j966j476jh86r9a6rb";
+                    else
+                        this.config.build = "https://www.wowhead.com/classic/talent-calc/mage/-5050220101_156j976jha6rb";
                 }
                 else if (spec == "frost") {
-                    this.config.build = "https://www.wowhead.com/classic/talent-calc/mage/--053500021_156jf76vca6ja";
                     this.config.rotation = constants.rotations.ROTATION_ST_FROST;
+                    if (this.config.player_level == 25)
+                        this.config.build = "https://www.wowhead.com/classic/talent-calc/mage/--0535000310230135_156j966jd76jh86r9a6rb";
+                    else
+                        this.config.build = "https://www.wowhead.com/classic/talent-calc/mage/--053500021_156jf76vca6ja";
                 }
 
                 this.parseTalents();
