@@ -534,6 +534,7 @@ var equip = {
         { id: 8248, title: "Imperial Red Cloak", ilvl: 50, int: 11, spi: 4, q: "uncommon", phase: 3 },
         { id: 8216, title: "Big Voodoo Cloak", ilvl: 48, int: 9, spi: 5, q: "uncommon", phase: 3 },
 
+        { id: 216620, title: "Bloodrot Cloak", ilvl: 45, int: 6, sp: 11, q: "rare", phase: 2 },
         { id: 213306, title: "Ingenuity's Cover", ilvl: 45, int: 9, sp: 9, q: "rare", phase: 2 },
         { id: 213309, title: "Cloak of Invention", ilvl: 45, int: 7, spi: 6, mp5: 2, q: "rare", phase: 2 },
         { id: 217005, title: "Repairman's Cape", ilvl: 40, int: 3, spi: 12, q: "rare" },
