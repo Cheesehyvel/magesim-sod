@@ -1126,7 +1126,7 @@
                                         <option :value="foods.FOOD_SPIRIT12" v-if="lvl >= 35">+12 Spirit/stam</option>
                                         <option :value="foods.FOOD_SPIRIT8">+8 Spirit/stam</option>
                                         <option :value="foods.FOOD_SPIRIT6">+6 Spirit/stam</option>
-                                        <option :value="foods.FOOD_MP8" v-if="lvl >= 35">Nightfin Soup (8 mp5)</option>
+                                        <option :value="foods.FOOD_MP8" v-if="lvl >= 35 && lvlPhase >= 3">Nightfin Soup (8 mp5)</option>
                                         <option :value="foods.FOOD_MP6" v-if="lvl >= 30">Sagefish Delight (6 mp5)</option>
                                         <option :value="foods.FOOD_MP3">Smoked Sagefish (3 mp5)</option>
                                     </select>
@@ -1137,13 +1137,13 @@
                                         <option :value="weapon_oils.OIL_NONE">None</option>
                                         <option :value="weapon_oils.OIL_BLACKFATHOM">Blackfathom Mana Oil (12 mp5 / 2% hit)</option>
                                         <option :value="weapon_oils.OIL_BLESSED_WIZARD" v-if="lvl >= 50 && lvlPhase == 4">Blessed Wizard Oil (60 sp to undead)</option>
-                                        <option :value="weapon_oils.OIL_BRILLIANT_WIZARD" v-if="lvl == 60 && lvlPhase == 4">Brilliant Wizard Oil (36 sp / 1% crit)</option>
-                                        <option :value="weapon_oils.OIL_WIZARD" v-if="lvl >= 40 && lvlPhase == 4">Wizard Oil (24 sp)</option>
-                                        <option :value="weapon_oils.OIL_LESSER_WIZARD" v-if="lvl >= 30 && lvlPhase == 4">Lesser Wizard Oil (16 sp)</option>
-                                        <option :value="weapon_oils.OIL_MINOR_WIZARD" v-if="lvlPhase == 4">Minor Wizard Oil (8 sp)</option>
-                                        <option :value="weapon_oils.OIL_BRILLIANT_MANA" v-if="lvl == 60 && lvlPhase == 4">Brilliant Mana Oil (12 mp5)</option>
-                                        <option :value="weapon_oils.OIL_LESSER_MANA" v-if="lvl >= 40 && lvlPhase == 4">Lesser Mana Oil (8 mp5)</option>
-                                        <option :value="weapon_oils.OIL_MINOR_MANA" v-if="lvlPhase == 4">Minor Mana Oil (4 mp5)</option>
+                                        <option :value="weapon_oils.OIL_BRILLIANT_WIZARD" v-if="lvl == 60">Brilliant Wizard Oil (36 sp / 1% crit)</option>
+                                        <option :value="weapon_oils.OIL_WIZARD" v-if="lvl >= 40 && lvlPhase >= 3">Wizard Oil (24 sp)</option>
+                                        <option :value="weapon_oils.OIL_LESSER_WIZARD" v-if="lvl >= 30">Lesser Wizard Oil (16 sp)</option>
+                                        <option :value="weapon_oils.OIL_MINOR_WIZARD" v-if="lvlPhase >= 2">Minor Wizard Oil (8 sp)</option>
+                                        <option :value="weapon_oils.OIL_BRILLIANT_MANA" v-if="lvl == 60">Brilliant Mana Oil (12 mp5)</option>
+                                        <option :value="weapon_oils.OIL_LESSER_MANA" v-if="lvl >= 40">Lesser Mana Oil (8 mp5)</option>
+                                        <option :value="weapon_oils.OIL_MINOR_MANA" v-if="lvlPhase >= 2">Minor Mana Oil (4 mp5)</option>
                                     </select>
                                 </div>
                                 <div class="form-item">
@@ -1819,6 +1819,7 @@
                 set_aq40_5p: false,
                 set_zg_5p: false,
                 set_hyperconductive_wizard_3p: false,
+                enchant_dismantle: false,
                 item_gneuro_linked_monocle: false,
                 item_hyperconductive_goldwrap: false,
                 item_electromagnetic_hyperflux_reactivator: false,
@@ -3426,6 +3427,8 @@
                 num = this.numEquippedSet(this.items.ids.SET_HYPERCONDUCTIVE_WIZARD);
                 this.config.set_hyperconductive_wizard_3p = num > 2;
 
+                this.config.enchant_dismantle = this.isEnchanted("weapon", this.items.ids.ENCHANT_DISMANTLE);
+
                 this.config.item_gneuro_linked_monocle = this.isEquipped("head", this.items.ids.GNEURO_LINKED_MONOCLE);
                 this.config.item_hyperconductive_goldwrap = this.isEquipped("waist", this.items.ids.HYPERCONDUCTIVE_GOLDWRAP);
                 this.config.item_electromagnetic_hyperflux_reactivator = this.isEquipped("head", this.items.ids.ELECTROMAGNETIC_GIGAFLUX_REACTIVATOR);
@@ -3508,26 +3511,24 @@
                     stats.mp5+= 12;
                     stats.hit+= 2;
                 }
-                else if (this.lvlPhase == 4) {
-                    if (this.config.weapon_oil == this.weapon_oils.OIL_BRILLIANT_WIZARD && this.lvl == 60) {
-                        stats.sp+= 36;
-                        stats.crit+= 1;
-                    }
-                    else if (this.config.weapon_oil == this.weapon_oils.OIL_BLESSED_WIZARD && this.lvl >= 50)
-                        stats.sp+= 60;
-                    else if (this.config.weapon_oil == this.weapon_oils.OIL_WIZARD && this.lvl >= 40)
-                        stats.sp+= 24;
-                    else if (this.config.weapon_oil == this.weapon_oils.OIL_LESSER_WIZARD && this.lvl >= 30)
-                        stats.sp+= 16;
-                    else if (this.config.weapon_oil == this.weapon_oils.OIL_MINOR_WIZARD)
-                        stats.sp+= 8;
-                    else if (this.config.weapon_oil == this.weapon_oils.OIL_BRILLIANT_MANA && this.lvl == 60)
-                        stats.mp5+= 12;
-                    else if (this.config.weapon_oil == this.weapon_oils.OIL_LESSER_MANA && this.lvl >= 40)
-                        stats.mp5+= 8;
-                    else if (this.config.weapon_oil == this.weapon_oils.OIL_MINOR_MANA)
-                        stats.mp5+= 4;
+                else if (this.config.weapon_oil == this.weapon_oils.OIL_BRILLIANT_WIZARD && this.lvl == 60) {
+                    stats.sp+= 36;
+                    stats.crit+= 1;
                 }
+                else if (this.config.weapon_oil == this.weapon_oils.OIL_BLESSED_WIZARD && this.lvl >= 50 && this.lvlPhase == 4)
+                    stats.sp+= 60;
+                else if (this.config.weapon_oil == this.weapon_oils.OIL_WIZARD && this.lvl >= 40 && this.lvlPhase >= 3)
+                    stats.sp+= 24;
+                else if (this.config.weapon_oil == this.weapon_oils.OIL_LESSER_WIZARD && this.lvl >= 30)
+                    stats.sp+= 16;
+                else if (this.config.weapon_oil == this.weapon_oils.OIL_MINOR_WIZARD && this.lvlPhase >= 2)
+                    stats.sp+= 8;
+                else if (this.config.weapon_oil == this.weapon_oils.OIL_BRILLIANT_MANA && this.lvl == 60)
+                    stats.mp5+= 12;
+                else if (this.config.weapon_oil == this.weapon_oils.OIL_LESSER_MANA && this.lvl >= 40)
+                    stats.mp5+= 8;
+                else if (this.config.weapon_oil == this.weapon_oils.OIL_MINOR_MANA && this.lvlPhase >= 2)
+                    stats.mp5+= 4;
 
                 // Scrolls
                 if (this.config.arcane_scroll_accuracy)

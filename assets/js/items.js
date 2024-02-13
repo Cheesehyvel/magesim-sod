@@ -42,6 +42,8 @@ var ids = {
     SET_HYPERCONDUCTIVE_WIZARD: 1587,
     SET_HYPERCONDUCTIVE_MENDER: 1588,
 
+    ENCHANT_DISMANTLE: 435481,
+
     // Other items
     GNEURO_LINKED_MONOCLE: 215111,
     HYPERCONDUCTIVE_GOLDWRAP: 215115,
@@ -1183,7 +1185,7 @@ var equip = {
 var enchants = {
     weapon: [
         { id: 22749, enchantmentId: 2504, title: "Spell Power", sp: 30, phase: 3 },
-        { id: 435481, enchantmentId: 7210, title: "Dismantle", sp: 25, phase: 2 },
+        { id: ids.ENCHANT_DISMANTLE, enchantmentId: 7210, title: "Dismantle", phase: 2 },
         { id: 21931, enchantmentId: 2443, title: "Winter's Might", sp_frost: 7, phase: 2 },
         { id: 23804, enchantmentId: 2568, title: "Mighty Intellect", int: 22, phase: 3 },
         { id: 20036, enchantmentId: 1904, title: "Major Intellect", int: 9, twohand: true, phase: 3 },

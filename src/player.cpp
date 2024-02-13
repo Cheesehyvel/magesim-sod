@@ -475,6 +475,12 @@ std::vector<action::Action> Player::onCastSuccessProc(const State& state, std::s
         actions.push_back(spellAction<spell::FlamestrikeDRDot>());
     }
 
+    if (config.enchant_dismantle) {
+        double chance = std::max(1.5, spell->cast_time) / 5.0;
+        if (random<double>(0, 1) <= chance)
+            actions.push_back(spellAction<spell::Dismantle>(target));
+    }
+
     if (hasBuff(buff::GHOST_FINGERS))
         actions.push_back(buffExpireAction<buff::GhostFingers>());
 

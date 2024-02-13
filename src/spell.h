@@ -44,6 +44,7 @@ namespace spell
         REWIND_TIME = 401462,
         TEMPORAL_BEACON = 400735,
         ELECTROMAGNETIC_GIGAFLUX_REACTIVATOR = 11826,
+        DISMANTLE = 439164,
     };
 
     enum Result : int
@@ -854,6 +855,20 @@ namespace spell
             min_dmg = 152;
             max_dmg = 172;
             gcd = 0;
+        }
+    };
+
+    struct Dismantle : Spell
+    {
+        Dismantle(int lvl) : Spell(DISMANTLE, "Dismantle", SCHOOL_NATURE)
+        {
+            active_use = false;
+            min_dmg = 60;
+            max_dmg = 90;
+            gcd = 0;
+            coeff = 0;
+            can_proc = false;
+            proc = true;
         }
     };
 
