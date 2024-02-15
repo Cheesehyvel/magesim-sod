@@ -55,6 +55,7 @@ public:
     void removeCooldown(cooldown::ID id);
 
     int buffStacks(buff::ID id, bool snapshot = false) const;
+    double buffDuration(buff::ID id, const State& state) const;
     bool hasBuff(buff::ID id, bool snapshot = false) const;
     int addBuff(std::shared_ptr<buff::Buff> buff);
     void removeBuff(buff::ID id, bool snapshot = false);

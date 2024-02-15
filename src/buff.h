@@ -69,6 +69,7 @@ struct Buff
     double cost = 0;
     double t_gained = 0;
     double t_refreshed = 0;
+    double t_expires = 0;
     Stats stats;
 
     int addStack();

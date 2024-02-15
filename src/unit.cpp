@@ -71,6 +71,15 @@ int Unit::buffStacks(buff::ID id, bool snapshot) const
     return 0;
 }
 
+double Unit::buffDuration(buff::ID id, const State& state) const
+{
+    auto const itr = buffs.find(id);
+    if (itr == buffs.end())
+        return 0;
+
+    return itr->second->t_expires - state.t;
+}
+
 bool Unit::hasBuff(buff::ID id, bool snapshot) const
 {
     if (buffs.find(id) != buffs.end())

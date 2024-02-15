@@ -18,7 +18,6 @@ public:
     int id;
     std::string name;
     unsigned long long dmg;
-    double ignite_dmg;
     double t_ignite;
     double t_living_bomb;
     double t_pyroblast;

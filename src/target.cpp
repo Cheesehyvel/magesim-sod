@@ -17,7 +17,6 @@ Target::Target(const Config& _config, int _id)
 void Target::reset()
 {
     dmg = 0;
-    ignite_dmg = 0;
     t_ignite = -20;
     t_living_bomb = -20;
     t_pyroblast = -20;

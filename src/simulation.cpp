@@ -499,6 +499,7 @@ void Simulation::pushBuffExpire(std::shared_ptr<unit::Unit> unit, std::shared_pt
     event.t = t == 0 ? buff->duration : t;
     event.unit = unit;
     event.buff = buff;
+    buff->t_expires = state.t + event.t;
 
     push(event);
 }
@@ -521,6 +522,7 @@ void Simulation::pushDebuffExpire(std::shared_ptr<target::Target> target, std::s
     event.t = debuff->duration;
     event.target = target;
     event.debuff = debuff;
+    debuff->t_expires = state.t + event.t;
 
     push(event);
 }
@@ -1029,7 +1031,6 @@ void Simulation::onBuffGain(std::shared_ptr<unit::Unit> unit, std::shared_ptr<bu
 
     int old_stacks = unit->buffStacks(buff->id);
 
-    buff->t_refreshed = state.t;
     if (old_stacks < 1)
         buff->t_gained = state.t;
 

@@ -189,6 +189,9 @@ double Player::critChance(std::shared_ptr<spell::Spell> spell) const
     if (talents.incinerate && (spell->id == spell::FIRE_BLAST || spell->id == spell::SCORCH))
         crit += talents.incinerate * 2.0;
 
+    if (talents.arcane_instability)
+        crit += talents.arcane_instability;
+
     if (talents.imp_flamestrike && (spell->id == spell::FLAMESTRIKE || spell->id == spell::FLAMESTRIKE_DR))
         crit += talents.imp_flamestrike * 5.0;
 
@@ -260,12 +263,16 @@ double Player::buffDmgMultiplier(std::shared_ptr<spell::Spell> spell, const Stat
     if (runes.enlightenment && manaPercent() >= 70.0)
         multi *= 1.1;
 
+    if (talents.arcane_instability)
+        multi *= 1 + talents.arcane_instability * 0.01;
+
     if (talents.piercing_ice && spell->isSchool(SCHOOL_FROST))
         multi *= 1 + talents.piercing_ice * 0.02;
+
     if (spell->id == spell::CONE_OF_COLD && talents.imp_cone_of_cold)
         multi *= 1.05 + talents.imp_cone_of_cold * 0.1;
 
-    if (spell->isSchool(SCHOOL_ARCANE) && spell->id != spell::ARCANE_BLAST && hasBuff(buff::ARCANE_BLAST, true)) {
+    if (spell->isSchool(SCHOOL_ARCANE) && spell->id != spell::ARCANE_BLAST && hasBuff(buff::ARCANE_BLAST, true) && !spell->dynamic) {
         double ab = 0.15;
         multi *= 1 + ab * buffStacks(buff::ARCANE_BLAST, true);
     }
@@ -279,7 +286,11 @@ double Player::buffDmgMultiplier(std::shared_ptr<spell::Spell> spell, const Stat
     if (spell->id == spell::BALEFIRE_BOLT)
         multi *= (1.0 + buffStacks(buff::BALEFIRE_BOLT) * 0.1);
 
+    if (spell->snapshot_multi)
+        multi *= spell->snapshot_multi;
+
     // Additive category
+    // Unconfirmed if this is relevant in SoD
     additive = 1;
 
     if (talents.fire_power && spell->isSchool(SCHOOL_FIRE))
@@ -476,6 +487,7 @@ std::vector<action::Action> Player::onCastSuccessProc(const State& state, std::s
     }
 
     if (config.enchant_dismantle) {
+        // Unconfirmed: proc chance, on cast/impact
         double chance = std::max(1.5, spell->cast_time) / 5.0;
         if (random<double>(0, 1) <= chance)
             actions.push_back(spellAction<spell::Dismantle>(target));
@@ -1350,10 +1362,10 @@ action::Action Player::nextAction(const State& state)
                 if (ab_streak < ab_stacks && canCast(ab))
                     return spellAction(ab, target);
                 else
-                    return spellAction<spell::LivingFlame>(config.distance);
+                    return spellAction<spell::LivingFlame>(config.distance, buffStacks(buff::ARCANE_BLAST));
             }
 
-            return spellAction<spell::LivingFlame>(config.distance);
+            return spellAction<spell::LivingFlame>(config.distance, buffStacks(buff::ARCANE_BLAST));
         }
 
         if (runes.missile_barrage && canReactTo(buff::MISSILE_BARRAGE, state.t) && !state.isMoving())
@@ -1367,6 +1379,10 @@ action::Action Player::nextAction(const State& state)
             }
         }
 
+        // Pyroblast - second check
+        if (hot_streak && pyro_will_land)
+            return spellAction(pyroblast, target);
+
         std::shared_ptr<spell::Spell> main_spell;
         if (runes.balefire_bolt && buffStacks(buff::BALEFIRE_BOLT) < 9)
             main_spell = std::make_shared<spell::BalefireBolt>(config.player_level);
@@ -1376,10 +1392,6 @@ action::Action Player::nextAction(const State& state)
             main_spell = std::make_shared<spell::FrostfireBolt>(config.player_level);
         else
             main_spell = std::make_shared<spell::Fireball>(config.player_level);
-
-        // Pyroblast - second check
-        if (hot_streak && pyro_will_land)
-            return spellAction(pyroblast, target);
 
         // Fire blast weave
         if (!multi_target || config.only_main_dmg) {
@@ -1465,7 +1477,7 @@ action::Action Player::nextAction(const State& state)
             if (ab_streak < ab_stacks)
                 return spellAction(ab, target);
             else
-                return spellAction<spell::LivingFlame>(config.distance);
+                return spellAction<spell::LivingFlame>(config.distance, buffStacks(buff::ARCANE_BLAST));
         }
 
         if (runes.arcane_surge && 
@@ -1539,10 +1551,10 @@ action::Action Player::nextAction(const State& state)
                 if (ab_streak < ab_stacks && canCast(ab))
                     return spellAction(ab, target);
                 else
-                    return spellAction<spell::LivingFlame>(config.distance);
+                    return spellAction<spell::LivingFlame>(config.distance, buffStacks(buff::ARCANE_BLAST));
             }
 
-            return spellAction<spell::LivingFlame>(config.distance);
+            return spellAction<spell::LivingFlame>(config.distance, buffStacks(buff::ARCANE_BLAST));
         }
 
         if (runes.missile_barrage && canReactTo(buff::MISSILE_BARRAGE, state.t) && !state.isMoving())

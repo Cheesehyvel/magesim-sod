@@ -16,6 +16,7 @@ namespace debuff
         ID id;
         std::string name = "";
         double duration = 0;
+        double t_expires = 0;
         int stacks = 1;
         int max_stacks = 1;
         bool hidden = false;
