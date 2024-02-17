@@ -4,6 +4,7 @@
 #include "talents.h"
 #include "config.h"
 
+#include <queue>
 #include <vector>
 
 namespace unit
@@ -15,6 +16,8 @@ private:
     const Timing* getNextTiming(const std::string& name) const;
     void useTiming(const Timing* timing);
 
+    std::queue<APL::Action*> apl_sequence;
+
 public:
     const Talents talents;
     const Runes runes;
@@ -23,14 +26,11 @@ public:
 
     int combustion;
     int fingers_of_frost;
-    bool heating_up;
     int hotstreak_crits;
     int hotstreak_hits;
     double t_flamestrike;
     double t_flamestrike_dr;
-    double t_scorch;
     double t_mana_spent;
-    double t_living_bomb;
     bool mana_ruby;
     bool mana_citrine;
     bool mana_jade;
@@ -160,5 +160,22 @@ public:
     action::Action preCombat(const State& state);
 
     action::Action nextAction(const State& state);
+
+    std::shared_ptr<spell::Spell> APL_SpellFromID(spell::ID id);
+
+    int APL_TalentCount(std::string str) const;
+
+    bool APL_RuneExists(std::string str) const;
+
+    double APL_Value(APL::Value value, const State& state);
+
+    bool APL_CheckCondition(APL::Condition condition, const State& state);
+
+    action::Action APL_Action(APL::Action apl, const State& state);
+
+    action::Action APL_ActionFromItem(APL::Item item, const State& state);
+
+    action::Action APL_NextAction(std::vector<APL::Item> apl, const State& state);
+
 };
 }

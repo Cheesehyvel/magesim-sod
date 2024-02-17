@@ -8,6 +8,8 @@ namespace debuff
     {
         IMPROVED_SCORCH = 22959,
         WINTERS_CHILL = 12579,
+        PYROBLAST = 11366,
+        LIVING_BOMB = 400613,
     };
 
     // Prolonged ownership by Event, State and Unit. TODO: Do Event and Unit really need the same copy (i.e. pointer)?
@@ -54,6 +56,28 @@ namespace debuff
             name = "Winter's Chill";
             duration = 15;
             max_stacks = 5;
+        }
+    };
+
+    class Pyroblast : public Debuff
+    {
+    public:
+        Pyroblast()
+        {
+            id = PYROBLAST;
+            name = "Pyroblast";
+            duration = 12;
+        }
+    };
+
+    class LivingBomb : public Debuff
+    {
+    public:
+        LivingBomb()
+        {
+            id = LIVING_BOMB;
+            name = "Living Bomb";
+            duration = 12;
         }
     };
 

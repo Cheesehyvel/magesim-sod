@@ -23,7 +23,6 @@ namespace cooldown
         ARCANE_SURGE = 425124,
         ARCANE_POWER = 12042,
         PRESENCE_OF_MIND = 12043,
-        POWER_INFUSION = 10060,
         MANA_GEM = 42987,
         LIVING_FLAME = 401558,
         BRAIN_FREEZE = 400731,
@@ -44,6 +43,7 @@ namespace cooldown
         ID id;
         double duration;
         double t_gained = 0;
+        double t_expires = 0;
 
         Cooldown(ID _id = NONE, double _duration = 0) : id(_id), duration(std::max(0.0, _duration)) {}
     };
@@ -236,18 +236,6 @@ namespace cooldown
         {
             id = DEEP_FREEZE;
             duration = 30;
-        }
-
-    };
-
-    class PowerInfusion : public Cooldown
-    {
-
-    public:
-        PowerInfusion()
-        {
-            id = POWER_INFUSION;
-            duration = 180;
         }
 
     };

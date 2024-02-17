@@ -1,5 +1,5 @@
 node_modules
 magesim
-notes
+*.note
 dist/main.js
 .env

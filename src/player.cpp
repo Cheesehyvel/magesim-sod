@@ -3,6 +3,7 @@
 #include "unit.h"
 #include "talents.h"
 #include "state.h"
+#include "apl.h"
 
 #include <algorithm>
 #include <string>
@@ -34,14 +35,11 @@ void Player::reset()
     Unit::reset();
     combustion = 0;
     fingers_of_frost = 0;
-    heating_up = false;
     hotstreak_crits = 0;
     hotstreak_hits = 0;
     t_flamestrike = -20;
     t_flamestrike_dr = -20;
-    t_scorch = -60;
     t_mana_spent = 0;
-    t_living_bomb = -20;
     ab_streak = 0;
     has_pre_cast = false;
 
@@ -445,6 +443,29 @@ std::vector<action::Action> Player::onCastSuccessProc(const State& state, std::s
     if (spell->id == spell::MANA_GEM)
         return useManaGem();
 
+    // Items
+    if (spell->id == spell::ROBE_ARCHMAGE) {
+        actions.push_back(manaAction((double) random<int>(375, 625), "Robe of the Archmage"));
+        actions.push_back(cooldownAction<cooldown::RobeArchmage>());
+        return actions;
+    }
+    if (spell->id == spell::CELESTIAL_ORB) {
+        actions.push_back(manaAction((double) random<int>(400, 1200), "Celestial Orb"));
+        actions.push_back(cooldownAction<cooldown::CelestialOrb>());
+        return actions;
+    }
+    if (spell->id == spell::COIN_FLIP) {
+        if (random<int>(0, 1) == 0)
+            actions.push_back(buffCooldownAction<buff::CoinFlipHeads, cooldown::CoinFlip>());
+        else
+            actions.push_back(buffCooldownAction<buff::CoinFlipTails, cooldown::CoinFlip>());
+        return actions;
+    }
+    if (spell->id == spell::CHARGED_INSPIRATION) {
+        actions.push_back(buffCooldownAction<buff::ChargedInspiration, cooldown::ChargedInspiration>());
+        return actions;
+    }
+
     bool is_harmful = spell->max_dmg > 0;
 
     // Cooldowns
@@ -466,17 +487,21 @@ std::vector<action::Action> Player::onCastSuccessProc(const State& state, std::s
         actions.push_back(cooldownAction<cooldown::ColdSnap>());
         actions.push_back(cooldownExpireAction<cooldown::IcyVeins>());
         actions.push_back(cooldownExpireAction<cooldown::ConeOfCold>());
+        actions.push_back(cooldownExpireAction<cooldown::DeepFreeze>());
     }
     if (spell->id == spell::ARCANE_SURGE) {
         actions.push_back(buffAction<buff::ArcaneSurge>());
         actions.push_back(cooldownAction<cooldown::ArcaneSurge>());
+    }
+    if (spell->id == spell::ELECTROMAGNETIC_GIGAFLUX_REACTIVATOR) {
+        actions.push_back(cooldownAction<cooldown::ElectromagneticGigafluxReactivator>());
     }
 
     if (config.set_t2_8p && (spell->id == spell::ARCANE_MISSILES || spell->id == spell::FIREBALL || spell->id == spell::FROSTBOLT))
         actions.push_back(buffAction<buff::NetherwindFocus>());
 
     if (spell->id == spell::LIVING_BOMB)
-        target->t_living_bomb = state.t;
+        actions.push_back(debuffAction<debuff::LivingBomb>(target));
     if (spell->id == spell::FLAMESTRIKE) {
         t_flamestrike = state.t;
         actions.push_back(spellAction<spell::FlamestrikeDot>());
@@ -580,15 +605,15 @@ std::vector<action::Action> Player::onSpellImpactProc(const State& state, const 
         actions.push_back(buffAction<buff::EnigmasAnswer>());
 
     if (instance.result != spell::MISS) {
-        if (talents.imp_scorch && instance.spell->id == spell::SCORCH && (talents.imp_scorch == 3 || random<int>(0, 2) < talents.imp_scorch)) {
-            t_scorch = state.t;
+        if (talents.imp_scorch && instance.spell->id == spell::SCORCH && (talents.imp_scorch == 3 || random<int>(0, 2) < talents.imp_scorch))
             actions.push_back(debuffAction<debuff::ImprovedScorch>(target));
-        }
 
         if (instance.spell->id == spell::FIREBALL)
             actions.push_back(spellAction<spell::FireballDot>(target));
-        if (instance.spell->id == spell::PYROBLAST)
+        if (instance.spell->id == spell::PYROBLAST) {
             actions.push_back(spellAction<spell::PyroblastDot>(target));
+            actions.push_back(debuffAction<debuff::Pyroblast>(target));
+        }
         if (instance.spell->id == spell::FROSTFIRE_BOLT)
             actions.push_back(spellAction<spell::FrostfireBoltDot>(target));
 
@@ -669,15 +694,15 @@ std::vector<action::Action> Player::onSpellImpactProc(const State& state, const 
                     hotstreak_crits++;
 
                 if (hotstreak_hits == config.targets) {
-                    if (hotstreak_crits == 1 && !heating_up) {
-                        heating_up = true;
+                    if (hotstreak_crits == 1 && !hasBuff(buff::HEATING_UP)) {
+                        actions.push_back(buffAction<buff::HeatingUp>());
                     }
-                    else if (hotstreak_crits == 1 && heating_up || hotstreak_crits > 1) {
+                    else if (hotstreak_crits == 1 && hasBuff(buff::HEATING_UP) || hotstreak_crits > 1) {
                         actions.push_back(buffAction<buff::HotStreak>());
-                        heating_up = false;
+                        actions.push_back(buffExpireAction<buff::HeatingUp>());
                     }
-                    else {
-                        heating_up = false;
+                    else if (hasBuff(buff::HEATING_UP)) {
+                        actions.push_back(buffExpireAction<buff::HeatingUp>());
                     }
 
                     hotstreak_hits = hotstreak_crits = 0;
@@ -685,16 +710,16 @@ std::vector<action::Action> Player::onSpellImpactProc(const State& state, const 
             }
             else {
                 if (instance.result == spell::CRIT) {
-                    if (heating_up) {
+                    if (hasBuff(buff::HEATING_UP)) {
                         actions.push_back(buffAction<buff::HotStreak>());
-                        heating_up = false;
+                        actions.push_back(buffExpireAction<buff::HeatingUp>());
                     }
                     else {
-                        heating_up = true;
+                        actions.push_back(buffAction<buff::HeatingUp>());
                     }
                 }
-                else {
-                    heating_up = false;
+                else if (hasBuff(buff::HEATING_UP)) {
+                    actions.push_back(buffExpireAction<buff::HeatingUp>());
                 }
             }
         }
@@ -1152,16 +1177,13 @@ action::Action Player::useCooldown(const State& state)
         return buffCooldownAction<buff::Berserking, cooldown::Berserking>(true);
     }
     else if (config.item_gneuro_linked_monocle && !hasCooldown(cooldown::CHARGED_INSPIRATION) && useTimingIfPossible("gneuro_linked_monocle", state)) {
-        return buffCooldownAction<buff::ChargedInspiration, cooldown::ChargedInspiration>(true);
+        return spellAction<spell::ChargedInspiration>();
     }
     else if (config.item_electromagnetic_hyperflux_reactivator && !hasCooldown(cooldown::ELECTROMAGNETIC_GIGAFLUX_REACTIVATOR) && useTimingIfPossible("electromagnetic_hyperflux_reactivator", state)) {
-        return spellCooldownAction<spell::ElectromagneticGigafluxReactivator, cooldown::ElectromagneticGigafluxReactivator>();
+        return spellAction<spell::ElectromagneticGigafluxReactivator>();
     }
     else if (config.item_hyperconductive_goldwrap && !hasCooldown(cooldown::COIN_FLIP) && useTimingIfPossible("hyperconductive_goldwrap", state)) {
-        if (random<int>(0, 1) == 0)
-            return buffCooldownAction<buff::CoinFlipHeads, cooldown::CoinFlip>(true);
-        else
-            return buffCooldownAction<buff::CoinFlipTails, cooldown::CoinFlip>(true);
+        return spellAction<spell::CoinFlip>();
     }
     else if (config.potion != POTION_NONE && !hasCooldown(cooldown::POTION) && !hasManaPotion() && useTimingIfPossible("potion", state)) {
         action::Action action { action::TYPE_POTION };
@@ -1173,7 +1195,7 @@ action::Action Player::useCooldown(const State& state)
         action.primary_action = true;
         return action;
     }
-    else if (!hasCooldown(cooldown::MANA_GEM) && useTimingIfPossible("mana_gem", state, true)) {
+    else if (!hasCooldown(cooldown::MANA_GEM) && hasManaGem() && useTimingIfPossible("mana_gem", state, true)) {
         return spellAction<spell::ManaGem>();
     }
     else if (isUseTrinket(config.trinket1) && !hasCooldown(cooldown::TRINKET1) && !isTrinketOnSharedCD(config.trinket1) && useTimingIfPossible("trinket1", state)) {
@@ -1212,20 +1234,10 @@ action::Action Player::useCooldown(const State& state)
         return spellAction<spell::Evocation>();
     }
     else if (config.item_robe_archmage && maxMana() - mana >= 625.0 && !hasCooldown(cooldown::ROBE_ARCHMAGE)) {
-        action::Action action{ action::TYPE_MANA };
-        action.value = (double) random<int>(375, 625);
-        action.str = "Robe of the Archmage";
-        action.cooldown = std::make_shared<cooldown::RobeArchmage>();
-        action.primary_action = true;
-        return action;
+        return spellAction<spell::RobeArchmage>();
     }
     else if (config.item_celestial_orb && maxMana() - mana >= 1200.0 && !hasCooldown(cooldown::CELESTIAL_ORB)) {
-        action::Action action{ action::TYPE_MANA };
-        action.value = (double) random<int>(400, 1200);
-        action.str = "Celestial Orb";
-        action.cooldown = std::make_shared<cooldown::CelestialOrb>();
-        action.primary_action = true;
-        return action;
+        return spellAction<spell::CelestialOrb>();
     }
 
     return { action::TYPE_NONE };
@@ -1238,6 +1250,21 @@ bool Player::shouldPreCast() const
 
 std::shared_ptr<spell::Spell> Player::preCastSpell()
 {
+    // TODO: APL precombat
+    if (config.rotation == ROTATION_APL) {
+        if (talents.pyroblast)
+            return std::make_shared<spell::Pyroblast>(config.player_level);
+        else if (runes.arcane_blast)
+            return std::make_shared<spell::ArcaneBlast>(config.player_level);
+        else if (runes.frostfire_bolt)
+            return std::make_shared<spell::FrostfireBolt>(config.player_level);
+        else if (talents.imp_fireball == 5)
+            return std::make_shared<spell::Fireball>(config.player_level);
+        else if (talents.imp_frostbolt == 5)
+            return std::make_shared<spell::Frostbolt>(config.player_level);
+        return std::make_shared<spell::Fireball>(config.player_level);
+    }
+
     if (config.rotation == ROTATION_ST_FIRE) {
         if (runes.frostfire_bolt)
             return std::make_shared<spell::FrostfireBolt>(config.player_level);
@@ -1297,11 +1324,11 @@ action::Action Player::nextAction(const State& state)
         return gcd;
 
     if (buffStacks(buff::BALEFIRE_BOLT) >= 10) {
-        action::Action action{ action::TYPE_WAIT };
-        action.primary_action = true;
-        action.value = state.t + 10.0;
-        action.str = "Dead";
-        return action;
+        return waitAction(state.t + 10.0, "Dead");
+    }
+
+    if (config.rotation == ROTATION_APL) {
+        return APL_NextAction(config.apl.combat, state);
     }
 
     auto cd = useCooldown(state);
@@ -1337,15 +1364,15 @@ action::Action Player::nextAction(const State& state)
         bool pyro_will_land = travelTime(pyroblast) <= state.duration - state.t;
 
         if (config.maintain_imp_scorch && talents.imp_scorch && !state.isMoving()) {
-            if (target->debuffStacks(debuff::IMPROVED_SCORCH) < 5 || state.t - t_scorch >= 10.0 + talents.imp_scorch * 4.0)
+            if (target->debuffStacks(debuff::IMPROVED_SCORCH) < 5 || target->debuffDuration(debuff::IMPROVED_SCORCH, state) < 18.0 - talents.imp_scorch * 4.0)
                 return spellAction<spell::Scorch>(target);
         }
 
         // Pyroblast - first check
-        if (hot_streak && pyro_will_land && (multi_target || heating_up)) {
+        if (hot_streak && pyro_will_land && (multi_target || hasBuff(buff::HEATING_UP))) {
             if (multi_target && !config.only_main_dmg) {
                 for (auto const& tar : state.targets) {
-                    if (tar->t_pyroblast + 12.0 < state.t)
+                    if (!tar->hasDebuff(debuff::PYROBLAST))
                         return spellAction<spell::Pyroblast>(tar);
                 }
             }
@@ -1374,7 +1401,7 @@ action::Action Player::nextAction(const State& state)
         // Check for Living Bomb targets
         if (runes.living_bomb && state.timeRemain() >= 12.0) {
             for (auto const& tar : state.targets) {
-                if (tar->t_living_bomb + 12.0 < state.t && tar->id <= config.dot_targets)
+                if (!tar->hasDebuff(debuff::LIVING_BOMB) && tar->id <= config.dot_targets)
                     return spellAction<spell::LivingBomb>(tar);
             }
         }
@@ -1395,10 +1422,10 @@ action::Action Player::nextAction(const State& state)
 
         // Fire blast weave
         if (!multi_target || config.only_main_dmg) {
-            double t_explosion = state.targets[0]->t_living_bomb + 12.0 - state.t;
+            double t_explosion = state.targets[0]->debuffDuration(debuff::LIVING_BOMB, state);
 
             if (config.rot_fire_blast_weave && !hasCooldown(cooldown::FIRE_BLAST)) {
-                if (runes.living_bomb) {
+                if (runes.living_bomb && config.rotation == ROTATION_ST_FIRE) {
                     if (t_explosion <= 1.5)
                         return spellAction<spell::FireBlast>(target);
                 }
@@ -1408,9 +1435,7 @@ action::Action Player::nextAction(const State& state)
             }
 
             if (runes.living_bomb && t_explosion < 0.05 && state.timeRemain() >= 12.0) {
-                action::Action action{ action::TYPE_WAIT };
-                action.value = std::max(t_explosion, 0.0) + 0.01;
-                return action;
+                return waitAction(std::max(t_explosion, 0.0) + 0.01);
             }
         }
 
@@ -1431,11 +1456,7 @@ action::Action Player::nextAction(const State& state)
                     return spellAction<spell::FireBlast>(target);
                 }
                 else {
-                    action::Action action{ action::TYPE_WAIT };
-                    action.value = state.interruptedFor();
-                    if (action.value > 0.1)
-                        action.value = 0.1;
-                    return action;
+                    return waitAction(std::min(0.1, state.interruptedFor()));
                 }
             }
         }
@@ -1500,11 +1521,7 @@ action::Action Player::nextAction(const State& state)
                 return spellAction<spell::FireBlast>(target);
             }
             else {
-                action::Action action{ action::TYPE_WAIT };
-                action.value = state.interruptedFor();
-                if (action.value > 0.1)
-                    action.value = 0.1;
-                return action;
+                return waitAction(std::min(0.1, state.interruptedFor()));
             }
         }
         
@@ -1563,7 +1580,7 @@ action::Action Player::nextAction(const State& state)
         // Check for Living Bomb targets
         if (runes.living_bomb && state.timeRemain() >= 12.0) {
             for (auto const& tar : state.targets) {
-                if (tar->t_living_bomb + 12.0 < state.t && tar->id <= config.dot_targets)
+                if (!tar->hasDebuff(debuff::LIVING_BOMB) && tar->id <= config.dot_targets)
                     return spellAction<spell::LivingBomb>(tar);
             }
         }
@@ -1579,11 +1596,7 @@ action::Action Player::nextAction(const State& state)
                 return spellAction<spell::FireBlast>(target);
             }
             else {
-                action::Action action{ action::TYPE_WAIT };
-                action.value = state.interruptedFor();
-                if (action.value > 0.1)
-                    action.value = 0.1;
-                return action;
+                return waitAction(std::min(0.1, state.interruptedFor()));
             }
         }
 
@@ -1657,7 +1670,7 @@ action::Action Player::nextAction(const State& state)
         // Check for Living Bomb targets
         if (runes.living_bomb && state.t + 12.0 < state.duration) {
             for (auto const& tar : state.targets) {
-                if (tar->t_living_bomb + 12.0 < state.t && tar->id <= config.dot_targets)
+                if (!tar->hasDebuff(debuff::LIVING_BOMB) && tar->id <= config.dot_targets)
                     return spellAction<spell::LivingBomb>(tar);
             }
         }
@@ -1678,6 +1691,593 @@ action::Action Player::nextAction(const State& state)
     }
 
     throw std::runtime_error("Player::nextAction failed to decide");
+}
+
+
+/**
+ * APL
+ */
+
+std::shared_ptr<spell::Spell> Player::APL_SpellFromID(spell::ID id)
+{
+    if (id == spell::ARCANE_BLAST) 
+        return std::make_shared<spell::ArcaneBlast>(config.player_level);
+    if (id == spell::ARCANE_SURGE) 
+        return std::make_shared<spell::ArcaneSurge>(config.player_level);
+    if (id == spell::ARCANE_EXPLOSION) 
+        return std::make_shared<spell::ArcaneExplosion>(config.player_level);
+    if (id == spell::ARCANE_MISSILES)  
+        return std::make_shared<spell::ArcaneMissiles>(config.player_level);
+    if (id == spell::BLAST_WAVE)   
+        return std::make_shared<spell::BlastWave>(config.player_level);
+    if (id == spell::BLIZZARD) 
+        return std::make_shared<spell::Blizzard>(config.player_level);
+    if (id == spell::COLD_SNAP)
+        return std::make_shared<spell::ColdSnap>(config.player_level);
+    if (id == spell::CONE_OF_COLD) 
+        return std::make_shared<spell::ConeOfCold>(config.player_level);
+    if (id == spell::EVOCATION)
+        return std::make_shared<spell::Evocation>(config.player_level);
+    if (id == spell::FLAMESTRIKE)  
+        return std::make_shared<spell::Flamestrike>(config.player_level);
+    if (id == spell::FLAMESTRIKE_DR)   
+        return std::make_shared<spell::FlamestrikeDR>(config.player_level);
+    if (id == spell::FIREBALL) 
+        return std::make_shared<spell::Fireball>(config.player_level);
+    if (id == spell::FROSTFIRE_BOLT)   
+        return std::make_shared<spell::FrostfireBolt>(config.player_level);
+    if (id == spell::SPELLFROST_BOLT)  
+        return std::make_shared<spell::SpellfrostBolt>(config.player_level);
+    if (id == spell::BALEFIRE_BOLT)
+        return std::make_shared<spell::BalefireBolt>(config.player_level);
+    if (id == spell::DEEP_FREEZE)  
+        return std::make_shared<spell::DeepFreeze>(config.player_level);
+    if (id == spell::SCORCH)   
+        return std::make_shared<spell::Scorch>(config.player_level);
+    if (id == spell::FIRE_BLAST)   
+        return std::make_shared<spell::FireBlast>(config.player_level);
+    if (id == spell::FROSTBOLT)
+        return std::make_shared<spell::Frostbolt>(config.player_level);
+    if (id == spell::ICE_LANCE)
+        return std::make_shared<spell::IceLance>(config.player_level);
+    if (id == spell::LIVING_BOMB)  
+        return std::make_shared<spell::LivingBomb>(config.player_level);
+    if (id == spell::LIVING_FLAME) 
+        return std::make_shared<spell::LivingFlame>(config.player_level, config.distance, buffStacks(buff::ARCANE_BLAST));
+    if (id == spell::MANA_GEM) 
+        return std::make_shared<spell::ManaGem>(config.player_level);
+    if (id == spell::MASS_REGENERATION)
+        return std::make_shared<spell::MassRegeneration>(config.player_level);
+    if (id == spell::PYROBLAST)
+        return std::make_shared<spell::Pyroblast>(config.player_level);
+    if (id == spell::REGENERATION) 
+        return std::make_shared<spell::Regeneration>(config.player_level);
+
+    // Items
+    if (id == spell::ELECTROMAGNETIC_GIGAFLUX_REACTIVATOR) 
+        return std::make_shared<spell::ElectromagneticGigafluxReactivator>(config.player_level);
+    if (id == spell::CHARGED_INSPIRATION) 
+        return std::make_shared<spell::ChargedInspiration>(config.player_level);
+    if (id == spell::COIN_FLIP) 
+        return std::make_shared<spell::CoinFlip>(config.player_level);
+    if (id == spell::ROBE_ARCHMAGE) 
+        return std::make_shared<spell::RobeArchmage>(config.player_level);
+    if (id == spell::CELESTIAL_ORB) 
+        return std::make_shared<spell::CelestialOrb>(config.player_level);
+
+    return NULL;
+}
+
+int Player::APL_TalentCount(std::string str) const
+{
+    if (str == "arcane_subtlety")
+        return talents.arcane_subtlety;
+    if (str == "arcane_focus")
+        return talents.arcane_focus;
+    if (str == "imp_arcane_missiles")
+        return talents.imp_arcane_missiles;
+    if (str == "wand_specialization")
+        return talents.wand_specialization;
+    if (str == "magic_absorption")
+        return talents.magic_absorption;
+    if (str == "clearcast")
+        return talents.clearcast;
+    if (str == "magic_attunement")
+        return talents.magic_attunement;
+    if (str == "imp_arcane_explosion")
+        return talents.imp_arcane_explosion;
+    if (str == "arcane_resilience")
+        return talents.arcane_resilience;
+    if (str == "imp_mana_shield")
+        return talents.imp_mana_shield;
+    if (str == "imp_counterspell")
+        return talents.imp_counterspell;
+    if (str == "arcane_meditation")
+        return talents.arcane_meditation;
+    if (str == "presence_of_mind")
+        return talents.presence_of_mind;
+    if (str == "arcane_mind")
+        return talents.arcane_mind;
+    if (str == "arcane_instability")
+        return talents.arcane_instability;
+    if (str == "arcane_power")
+        return talents.arcane_power;
+
+    if (str == "imp_fireball")
+        return talents.imp_fireball;
+    if (str == "impact")
+        return talents.impact;
+    if (str == "ignite")
+        return talents.ignite;
+    if (str == "flame_throwing")
+        return talents.flame_throwing;
+    if (str == "imp_fire_blast")
+        return talents.imp_fire_blast;
+    if (str == "incinerate")
+        return talents.incinerate;
+    if (str == "imp_flamestrike")
+        return talents.imp_flamestrike;
+    if (str == "pyroblast")
+        return talents.pyroblast;
+    if (str == "burning_soul")
+        return talents.burning_soul;
+    if (str == "imp_scorch")
+        return talents.imp_scorch;
+    if (str == "imp_fire_ward")
+        return talents.imp_fire_ward;
+    if (str == "master_of_elements")
+        return talents.master_of_elements;
+    if (str == "critical_mass")
+        return talents.critical_mass;
+    if (str == "blast_wave")
+        return talents.blast_wave;
+    if (str == "fire_power")
+        return talents.fire_power;
+    if (str == "combustion")
+        return talents.combustion;
+
+    if (str == "frost_warding")
+        return talents.frost_warding;
+    if (str == "imp_frostbolt")
+        return talents.imp_frostbolt;
+    if (str == "elemental_precision")
+        return talents.elemental_precision;
+    if (str == "ice_shards")
+        return talents.ice_shards;
+    if (str == "frostbite")
+        return talents.frostbite;
+    if (str == "imp_frost_nova")
+        return talents.imp_frost_nova;
+    if (str == "permafrost")
+        return talents.permafrost;
+    if (str == "piercing_ice")
+        return talents.piercing_ice;
+    if (str == "cold_snap")
+        return talents.cold_snap;
+    if (str == "imp_blizzard")
+        return talents.imp_blizzard;
+    if (str == "arctic_reach")
+        return talents.arctic_reach;
+    if (str == "frost_channeling")
+        return talents.frost_channeling;
+    if (str == "shatter")
+        return talents.shatter;
+    if (str == "ice_block")
+        return talents.ice_block;
+    if (str == "imp_cone_of_cold")
+        return talents.imp_cone_of_cold;
+    if (str == "winters_chill")
+        return talents.winters_chill;
+    if (str == "ice_barrier")
+        return talents.ice_barrier;
+
+    return 0;
+}
+
+bool Player::APL_RuneExists(std::string str) const
+{
+    if (str == "burnout")
+        return runes.burnout;
+    if (str == "enlightenment")
+        return runes.enlightenment;
+    if (str == "fingers_of_frost")
+        return runes.fingers_of_frost;
+    if (str == "regeneration")
+        return runes.regeneration;
+
+    if (str == "arcane_blast")
+        return runes.arcane_blast;
+    if (str == "ice_lance")
+        return runes.ice_lance;
+    if (str == "living_bomb")
+        return runes.living_bomb;
+    if (str == "rewind_time")
+        return runes.rewind_time;
+
+    if (str == "arcane_surge")
+        return runes.arcane_surge;
+    if (str == "icy_veins")
+        return runes.icy_veins;
+    if (str == "living_flame")
+        return runes.living_flame;
+    if (str == "mass_regeneration")
+        return runes.mass_regeneration;
+
+    if (str == "frostfire_bolt")
+        return runes.frostfire_bolt;
+    if (str == "missile_barrage")
+        return runes.missile_barrage;
+    if (str == "hot_streak")
+        return runes.hot_streak;
+    if (str == "spellfrost_bolt")
+        return runes.spellfrost_bolt;
+
+    if (str == "brain_freeze")
+        return runes.brain_freeze;
+    if (str == "spell_power")
+        return runes.spell_power;
+    if (str == "chronostatic_preservation")
+        return runes.chronostatic_preservation;
+
+    if (str == "molten_armor")
+        return runes.molten_armor;
+    if (str == "balefire_bolt")
+        return runes.balefire_bolt;
+    if (str == "displacement")
+        return runes.displacement;
+
+    if (str == "deep_freeze")
+        return runes.deep_freeze;
+    if (str == "temporal_anomaly")
+        return runes.temporal_anomaly;
+
+    return false;
+}
+
+double Player::APL_Value(APL::Value value, const State& state)
+{
+    if (value.type == APL::VALUE_TYPE_CONST) {
+        return value.value;
+    }
+
+    else if (value.type == APL::VALUE_TYPE_PLAYER_MANA) {
+        return mana;
+    }
+    else if (value.type == APL::VALUE_TYPE_PLAYER_MANA_PERCENT) {
+        return manaPercent();
+    }
+    else if (value.type == APL::VALUE_TYPE_PLAYER_MANA_DEFICIT) {
+        return maxMana() - mana;
+    }
+    else if (value.type == APL::VALUE_TYPE_PLAYER_MANA_DEFICIT_PERCENT) {
+        return 100.0 - manaPercent();
+    }
+
+    else if (value.type == APL::VALUE_TYPE_TALENT_COUNT) {
+        return (double) APL_TalentCount(value.str);
+    }
+
+    else if (value.type == APL::VALUE_TYPE_RUNE_EXISTS) {
+        return (double) APL_RuneExists(value.str);
+    }
+
+    else if (value.type == APL::VALUE_TYPE_COOLDOWN_EXISTS) {
+        return (double) hasCooldown(static_cast<cooldown::ID>(value.id));
+    }
+    else if (value.type == APL::VALUE_TYPE_COOLDOWN_REACT) {
+        return (double) canReactTo(static_cast<cooldown::ID>(value.id), state.t);
+    }
+    else if (value.type == APL::VALUE_TYPE_COOLDOWN_DURATION) {
+        return cooldownDuration(static_cast<cooldown::ID>(value.id), state);
+    }
+
+    else if (value.type == APL::VALUE_TYPE_BUFF_EXISTS) {
+        return (double) hasBuff(static_cast<buff::ID>(value.id));
+    }
+    else if (value.type == APL::VALUE_TYPE_BUFF_REACT) {
+        return (double) canReactTo(static_cast<buff::ID>(value.id), state.t);
+    }
+    else if (value.type == APL::VALUE_TYPE_BUFF_STACKS) {
+        return (double) buffStacks(static_cast<buff::ID>(value.id));
+    }
+    else if (value.type == APL::VALUE_TYPE_BUFF_DURATION) {
+        return buffDuration(static_cast<buff::ID>(value.id), state);
+    }
+
+    else if (value.type == APL::VALUE_TYPE_DEBUFF_EXISTS) {
+        return (double) state.targets[0]->hasDebuff(static_cast<debuff::ID>(value.id));
+    }
+    else if (value.type == APL::VALUE_TYPE_DEBUFF_STACKS) {
+        return (double) state.targets[0]->debuffStacks(static_cast<debuff::ID>(value.id));
+    }
+    else if (value.type == APL::VALUE_TYPE_DEBUFF_DURATION) {
+        return state.targets[0]->debuffDuration(static_cast<debuff::ID>(value.id), state);
+    }
+
+    else if (value.type == APL::VALUE_TYPE_STATE_TIME) {
+        return state.t;
+    }
+    else if (value.type == APL::VALUE_TYPE_STATE_TIME_PERCENT) {
+        return state.t / state.duration * 100.0;
+    }
+    else if (value.type == APL::VALUE_TYPE_STATE_DURATION) {
+        return state.timeRemain();
+    }
+    else if (value.type == APL::VALUE_TYPE_STATE_DURATION_PERCENT) {
+        return state.timeRemain() / state.duration * 100.0;
+    }
+    else if (value.type == APL::VALUE_TYPE_STATE_IS_MOVING) {
+        return (double) state.isMoving();
+    }
+    else if (value.type == APL::VALUE_TYPE_STATE_IS_SILENCED) {
+        return (double) state.isSilenced();
+    }
+    else if (value.type == APL::VALUE_TYPE_STATE_IS_INTERRUPTED) {
+        return (double) state.isInterrupted();
+    }
+
+    else if (value.type == APL::VALUE_TYPE_SPELL_CAST_TIME) {
+        auto spell = APL_SpellFromID(static_cast<spell::ID>(value.id));
+        if (spell != NULL)
+            return castTime(spell);
+    }
+    else if (value.type == APL::VALUE_TYPE_SPELL_TRAVEL_TIME) {
+        auto spell = APL_SpellFromID(static_cast<spell::ID>(value.id));
+        if (spell != NULL)
+            return travelTime(spell);
+    }
+    else if (value.type == APL::VALUE_TYPE_SPELL_TRAVEL_CAST_TIME) {
+        auto spell = APL_SpellFromID(static_cast<spell::ID>(value.id));
+        if (spell != NULL)
+            return castTime(spell) + travelTime(spell);
+    }
+    else if (value.type == APL::VALUE_TYPE_SPELL_MANA_COST) {
+        auto spell = APL_SpellFromID(static_cast<spell::ID>(value.id));
+        if (spell != NULL)
+            return manaCost(spell);
+    }
+    else if (value.type == APL::VALUE_TYPE_SPELL_CAN_CAST) {
+        auto spell = APL_SpellFromID(static_cast<spell::ID>(value.id));
+        if (spell != NULL)
+            return canCast(spell);
+    }
+
+    else if (value.type == APL::VALUE_TYPE_CONFIG_DISTANCE) {
+        return (double) config.distance;
+    }
+    else if (value.type == APL::VALUE_TYPE_CONFIG_REACTION_TIME) {
+        return (double) config.reaction_time;
+    }
+    else if (value.type == APL::VALUE_TYPE_CONFIG_TARGET_LEVEL) {
+        return (double) config.target_level;
+    }
+    else if (value.type == APL::VALUE_TYPE_CONFIG_PLAYER_LEVEL) {
+        return (double) config.player_level;
+    }
+    else if (value.type == APL::VALUE_TYPE_CONFIG_DIFF_LEVEL) {
+        return (double) (config.target_level - config.player_level);
+    }
+
+    return 0;
+}
+
+bool Player::APL_CheckCondition(APL::Condition condition, const State& state)
+{
+    if (condition.type == APL::CONDITION_TYPE_NONE) {
+        return true;
+    }
+
+    else if (condition.type == APL::CONDITION_TYPE_AND) {
+        for (int i=0; i<condition.conditions.size(); i++) {
+            if (!APL_CheckCondition(condition.conditions[i], state))
+                return false;
+        }
+        return true;
+    }
+
+    else if (condition.type == APL::CONDITION_TYPE_OR) {
+        for (int i=0; i<condition.conditions.size(); i++) {
+            if (APL_CheckCondition(condition.conditions[i], state))
+                return true;
+        }
+        return false;
+    }
+
+    else if (condition.type == APL::CONDITION_TYPE_CMP) {
+        if (condition.values.size() != 2)
+            return false;
+
+        double val1 = APL_Value(condition.values[0], state);
+        double val2 = APL_Value(condition.values[1], state);
+
+        if (condition.op == APL::CONDITION_OP_EQ)
+            return val1 == val2;
+        else if (condition.op == APL::CONDITION_OP_NEQ)
+            return val1 != val2;
+        else if (condition.op == APL::CONDITION_OP_GT)
+            return val1 > val2;
+        else if (condition.op == APL::CONDITION_OP_GTE)
+            return val1 >= val2;
+        else if (condition.op == APL::CONDITION_OP_LT)
+            return val1 < val2;
+        else if (condition.op == APL::CONDITION_OP_LTE)
+            return val1 <= val2;
+        else
+            return false;
+    }
+
+    else if (condition.type == APL::CONDITION_TYPE_NOT) {
+        if (condition.conditions.size() != 1)
+            return false;
+
+        return !APL_CheckCondition(condition.conditions[0], state);
+    }
+
+    else if (condition.type == APL::CONDITION_TYPE_FALSE) {
+        if (condition.values.size() != 1)
+            return false;
+        return APL_Value(condition.values[0], state) == 0;
+    }
+
+    else if (condition.type == APL::CONDITION_TYPE_TRUE) {
+        if (condition.values.size() != 1)
+            return false;
+        return APL_Value(condition.values[0], state) == 1;
+    }
+
+    return true;
+}
+
+action::Action Player::APL_Action(APL::Action apl, const State& state)
+{
+    action::Action none = { action::TYPE_NONE };
+
+    if (apl.type == APL::ACTION_TYPE_SPELL) {
+        spell::ID id = static_cast<spell::ID>(apl.id);
+        auto spell = APL_SpellFromID(id);
+        if (spell != NULL) {
+            // Check if spell is available and not on cooldown
+            if (spell->id == spell::ARCANE_BLAST && !runes.arcane_blast)
+                return none;
+            if (spell->id == spell::ARCANE_SURGE && (!runes.arcane_blast || hasCooldown(cooldown::ARCANE_SURGE)))
+                return none;
+            if (spell->id == spell::BALEFIRE_BOLT && buffStacks(buff::BALEFIRE_BOLT) == 9)
+                return none;
+            if (spell->id == spell::BLAST_WAVE && (!talents.blast_wave || hasCooldown(cooldown::BLAST_WAVE)))
+                return none;
+            if (spell->id == spell::COLD_SNAP && (!talents.cold_snap || hasCooldown(cooldown::COLD_SNAP)))
+                return none;
+            if (spell->id == spell::CONE_OF_COLD && hasCooldown(cooldown::CONE_OF_COLD))
+                return none;
+            if (spell->id == spell::DEEP_FREEZE && hasCooldown(cooldown::DEEP_FREEZE))
+                return none;
+            if (spell->id == spell::EVOCATION && hasCooldown(cooldown::EVOCATION))
+                return none;
+            if (spell->id == spell::FIRE_BLAST && hasCooldown(cooldown::FIRE_BLAST))
+                return none;
+            if (spell->id == spell::LIVING_BOMB && !runes.living_bomb)
+                return none;
+            if (spell->id == spell::LIVING_FLAME && (!runes.living_flame || hasCooldown(cooldown::LIVING_FLAME)))
+                return none;
+            if (spell->id == spell::MANA_GEM && hasCooldown(cooldown::MANA_GEM))
+                return none;
+            if (spell->id == spell::PYROBLAST && !talents.pyroblast)
+                return none;
+            if (spell->id == spell::ELECTROMAGNETIC_GIGAFLUX_REACTIVATOR && (!config.item_electromagnetic_hyperflux_reactivator || hasCooldown(cooldown::ELECTROMAGNETIC_GIGAFLUX_REACTIVATOR)))
+                return none;
+            if (spell->id == spell::COIN_FLIP && (!config.item_hyperconductive_goldwrap || hasCooldown(cooldown::COIN_FLIP)))
+                return none;
+            if (spell->id == spell::ROBE_ARCHMAGE && (!config.item_robe_archmage || hasCooldown(cooldown::ROBE_ARCHMAGE)))
+                return none;
+            if (spell->id == spell::CELESTIAL_ORB && (!config.item_celestial_orb || hasCooldown(cooldown::CELESTIAL_ORB)))
+                return none;
+            if (spell->id == spell::CHARGED_INSPIRATION && (!config.item_gneuro_linked_monocle || hasCooldown(cooldown::CHARGED_INSPIRATION)))
+                return none;
+            return spellAction(spell, state.targets[0]);
+        }
+    }
+
+    else if (apl.type == APL::ACTION_TYPE_BUFF) {
+        buff::ID id = static_cast<buff::ID>(apl.id);
+        if (id == buff::ARCANE_POWER && talents.arcane_power && !hasCooldown(cooldown::ARCANE_POWER)) {
+            return buffCooldownAction<buff::ArcanePower, cooldown::ArcanePower>(true);
+        }
+        else if (id == buff::COMBUSTION && talents.combustion && !hasCooldown(cooldown::COMBUSTION) && !hasBuff(buff::COMBUSTION)) {
+            combustion = 0;
+            return buffAction<buff::Combustion>(true);
+        }
+        else if (id == buff::PRESENCE_OF_MIND && talents.presence_of_mind && !hasCooldown(cooldown::PRESENCE_OF_MIND)) {
+            return buffCooldownAction<buff::PresenceOfMind, cooldown::PresenceOfMind>(true);
+        }
+        else if (id == buff::ICY_VEINS && runes.icy_veins && !hasCooldown(cooldown::ICY_VEINS)) {
+            return buffCooldownAction<buff::IcyVeins, cooldown::IcyVeins>(true);
+        }
+        else if (id == buff::BERSERKING && race == RACE_TROLL && !hasCooldown(cooldown::BERSERKING)) {
+            return buffCooldownAction<buff::Berserking, cooldown::Berserking>(true);
+        }
+        else if (id == buff::INNERVATE) {
+            return buffAction<buff::Innervate>(true);
+        }
+        else if (id == buff::MANA_TIDE) {
+            return buffAction<buff::ManaTide>(true);
+        }
+        else if (id == buff::POWER_INFUSION) {
+            return buffAction<buff::PowerInfusion>(true);
+        }
+    }
+
+    else if (apl.type == APL::ACTION_TYPE_WAIT) {
+        return waitAction(apl.value, "APL");
+    }
+
+    else if (apl.type == APL::ACTION_TYPE_CUSTOM) {
+        if (apl.str == "potion") {
+            if (hasCooldown(cooldown::POTION))
+                return none;
+            action::Action action { action::TYPE_POTION };
+            action.primary_action = true;
+            return action;
+        }
+        else if (apl.str == "trinket1") {
+            if (!isUseTrinket(config.trinket1) || hasCooldown(cooldown::TRINKET1) || isTrinketOnSharedCD(config.trinket1))
+                return none;
+            action::Action action{ action::TYPE_TRINKET };
+            action.cooldown = std::make_shared<cooldown::Cooldown>(cooldown::TRINKET1);
+            action.trinket = config.trinket1;
+            action.primary_action = true;
+            return action;
+        }
+        else if (apl.str == "trinket2") {
+            if (!isUseTrinket(config.trinket2) || hasCooldown(cooldown::TRINKET1) || isTrinketOnSharedCD(config.trinket2))
+                return none;
+            action::Action action{ action::TYPE_TRINKET };
+            action.cooldown = std::make_shared<cooldown::Cooldown>(cooldown::TRINKET2);
+            action.trinket = config.trinket2;
+            action.primary_action = true;
+            return action;
+        }
+    }
+
+    else if (apl.type == APL::ACTION_TYPE_SEQUENCE) {
+        for (int i=0; i<apl.sequence.size(); i++) {
+            if (apl.sequence[i].type != APL::ACTION_TYPE_SEQUENCE)
+                apl_sequence.push(&apl.sequence[i]);
+        }
+
+        if (apl_sequence.size() > 0) {
+            auto ptr = apl_sequence.front();
+            apl_sequence.pop();
+            return APL_Action(*ptr, state);
+        }
+    }
+
+    return none;
+}
+
+action::Action Player::APL_ActionFromItem(APL::Item item, const State& state)
+{
+    if (APL_CheckCondition(item.condition, state))
+        return APL_Action(item.action, state);
+    return { action::TYPE_NONE };
+}
+
+action::Action Player::APL_NextAction(std::vector<APL::Item> apl, const State& state)
+{
+    while (apl_sequence.size() > 0) {
+        auto ptr = apl_sequence.front();
+        apl_sequence.pop();
+        auto action = APL_Action(*ptr, state);
+        if (action.type != action::TYPE_NONE)
+            return action;
+    }
+
+    for (int i=0; i<apl.size(); i++) {
+        auto action = APL_ActionFromItem(apl[i], state);
+        if (action.type != action::TYPE_NONE)
+            return action;
+    }
+
+    return waitAction(0.1, "APL: No available action");
 }
 
 }

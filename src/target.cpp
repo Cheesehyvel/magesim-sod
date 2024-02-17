@@ -32,6 +32,15 @@ int Target::debuffStacks(debuff::ID id) const
     return 0;
 }
 
+double Target::debuffDuration(debuff::ID id, const State& state) const
+{
+    auto const itr = debuffs.find(id);
+    if (itr == debuffs.end())
+        return 0;
+
+    return itr->second->t_expires - state.t;
+}
+
 bool Target::hasDebuff(debuff::ID id) const
 {
     return debuffs.find(id) != debuffs.end();
@@ -39,10 +48,13 @@ bool Target::hasDebuff(debuff::ID id) const
 
 int Target::addDebuff(std::shared_ptr<debuff::Debuff> debuff)
 {
-    if (hasDebuff(debuff->id))
+    if (hasDebuff(debuff->id)) {
+        debuffs[debuff->id]->t_expires = debuff->t_expires;
         return debuffs[debuff->id]->addStack();
-    else
+    }
+    else {
         debuffs[debuff->id] = debuff;
+    }
 
     return 1;
 }

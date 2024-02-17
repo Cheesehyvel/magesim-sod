@@ -51,6 +51,7 @@ public:
     virtual void reset();
 
     bool hasCooldown(cooldown::ID id) const;
+    double cooldownDuration(cooldown::ID id, const State& state) const;
     void addCooldown(std::shared_ptr<cooldown::Cooldown> cooldown);
     void removeCooldown(cooldown::ID id);
 
@@ -200,6 +201,8 @@ public:
     action::Action spellCooldownAction(std::shared_ptr<target::Target> target = NULL) const;
 
     virtual action::Action manaAction(double mana, const std::string& str = "") const;
+
+    virtual action::Action waitAction(double t, const std::string& str = "") const;
 
     virtual action::Action gcdAction(double t);
     virtual action::Action nextAction(const State &state);

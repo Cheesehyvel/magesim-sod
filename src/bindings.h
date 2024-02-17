@@ -3,6 +3,7 @@
 #include "simulation.h"
 #include "common.h"
 #include "talents.h"
+#include "apl.h"
 
 #include <emscripten.h>
 #include <emscripten/bind.h>
@@ -70,9 +71,113 @@ SimulationsResult runSimulations(std::shared_ptr<Config> config, std::shared_ptr
 EMSCRIPTEN_BINDINGS(my_module)
 {
 
-    emscripten::register_vector<double>("VectorDouble");
+    emscripten::register_vector<double>("DoubleVector");
+    emscripten::register_vector<APL::Item>("APLItemVector");
+    emscripten::register_vector<APL::Action>("APLActionVector");
+    emscripten::register_vector<APL::Condition>("APLConditionVector");
+    emscripten::register_vector<APL::Value>("APLValueVector");
+
+    emscripten::enum_<APL::ActionType>("APL_ActionType")
+        .value("ACTION_TYPE_NONE", APL::ACTION_TYPE_NONE)
+        .value("ACTION_TYPE_SPELL", APL::ACTION_TYPE_SPELL)
+        .value("ACTION_TYPE_BUFF", APL::ACTION_TYPE_BUFF)
+        .value("ACTION_TYPE_CUSTOM", APL::ACTION_TYPE_CUSTOM)
+        .value("ACTION_TYPE_WAIT", APL::ACTION_TYPE_WAIT)
+        .value("ACTION_TYPE_SEQUENCE", APL::ACTION_TYPE_SEQUENCE)
+        ;
+
+    emscripten::enum_<APL::ValueType>("APL_ValueType")
+        .value("VALUE_TYPE_NONE", APL::VALUE_TYPE_NONE)
+        .value("VALUE_TYPE_CONST", APL::VALUE_TYPE_CONST)
+        .value("VALUE_TYPE_PLAYER_MANA", APL::VALUE_TYPE_PLAYER_MANA)
+        .value("VALUE_TYPE_PLAYER_MANA_PERCENT", APL::VALUE_TYPE_PLAYER_MANA_PERCENT)
+        .value("VALUE_TYPE_PLAYER_MANA_DEFICIT", APL::VALUE_TYPE_PLAYER_MANA_DEFICIT)
+        .value("VALUE_TYPE_PLAYER_MANA_DEFICIT_PERCENT", APL::VALUE_TYPE_PLAYER_MANA_DEFICIT_PERCENT)
+        .value("VALUE_TYPE_TALENT_COUNT", APL::VALUE_TYPE_TALENT_COUNT)
+        .value("VALUE_TYPE_RUNE_EXISTS", APL::VALUE_TYPE_RUNE_EXISTS)
+        .value("VALUE_TYPE_COOLDOWN_EXISTS", APL::VALUE_TYPE_COOLDOWN_EXISTS)
+        .value("VALUE_TYPE_COOLDOWN_REACT", APL::VALUE_TYPE_COOLDOWN_REACT)
+        .value("VALUE_TYPE_COOLDOWN_DURATION", APL::VALUE_TYPE_COOLDOWN_DURATION)
+        .value("VALUE_TYPE_BUFF_EXISTS", APL::VALUE_TYPE_BUFF_EXISTS)
+        .value("VALUE_TYPE_BUFF_REACT", APL::VALUE_TYPE_BUFF_REACT)
+        .value("VALUE_TYPE_BUFF_STACKS", APL::VALUE_TYPE_BUFF_STACKS)
+        .value("VALUE_TYPE_BUFF_DURATION", APL::VALUE_TYPE_BUFF_DURATION)
+        .value("VALUE_TYPE_DEBUFF_EXISTS", APL::VALUE_TYPE_DEBUFF_EXISTS)
+        .value("VALUE_TYPE_DEBUFF_STACKS", APL::VALUE_TYPE_DEBUFF_STACKS)
+        .value("VALUE_TYPE_DEBUFF_DURATION", APL::VALUE_TYPE_DEBUFF_DURATION)
+        .value("VALUE_TYPE_STATE_TIME", APL::VALUE_TYPE_STATE_TIME)
+        .value("VALUE_TYPE_STATE_TIME_PERCENT", APL::VALUE_TYPE_STATE_TIME_PERCENT)
+        .value("VALUE_TYPE_STATE_DURATION", APL::VALUE_TYPE_STATE_DURATION)
+        .value("VALUE_TYPE_STATE_DURATION_PERCENT", APL::VALUE_TYPE_STATE_DURATION_PERCENT)
+        .value("VALUE_TYPE_STATE_IS_MOVING", APL::VALUE_TYPE_STATE_IS_MOVING)
+        .value("VALUE_TYPE_STATE_IS_SILENCED", APL::VALUE_TYPE_STATE_IS_SILENCED)
+        .value("VALUE_TYPE_STATE_IS_INTERRUPTED", APL::VALUE_TYPE_STATE_IS_INTERRUPTED)
+        .value("VALUE_TYPE_SPELL_TRAVEL_TIME", APL::VALUE_TYPE_SPELL_TRAVEL_TIME)
+        .value("VALUE_TYPE_SPELL_CAST_TIME", APL::VALUE_TYPE_SPELL_CAST_TIME)
+        .value("VALUE_TYPE_SPELL_TRAVEL_CAST_TIME", APL::VALUE_TYPE_SPELL_TRAVEL_CAST_TIME)
+        .value("VALUE_TYPE_SPELL_MANA_COST", APL::VALUE_TYPE_SPELL_MANA_COST)
+        .value("VALUE_TYPE_SPELL_CAN_CAST", APL::VALUE_TYPE_SPELL_CAN_CAST)
+        .value("VALUE_TYPE_CONFIG_DISTANCE", APL::VALUE_TYPE_CONFIG_DISTANCE)
+        .value("VALUE_TYPE_CONFIG_REACTION_TIME", APL::VALUE_TYPE_CONFIG_REACTION_TIME)
+        .value("VALUE_TYPE_CONFIG_TARGET_LEVEL", APL::VALUE_TYPE_CONFIG_TARGET_LEVEL)
+        .value("VALUE_TYPE_CONFIG_PLAYER_LEVEL", APL::VALUE_TYPE_CONFIG_PLAYER_LEVEL)
+        .value("VALUE_TYPE_CONFIG_DIFF_LEVEL", APL::VALUE_TYPE_CONFIG_DIFF_LEVEL)
+        ;
+
+    emscripten::enum_<APL::ConditionType>("APL_ConditionType")
+        .value("CONDITION_TYPE_NONE", APL::CONDITION_TYPE_NONE)
+        .value("CONDITION_TYPE_AND", APL::CONDITION_TYPE_AND)
+        .value("CONDITION_TYPE_OR", APL::CONDITION_TYPE_OR)
+        .value("CONDITION_TYPE_CMP", APL::CONDITION_TYPE_CMP)
+        .value("CONDITION_TYPE_NOT", APL::CONDITION_TYPE_NOT)
+        .value("CONDITION_TYPE_FALSE", APL::CONDITION_TYPE_FALSE)
+        .value("CONDITION_TYPE_TRUE", APL::CONDITION_TYPE_TRUE)
+        ;
+
+    emscripten::enum_<APL::ConditionOp>("APL_ConditionOp")
+        .value("CONDITION_OP_NONE", APL::CONDITION_OP_NONE)
+        .value("CONDITION_OP_EQ", APL::CONDITION_OP_EQ)
+        .value("CONDITION_OP_NEQ", APL::CONDITION_OP_NEQ)
+        .value("CONDITION_OP_GT", APL::CONDITION_OP_GT)
+        .value("CONDITION_OP_GTE", APL::CONDITION_OP_GTE)
+        .value("CONDITION_OP_LT", APL::CONDITION_OP_LT)
+        .value("CONDITION_OP_LTE", APL::CONDITION_OP_LTE)
+        ;
+
+    emscripten::value_object<APL::Value>("APL_Value")
+        .field("type", &APL::Value::type)
+        .field("str", &APL::Value::str)
+        .field("value", &APL::Value::value)
+        .field("id", &APL::Value::id)
+        ;
+
+    emscripten::value_object<APL::Condition>("APL_Condition")
+        .field("type", &APL::Condition::type)
+        .field("op", &APL::Condition::op)
+        .field("values", &APL::Condition::values)
+        .field("conditions", &APL::Condition::conditions)
+        ;
+
+    emscripten::value_object<APL::Action>("APL_Action")
+        .field("type", &APL::Action::type)
+        .field("str", &APL::Action::str)
+        .field("value", &APL::Action::value)
+        .field("id", &APL::Action::id)
+        .field("sequence", &APL::Action::sequence)
+        ;
+
+    emscripten::value_object<APL::Item>("APL_Item")
+        .field("condition", &APL::Item::condition)
+        .field("action", &APL::Item::action)
+        ;
+
+    emscripten::value_object<APL::APL>("APL_APL")
+        .field("precombat", &APL::APL::precombat)
+        .field("combat", &APL::APL::combat)
+        ;
 
     emscripten::enum_<Rotation>("Rotation")
+        .value("ROTATION_APL", ROTATION_APL)
         .value("ROTATION_ST_ARCANE", ROTATION_ST_ARCANE)
         .value("ROTATION_ST_FIRE", ROTATION_ST_FIRE)
         .value("ROTATION_ST_FIRE_SC", ROTATION_ST_FIRE_SC)
@@ -190,6 +295,8 @@ EMSCRIPTEN_BINDINGS(my_module)
         .property("rot_ab_spam_above", &Config::rot_ab_spam_above)
         .property("rot_ab_stacks_dec_below", &Config::rot_ab_stacks_dec_below)
         .property("rot_mb_mana", &Config::rot_mb_mana)
+
+        .property("apl", &Config::apl)
         ;
 
     emscripten::function("allocConfig", &allocConfig);

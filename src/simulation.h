@@ -111,7 +111,7 @@ public:
 
     void pushBuffGainAll(std::shared_ptr<buff::Buff> buff, double t);
 
-    void pushBuffExpire(std::shared_ptr<unit::Unit> unit, std::shared_ptr<buff::Buff> buff, double t = 0);
+    void pushBuffExpire(std::shared_ptr<unit::Unit> unit, std::shared_ptr<buff::Buff> buff);
 
     void pushDebuffGain(std::shared_ptr<target::Target> target, std::shared_ptr<debuff::Debuff> debuff, double t);
 

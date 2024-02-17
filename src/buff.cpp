@@ -133,6 +133,13 @@ HotStreak::HotStreak()
     duration = 10;
 }
 
+HeatingUp::HeatingUp()
+{
+    id = HEATING_UP;
+    name = "Heating up";
+    duration = 10;
+}
+
 FingersOfFrost::FingersOfFrost()
 {
     id = FINGERS_OF_FROST;

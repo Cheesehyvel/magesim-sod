@@ -492,14 +492,13 @@ void Simulation::pushBuffGainAll(std::shared_ptr<buff::Buff> buff, double t)
     push(event);
 }
 
-void Simulation::pushBuffExpire(std::shared_ptr<unit::Unit> unit, std::shared_ptr<buff::Buff> buff, double t)
+void Simulation::pushBuffExpire(std::shared_ptr<unit::Unit> unit, std::shared_ptr<buff::Buff> buff)
 {
     Event event;
     event.type = EVENT_BUFF_EXPIRE;
-    event.t = t == 0 ? buff->duration : t;
+    event.t = buff->duration;
     event.unit = unit;
     event.buff = buff;
-    buff->t_expires = state.t + event.t;
 
     push(event);
 }
@@ -522,7 +521,6 @@ void Simulation::pushDebuffExpire(std::shared_ptr<target::Target> target, std::s
     event.t = debuff->duration;
     event.target = target;
     event.debuff = debuff;
-    debuff->t_expires = state.t + event.t;
 
     push(event);
 }
@@ -1037,6 +1035,7 @@ void Simulation::onBuffGain(std::shared_ptr<unit::Unit> unit, std::shared_ptr<bu
     int stacks = unit->addBuff(buff);
 
     if (old_stacks < 1 || buff->stack_refresh) {
+        buff->t_expires = state.t + buff->duration;
         removeBuffExpiration(unit, buff);
         pushBuffExpire(unit, buff);
     }
@@ -1079,6 +1078,7 @@ void Simulation::onBuffGainAll(std::shared_ptr<buff::Buff> buff)
 
 void Simulation::onDebuffGain(std::shared_ptr<target::Target> target, std::shared_ptr<debuff::Debuff> debuff)
 {
+    debuff->t_expires = state.t + debuff->duration;
     int stacks = target->addDebuff(debuff);
     removeDebuffExpiration(target, debuff);
     pushDebuffExpire(target, debuff);
@@ -1103,6 +1103,7 @@ void Simulation::onCooldownGain(std::shared_ptr<unit::Unit> unit, std::shared_pt
     unit->addCooldown(cooldown);
 
     if (cooldownDuration(unit, cooldown->id) < cooldown->duration) {
+        cooldown->t_expires = state.t + cooldown->duration;
         removeCooldownExpiration(unit, *cooldown);
         pushCooldownExpire(unit, cooldown);
     }

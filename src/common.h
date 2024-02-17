@@ -6,6 +6,7 @@
 
 enum Rotation : int
 {
+    ROTATION_APL = 1,
     ROTATION_ST_ARCANE = 10,
     ROTATION_ST_FIRE = 20,
     ROTATION_ST_FIRE_SC = 21,
@@ -44,6 +45,7 @@ enum School : int
     SCHOOL_SPELLFIRE,
     SCHOOL_SPELLFROST,
     SCHOOL_HOLY,
+    SCHOOL_PHYSICAL,
 };
 
 enum Trinket : int

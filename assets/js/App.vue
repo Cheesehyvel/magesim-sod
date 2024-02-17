@@ -670,7 +670,7 @@
                     </div>
 
                     <div class="config" v-if="active_tab == 'config'">
-                        <div class="fieldsets">
+                        <div class="fieldsets" :class="[config.rotation == rotations.ROTATION_APL ? 'with-apl' : '']">
                             <fieldset class="config-general">
                                 <legend>General</legend>
                                 <div class="form-item">
@@ -836,6 +836,7 @@
                                 <div class="form-item">
                                     <label>Main rotation</label>
                                     <select v-model="config.rotation">
+                                        <option :value="rotations.ROTATION_APL">APL</option>
                                         <option :value="rotations.ROTATION_ST_ARCANE">Arcane</option>
                                         <option :value="rotations.ROTATION_ST_FIRE">Fire</option>
                                         <option :value="rotations.ROTATION_ST_FIRE_SC">Fire (Scorch)</option>
@@ -848,64 +849,69 @@
                                         <option :value="rotations.ROTATION_AOE_FS">Flamestrike</option>
                                     </select>
                                 </div>
-                                <div class="form-item" v-if="config.talents.imp_scorch">
-                                    <label><input type="checkbox" v-model="config.maintain_imp_scorch">
-                                        <span>Keep up imp. scorch</span>
-                                        <help>Imp. Scorch from you</help>
-                                    </label>
-                                </div>
-                                <div class="form-item">
-                                    <label>
-                                        <span>Scorching mages</span>
-                                        <help>Not counting yourself</help>
-                                    </label>
-                                    <input type="text" v-model.number="config.scorching_mages">
-                                </div>
-                                <div class="form-item">
-                                    <label><input type="checkbox" v-model="config.rot_fire_blast_weave">
-                                        <span>Fire Blast Weave</span>
-                                    </label>
-                                </div>
-                                <template v-if="config.rotation == rotations.ROTATION_ST_FIRE_SC">
-                                    <div class="form-item">
-                                        <label><input type="checkbox" v-model="config.rot_combustion_fb">
-                                            <span>Cast Fireball during Combustion</span>
-                                        </label>
-                                    </div>
+                                <template v-if="config.rotation == rotations.ROTATION_APL">
+                                    <apl v-model="config.apl.combat" />
                                 </template>
-                                <template v-if="config.rotation == rotations.ROTATION_ST_ARCANE && config.runes.arcane_blast">
-                                    <div class="form-item">
-                                        <label>
-                                            <span>AB stacks before reset</span>
+                                <template v-else>
+                                    <div class="form-item" v-if="config.talents.imp_scorch">
+                                        <label><input type="checkbox" v-model="config.maintain_imp_scorch">
+                                            <span>Keep up imp. scorch</span>
+                                            <help>Imp. Scorch from you</help>
                                         </label>
-                                    <input type="text" v-model.number="config.rot_ab_stacks">
-                                    </div>
-                                    <div class="form-item">
-                                        <label>
-                                            <span>Spam AB above mana %</span>
-                                        </label>
-                                    <input type="text" v-model.number="config.rot_ab_spam_above">
                                     </div>
                                     <div class="form-item">
                                         <label>
-                                            <span>Decrease AB stacks by 1 below mana %</span>
+                                            <span>Scorching mages</span>
+                                            <help>Not counting yourself</help>
                                         </label>
-                                        <input type="text" v-model.number="config.rot_ab_stacks_dec_below">
+                                        <input type="text" v-model.number="config.scorching_mages">
                                     </div>
-                                    <div class="form-item" v-if="config.runes.missile_barrage">
-                                        <label>
-                                            <span>Use Missile Barrage ASAP below mana %</span>
-                                            <help>This can be useful to conserve mana</help>
-                                        </label>
-                                        <input type="text" v-model.number="config.rot_mb_mana">
-                                    </div>
-                                </template>
-                                <template v-if="config.rotation == rotations.ROTATION_ST_FROST">
-                                    <div class="form-item" v-if="config.runes.ice_lance && config.runes.fingers_of_frost">
-                                        <label><input type="checkbox" v-model="config.rot_ice_lance">
-                                            <span>Ice Lance at end of Fingers of Frost</span>
+                                    <div class="form-item">
+                                        <label><input type="checkbox" v-model="config.rot_fire_blast_weave">
+                                            <span>Fire Blast Weave</span>
                                         </label>
                                     </div>
+                                    <template v-if="config.rotation == rotations.ROTATION_ST_FIRE_SC">
+                                        <div class="form-item">
+                                            <label><input type="checkbox" v-model="config.rot_combustion_fb">
+                                                <span>Cast Fireball during Combustion</span>
+                                            </label>
+                                        </div>
+                                    </template>
+                                    <template v-if="config.rotation == rotations.ROTATION_ST_ARCANE && config.runes.arcane_blast">
+                                        <div class="form-item">
+                                            <label>
+                                                <span>AB stacks before reset</span>
+                                            </label>
+                                        <input type="text" v-model.number="config.rot_ab_stacks">
+                                        </div>
+                                        <div class="form-item">
+                                            <label>
+                                                <span>Spam AB above mana %</span>
+                                            </label>
+                                        <input type="text" v-model.number="config.rot_ab_spam_above">
+                                        </div>
+                                        <div class="form-item">
+                                            <label>
+                                                <span>Decrease AB stacks by 1 below mana %</span>
+                                            </label>
+                                            <input type="text" v-model.number="config.rot_ab_stacks_dec_below">
+                                        </div>
+                                        <div class="form-item" v-if="config.runes.missile_barrage">
+                                            <label>
+                                                <span>Use Missile Barrage ASAP below mana %</span>
+                                                <help>This can be useful to conserve mana</help>
+                                            </label>
+                                            <input type="text" v-model.number="config.rot_mb_mana">
+                                        </div>
+                                    </template>
+                                    <template v-if="config.rotation == rotations.ROTATION_ST_FROST">
+                                        <div class="form-item" v-if="config.runes.ice_lance && config.runes.fingers_of_frost">
+                                            <label><input type="checkbox" v-model="config.rot_ice_lance">
+                                                <span>Ice Lance at end of Fingers of Frost</span>
+                                            </label>
+                                        </div>
+                                    </template>
                                 </template>
                             </fieldset>
                             <fieldset class="config-debuffs">
@@ -1209,7 +1215,7 @@
                                     </label>
                                 </div>
                             </fieldset>
-                            <fieldset class="config-cooldowns">
+                            <fieldset class="config-cooldowns" v-if="config.rotation != rotations.ROTATION_APL">
                                 <legend>Cooldowns</legend>
                                 <div class="timings">
                                     <table class="items">
@@ -1264,7 +1270,7 @@
                                     </div>
                                 </div>
                             </fieldset>
-                            <fieldset class="config-interruptions">
+                            <fieldset class="config-interruptions" v-if="config.rotation != rotations.ROTATION_APL">
                                 <legend>Interruptions</legend>
                                 <div class="interruptions">
                                     <table class="items">
@@ -1830,6 +1836,10 @@
                 trinket2: 0,
 
                 rotation: constants.rotations.ROTATION_ST_FROST,
+                apl: {
+                    precombat: [],
+                    combat: [],
+                },
                 maintain_imp_scorch: false,
                 scorching_mages: 0,
                 rot_fire_blast_weave: false,
@@ -1876,8 +1886,15 @@
                 talents: {
                     arcane_subtlety: 0,
                     arcane_focus: 0,
+                    imp_arcane_missiles: 0,
+                    wand_specialization: 0,
+                    magic_absorption: 0,
                     clearcast: 0,
+                    magic_attunement: 0,
                     imp_arcane_explosion: 0,
+                    arcane_resilience: 0,
+                    imp_mana_shield: 0,
+                    imp_counterspell: 0,
                     arcane_meditation: 0,
                     presence_of_mind: 0,
                     arcane_mind: 0,
@@ -1885,27 +1902,39 @@
                     arcane_power: 0,
 
                     imp_fireball: 0,
+                    impact: 0,
                     ignite: 0,
+                    flame_throwing: 0,
                     imp_fire_blast: 0,
                     incinerate: 0,
                     imp_flamestrike: 0,
                     pyroblast: 0,
+                    burning_soul: 0,
                     imp_scorch: 0,
+                    imp_fire_ward: 0,
                     master_of_elements: 0,
                     critical_mass: 0,
                     blast_wave: 0,
                     fire_power: 0,
                     combustion: 0,
 
+                    frost_warding: 0,
                     imp_frostbolt: 0,
                     elemental_precision: 0,
                     ice_shards: 0,
+                    frostbite: 0,
+                    imp_frost_nova: 0,
+                    permafrost: 0,
                     piercing_ice: 0,
                     cold_snap: 0,
+                    imp_blizzard: 0,
+                    arctic_reach: 0,
                     frost_channeling: 0,
                     shatter: 0,
+                    ice_block: 0,
                     imp_cone_of_cold: 0,
                     winters_chill: 0,
+                    ice_barrier: 0,
                 },
 
                 runes: {
@@ -2078,8 +2107,15 @@
 
             data.talent_map[0][0] = "arcane_subtlety";
             data.talent_map[0][1] = "arcane_focus";
+            data.talent_map[0][2] = "imp_arcane_missiles";
+            data.talent_map[0][3] = "wand_specialization";
+            data.talent_map[0][4] = "magic_absorption";
             data.talent_map[0][5] = "clearcast";
+            data.talent_map[0][6] = "magic_attunement";
             data.talent_map[0][7] = "imp_arcane_explosion";
+            data.talent_map[0][8] = "arcane_resilience";
+            data.talent_map[0][9] = "imp_mana_shield";
+            data.talent_map[0][10] = "imp_counterspell";
             data.talent_map[0][11] = "arcane_meditation";
             data.talent_map[0][12] = "presence_of_mind";
             data.talent_map[0][13] = "arcane_mind";
@@ -2087,27 +2123,39 @@
             data.talent_map[0][15] = "arcane_power";
 
             data.talent_map[1][0] = "imp_fireball";
+            data.talent_map[1][1] = "impact";
             data.talent_map[1][2] = "ignite";
+            data.talent_map[1][3] = "flame_throwing";
             data.talent_map[1][4] = "imp_fire_blast";
             data.talent_map[1][5] = "incinerate";
             data.talent_map[1][6] = "imp_flamestrike";
             data.talent_map[1][7] = "pyroblast";
+            data.talent_map[1][8] = "burning_soul";
             data.talent_map[1][9] = "imp_scorch";
+            data.talent_map[1][10] = "imp_fire_ward";
             data.talent_map[1][11] = "master_of_elements";
             data.talent_map[1][12] = "critical_mass";
             data.talent_map[1][13] = "blast_weave";
             data.talent_map[1][14] = "fire_power";
             data.talent_map[1][15] = "combustion";
 
+            data.talent_map[2][0] = "frost_warding";
             data.talent_map[2][1] = "imp_frostbolt";
             data.talent_map[2][2] = "elemental_precision";
             data.talent_map[2][3] = "ice_shards";
+            data.talent_map[2][4] = "frostbite";
+            data.talent_map[2][5] = "imp_frost_nova";
+            data.talent_map[2][6] = "permafrost";
             data.talent_map[2][7] = "piercing_ice";
             data.talent_map[2][8] = "cold_snap";
+            data.talent_map[2][9] = "imp_blizzard";
+            data.talent_map[2][10] = "arctic_reach";
             data.talent_map[2][11] = "frost_channeling";
             data.talent_map[2][12] = "shatter";
+            data.talent_map[2][13] = "ice_block";
             data.talent_map[2][14] = "imp_cone_of_cold";
             data.talent_map[2][15] = "winters_chill";
+            data.talent_map[2][16] = "ice_barrier";
 
             return data;
         },
@@ -2852,9 +2900,8 @@
             },
 
             betaWarning() {
-                if (!localStorage.getItem("beta_warning")) {
-                    this.beta_warning_open = true;
-                }
+                // if (!localStorage.getItem("beta_warning"))
+                //     this.beta_warning_open = true;
             },
 
             closeBetaWarning(accept) {

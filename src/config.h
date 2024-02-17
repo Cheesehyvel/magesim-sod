@@ -3,6 +3,7 @@
 #include "common.h"
 #include "timing.h"
 #include "interruption.h"
+#include "apl.h"
 
 struct Config
 {
@@ -70,6 +71,8 @@ struct Config
     double rot_ab_spam_above = 100;
     double rot_ab_stacks_dec_below = 0;
     double rot_mb_mana = 0;
+
+    APL::APL apl;
 
     std::vector<Timing> timings;
     std::vector<Interruption> interruptions;

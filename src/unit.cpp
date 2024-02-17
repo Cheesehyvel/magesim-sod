@@ -45,6 +45,15 @@ bool Unit::hasCooldown(cooldown::ID id) const
     return cooldowns.find(id) != cooldowns.end();
 }
 
+double Unit::cooldownDuration(cooldown::ID id, const State& state) const
+{
+    auto const itr = cooldowns.find(id);
+    if (itr == cooldowns.end())
+        return 0;
+
+    return itr->second->t_expires - state.t;
+}
+
 void Unit::addCooldown(std::shared_ptr<cooldown::Cooldown> cooldown)
 {
     cooldowns[cooldown->id] = cooldown;
@@ -113,6 +122,7 @@ int Unit::addBuff(std::shared_ptr<buff::Buff> buff)
         buffs[buff->id] = buff;
     }
     else if (add != 0) {
+        buffs[buff->id]->t_expires = buff->t_expires;
         buffs[buff->id]->addStacks(add);
     }
 
@@ -517,6 +527,15 @@ action::Action Unit::manaAction(double mana, const std::string &str) const
     action::Action action{ action::TYPE_MANA };
     action.value = mana;
     action.str = str;
+    return action;
+}
+
+action::Action Unit::waitAction(double t, const std::string &str) const
+{
+    action::Action action{ action::TYPE_WAIT };
+    action.value = t;
+    action.str = str;
+    action.primary_action = true;
     return action;
 }
 

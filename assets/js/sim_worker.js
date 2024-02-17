@@ -11,7 +11,7 @@ onmessage = (event) => {
         .then(m => {
             var config = m.allocConfig();
             for (var key in data.config) {
-                if (key == "timings" || key == "interruptions")
+                if (key == "timings" || key == "interruptions" || key == "apl")
                     continue;
                 if (typeof(config[key]) != "undefined")
                     config[key] = data.config[key];
@@ -24,6 +24,60 @@ onmessage = (event) => {
                 config.trinket1 = m.Trinket.values[data.config.trinket1];
             if (m.Trinket.values.hasOwnProperty(data.config.trinket2))
                 config.trinket2 = m.Trinket.values[data.config.trinket2];
+
+            // APL
+            var aplValue = function(val) {
+                return {
+                    type: m.APL_ValueType.values[val.type],
+                    str: val.str,
+                    value: val.value,
+                    id: val.id,
+                };
+            };
+
+            var aplAction = function(val) {
+                var sequence = new m.APLActionVector();
+                for (var v of val.sequence)
+                    sequence.push_back(aplAction(v));
+
+                return {
+                    type: m.APL_ActionType.values[val.type],
+                    str: val.str,
+                    value: val.value,
+                    id: val.id,
+                    sequence: sequence,
+                };
+            };
+
+            var aplCondition = function(val) {
+                var conditions = new m.APLConditionVector();
+                for (var v of val.conditions)
+                    conditions.push_back(aplCondition(v));
+
+                var values = new m.APLValueVector();
+                for (var v of val.values)
+                    values.push_back(aplValue(v));
+
+                return {
+                    type: m.APL_ConditionType.values[val.type],
+                    op: m.APL_ConditionOp.values[val.op],
+                    conditions: conditions,
+                    values: values,
+                };
+            };
+
+            var combat = new m.APLItemVector();
+            for (var row of data.config.apl.combat) {
+                combat.push_back({
+                    condition: aplCondition(row.condition),
+                    action: aplAction(row.action),
+                });
+            }
+
+            config.apl = {
+                combat: combat,
+                precombat: new m.APLItemVector(), // TODO
+            };
 
             for (var i=0; i<data.config.timings.length; i++) {
                 m.addTiming(

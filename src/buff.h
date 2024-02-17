@@ -22,6 +22,7 @@ enum ID : int
     MANA_TIDE = 39609,
     BERSERKING = 20554,
     HOT_STREAK = 400624,
+    HEATING_UP = 4006240, // fake id
     FINGERS_OF_FROST = 400647,
     GHOST_FINGERS = 4454411,
     MISSILE_BARRAGE = 400588,
@@ -172,6 +173,13 @@ class HotStreak : public Buff
 
 public:
     HotStreak();
+};
+
+class HeatingUp : public Buff
+{
+
+public:
+    HeatingUp();
 };
 
 class FingersOfFrost : public Buff

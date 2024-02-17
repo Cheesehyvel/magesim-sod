@@ -43,8 +43,16 @@ namespace spell
         REGENERATION = 401417,
         REWIND_TIME = 401462,
         TEMPORAL_BEACON = 400735,
-        ELECTROMAGNETIC_GIGAFLUX_REACTIVATOR = 11826,
+
+        // Enchants
         DISMANTLE = 439164,
+
+        // Items
+        ELECTROMAGNETIC_GIGAFLUX_REACTIVATOR = 11826,
+        CHARGED_INSPIRATION = 437327,
+        COIN_FLIP = 437368,
+        ROBE_ARCHMAGE = 18385,
+        CELESTIAL_ORB = 9253,
     };
 
     enum Result : int
@@ -149,7 +157,6 @@ namespace spell
         {
             min_dmg = 226.0 * defaultRuneScale(lvl);
             max_dmg = 264.0 * defaultRuneScale(lvl);
-
             coeff = 1.5/3.5;
         }
     };
@@ -770,7 +777,6 @@ namespace spell
     {
         ColdSnap(int lvl) : Spell(COLD_SNAP, "Cold Snap", SCHOOL_FROST)
         {
-            cost = 0;
             is_trigger = true;
             gcd = 0;
         }
@@ -849,17 +855,6 @@ namespace spell
         }
     };
 
-    struct ElectromagneticGigafluxReactivator : Spell
-    {
-        ElectromagneticGigafluxReactivator(int lvl) : Spell(ELECTROMAGNETIC_GIGAFLUX_REACTIVATOR, "Electromagnetic Gigaflux Reactivator", SCHOOL_NATURE)
-        {
-            aoe = true;
-            min_dmg = 152;
-            max_dmg = 172;
-            gcd = 0;
-        }
-    };
-
     struct Dismantle : Spell
     {
         Dismantle(int lvl) : Spell(DISMANTLE, "Dismantle", SCHOOL_NATURE)
@@ -871,6 +866,54 @@ namespace spell
             coeff = 0;
             can_proc = false;
             proc = true;
+        }
+    };
+
+    struct ElectromagneticGigafluxReactivator : Spell
+    {
+        ElectromagneticGigafluxReactivator(int lvl) : Spell(ELECTROMAGNETIC_GIGAFLUX_REACTIVATOR, "Electromagnetic Gigaflux Reactivator", SCHOOL_NATURE)
+        {
+            aoe = true;
+            min_dmg = 152;
+            max_dmg = 172;
+            gcd = 0;
+        }
+    };
+
+
+    struct ChargedInspiration : public Spell
+    {
+        ChargedInspiration(int lvl) : Spell(CHARGED_INSPIRATION, "Charged Inspiration", SCHOOL_PHYSICAL)
+        {
+            is_trigger = true;
+            gcd = 0;
+        }
+    };
+
+    struct CoinFlip : public Spell
+    {
+        CoinFlip(int lvl) : Spell(COIN_FLIP, "Coin Flip", SCHOOL_PHYSICAL)
+        {
+            is_trigger = true;
+            gcd = 0;
+        }
+    };
+
+    struct RobeArchmage : public Spell
+    {
+        RobeArchmage(int lvl) : Spell(ROBE_ARCHMAGE, "Robe of the Archmage", SCHOOL_PHYSICAL)
+        {
+            is_trigger = true;
+            gcd = 0;
+        }
+    };
+
+    struct CelestialOrb : public Spell
+    {
+        CelestialOrb(int lvl) : Spell(CELESTIAL_ORB, "Celestial Orb", SCHOOL_PHYSICAL)
+        {
+            is_trigger = true;
+            gcd = 0;
         }
     };
 
