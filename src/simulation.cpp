@@ -758,10 +758,8 @@ void Simulation::onSpellImpact(std::shared_ptr<unit::Unit> unit, spell::SpellIns
     if (instance.result == spell::PENDING)
         rollSpellInstance(unit, instance, target);
 
-    if (instance.spell->dot) {
-        instance.resist = spellDmgResist(unit, instance);
-        instance.dmg -= instance.resist;
-    }
+    if (instance.spell->dot)
+        instance.dmg*= debuffDmgMultiplier(unit, instance.spell, target);
 
     if (instance.dmg)
         target->dmg += static_cast<unsigned long long>(instance.dmg);
@@ -1498,8 +1496,10 @@ void Simulation::rollSpellInstance(std::shared_ptr<unit::Unit> unit, spell::Spel
         instance.result = getSpellResult(unit, instance.spell, target);
 
         if (instance.result != spell::MISS) {
-            instance.initial_dmg = spellDmg(unit, instance.spell, target);
-            instance.dmg = instance.initial_dmg * debuffDmgMultiplier(unit, instance.spell, target);
+            instance.initial_dmg = instance.dmg = spellDmg(unit, instance.spell, target);
+
+            if (!instance.spell->dot)
+                instance.dmg *= debuffDmgMultiplier(unit, instance.spell, target);
 
             if (instance.result == spell::CRIT)
                 instance.dmg *= critMultiplier(unit, instance.spell);

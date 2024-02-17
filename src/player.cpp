@@ -1389,10 +1389,10 @@ action::Action Player::nextAction(const State& state)
                 if (ab_streak < ab_stacks && canCast(ab))
                     return spellAction(ab, target);
                 else
-                    return spellAction<spell::LivingFlame>(config.distance, buffStacks(buff::ARCANE_BLAST));
+                    return spellAction<spell::LivingFlame>(config.distance);
             }
 
-            return spellAction<spell::LivingFlame>(config.distance, buffStacks(buff::ARCANE_BLAST));
+            return spellAction<spell::LivingFlame>(config.distance);
         }
 
         if (runes.missile_barrage && canReactTo(buff::MISSILE_BARRAGE, state.t) && !state.isMoving())
@@ -1498,7 +1498,7 @@ action::Action Player::nextAction(const State& state)
             if (ab_streak < ab_stacks)
                 return spellAction(ab, target);
             else
-                return spellAction<spell::LivingFlame>(config.distance, buffStacks(buff::ARCANE_BLAST));
+                return spellAction<spell::LivingFlame>(config.distance);
         }
 
         if (runes.arcane_surge && 
@@ -1568,10 +1568,10 @@ action::Action Player::nextAction(const State& state)
                 if (ab_streak < ab_stacks && canCast(ab))
                     return spellAction(ab, target);
                 else
-                    return spellAction<spell::LivingFlame>(config.distance, buffStacks(buff::ARCANE_BLAST));
+                    return spellAction<spell::LivingFlame>(config.distance);
             }
 
-            return spellAction<spell::LivingFlame>(config.distance, buffStacks(buff::ARCANE_BLAST));
+            return spellAction<spell::LivingFlame>(config.distance);
         }
 
         if (runes.missile_barrage && canReactTo(buff::MISSILE_BARRAGE, state.t) && !state.isMoving())
@@ -1743,7 +1743,7 @@ std::shared_ptr<spell::Spell> Player::APL_SpellFromID(spell::ID id)
     if (id == spell::LIVING_BOMB)  
         return std::make_shared<spell::LivingBomb>(config.player_level);
     if (id == spell::LIVING_FLAME) 
-        return std::make_shared<spell::LivingFlame>(config.player_level, config.distance, buffStacks(buff::ARCANE_BLAST));
+        return std::make_shared<spell::LivingFlame>(config.player_level, config.distance);
     if (id == spell::MANA_GEM) 
         return std::make_shared<spell::ManaGem>(config.player_level);
     if (id == spell::MASS_REGENERATION)

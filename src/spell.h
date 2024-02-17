@@ -690,7 +690,7 @@ namespace spell
 
     struct LivingFlame : Spell
     {
-        LivingFlame(int lvl, double distance, int ab_stacks = 0) : Spell(LIVING_FLAME, "Living Flame", SCHOOL_SPELLFIRE)
+        LivingFlame(int lvl, double distance) : Spell(LIVING_FLAME, "Living Flame", SCHOOL_SPELLFIRE)
         {
             double diameter = 4;
             double flames_per_second = 2;
@@ -710,8 +710,6 @@ namespace spell
             t_interval = 1;
             min_dmg = max_dmg = 100.0 * defaultRuneScale(lvl);
             coeff = 0.143;
-            dynamic = true;
-            snapshot_multi = 1.0 + ((double) ab_stacks) * 0.15;
         }
     };
 
