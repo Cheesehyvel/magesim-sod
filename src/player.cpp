@@ -674,8 +674,8 @@ std::vector<action::Action> Player::onSpellImpactProc(const State& state, const 
                 actions.push_back(manaAction(mana, "Master of Elements"));
             }
 
-            if (runes.burnout && instance.spell->actual_cost)
-                actions.push_back(manaAction(instance.spell->actual_cost * -0.01, "Burnout"));
+            if (runes.burnout)
+                actions.push_back(manaAction(base_mana * -0.01, "Burnout"));
         }
     }
 
