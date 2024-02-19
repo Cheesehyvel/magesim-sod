@@ -675,7 +675,7 @@ std::vector<action::Action> Player::onSpellImpactProc(const State& state, const 
             }
 
             if (runes.burnout)
-                actions.push_back(manaAction(base_mana * -0.01, "Burnout"));
+                actions.push_back(manaAction(round(base_mana * -0.01), "Burnout"));
         }
     }
 
