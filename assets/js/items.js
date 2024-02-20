@@ -711,6 +711,7 @@ var equip = {
         { id: 16791, title: "Silkstream Cuffs", ilvl: 38, int: 5, spi: 4, q: "uncommon", phase: 2 },
         { id: 14416, title: "Stonecloth Bindings", ilvl: 34, int: 5, q: "uncommon", phase: 2 },
 
+        { id: 210781, title: "Phoenix Bindings", ilvl: 30, sp_fire: 13, q: "rare" },
         { id: "9821:1804", title: "Durable Bracers of Arcane Wrath", ilvl: 30, sp_arcane: 9, q: "uncommon" },
         { id: "9821:1880", title: "Durable Bracers of Fiery Wrath", ilvl: 30, sp_fire: 9, q: "uncommon" },
         { id: "9821:1956", title: "Durable Bracers of Frozen Wrath", ilvl: 30, sp_frost: 9, q: "uncommon" },
