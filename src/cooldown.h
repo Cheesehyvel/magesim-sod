@@ -28,6 +28,9 @@ namespace cooldown
         BRAIN_FREEZE = 400731,
         DEEP_FREEZE = 428739,
 
+        // Enchants
+        DISMANTLE = 439164,
+
         // Items
         CHARGED_INSPIRATION = 437327,
         COIN_FLIP = 437368,
@@ -248,6 +251,18 @@ namespace cooldown
         {
             id = MANA_GEM;
             duration = 120;
+        }
+
+    };
+
+    class Dismantle : public Cooldown
+    {
+
+    public:
+        Dismantle()
+        {
+            id = DISMANTLE;
+            duration = 25;
         }
 
     };
