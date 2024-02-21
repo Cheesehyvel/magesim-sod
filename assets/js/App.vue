@@ -1746,14 +1746,14 @@
         },
 
         data() {
-            var splitview = localStorage.getItem("splitview") == "true" ? true : false;
+            var splitview = localStorage.getItem("splitview") == "false" ? false : true;
 
             var default_config = {
                 iterations: 20000,
-                race: 0,
+                race: constants.races.RACE_UNDEAD,
 
-                duration: 120,
-                duration_variance: 10,
+                duration: 60,
+                duration_variance: 5,
                 rng_seed: 0,
                 stat_weight_increment: 20,
                 only_main_dmg: false,
@@ -1762,22 +1762,22 @@
                 targets: 1,
                 dot_targets: 0,
                 target_resistance: 0,
-                target_level: 27,
+                target_level: 42,
                 target_hp: 100,
-                player_level: 25,
+                player_level: 40,
                 distance: 20,
                 reaction_time: 300,
                 encounters: false,
 
                 // Buffs
-                mage_armor: false,
+                mage_armor: true,
                 molten_armor: false,
-                divine_spirit: false,
-                mark_of_the_wild: false,
+                divine_spirit: true,
+                mark_of_the_wild: true,
                 imp_mark_of_the_wild: false,
                 mana_spring: false,
                 imp_mana_spring: false,
-                blessing_of_kings: false,
+                blessing_of_kings: true,
                 blessing_of_wisdom: false,
                 imp_blessing_of_wisdom: false,
                 demonic_pact: false,
@@ -1788,6 +1788,7 @@
                 // Debuffs
                 curse_of_elements: false,
                 curse_of_shadow: false,
+                mekkatorques_arcano_shredder: false,
                 judgement_of_wisdom: false,
 
                 // World buffs
@@ -1796,7 +1797,7 @@
                 rallying_cry: false,
                 spirit_of_zandalar: false,
                 warchiefs_blessing: false,
-                spark_of_inspiration: false,
+                spark_of_inspiration: true,
                 boon_blackfathom: false,
                 ashenvale_cry: false,
                 dmf_dmg: false,
@@ -1806,18 +1807,18 @@
                 arcane_scroll_accuracy: false,
                 arcane_scroll_power: false,
                 arcane_scroll_recovery: false,
-                elixir_firepower: false,
+                elixir_firepower: true,
                 elixir_greater_firepower: false,
                 elixir_frost_power: false,
-                elixir_lesser_arcane: false,
+                elixir_lesser_arcane: true,
                 elixir_arcane: false,
                 elixir_greater_arcane: false,
-                weapon_oil: 0,
+                weapon_oil: constants.weapon_oils.OIL_LESSER_WIZARD,
                 flask: 0,
-                potion: 3385,
-                food: 0,
+                potion: constants.potions.POTION_GREATER_MANA,
+                food: constants.foods.FOOD_MP6,
 
-                pre_cast: false,
+                pre_cast: true,
 
                 set_udc_3p: false,
                 set_t3_2p: false,
@@ -1835,15 +1836,15 @@
                 trinket1: 0,
                 trinket2: 0,
 
-                rotation: constants.rotations.ROTATION_ST_FROST,
+                rotation: constants.rotations.ROTATION_ST_FIRE_SC,
                 apl: {
                     precombat: [],
                     combat: [],
                 },
-                maintain_imp_scorch: false,
+                maintain_imp_scorch: true,
                 scorching_mages: 0,
-                rot_fire_blast_weave: false,
-                rot_combustion_fb: false,
+                rot_fire_blast_weave: true,
+                rot_combustion_fb: true,
                 rot_ice_lance: false,
                 rot_ab_stacks: 3,
                 rot_ab_spam_above: 100,
@@ -1853,7 +1854,7 @@
                 timings: Array(),
                 interruptions: Array(),
 
-                build: "https://www.wowhead.com/classic/talent-calc/mage/--053500021_156jf76vca6ja",
+                build: "https://www.wowhead.com/classic/talent-calc/mage/-5050220103033151_156j966j476jh86r9a6rb",
 
                 stats: {
                     intellect: 0,
@@ -3947,7 +3948,7 @@
                 if (spec == "arcane") {
                     this.config.rotation = constants.rotations.ROTATION_ST_ARCANE;
                     if (this.config.player_level == 40)
-                        this.config.build = "https://www.wowhead.com/classic/talent-calc/mage/2500052310031531_156ra66jd76jh86r9a6j8";
+                        this.config.build = "https://www.wowhead.com/classic/talent-calc/mage/2250050310031531_156j966jd76jh86r9a6j8";
                     else
                         this.config.build = "https://www.wowhead.com/classic/talent-calc/mage/250025001001_156j976jha6j8";
                 }
@@ -4957,6 +4958,7 @@
 
                 this.calcStats();
                 this.saveCurrentProfile();
+                this.refreshTooltips();
 
                 var self = this;
                 clearTimeout(this.profile_status.timeout);
