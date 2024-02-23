@@ -169,7 +169,7 @@
                         title: "Cast: Icy Veins",
                         key: "icy_veins", 
                         type: constants.apl_action_types.ACTION_TYPE_BUFF,
-                        id: constants.spells.ICY_VEINS,
+                        id: constants.buffs.ICY_VEINS,
                         rune: "icy_veins",
                     },
                     { 
