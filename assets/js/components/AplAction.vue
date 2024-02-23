@@ -201,6 +201,13 @@
                         talent: "pyroblast",
                     },
                     { 
+                        title: "Cast: Presence of Mind",
+                        key: "presence_of_mind", 
+                        type: constants.apl_action_types.ACTION_TYPE_BUFF,
+                        id: constants.buffs.PRESENCE_OF_MIND,
+                        talent: "presence_of_mind",
+                    },
+                    { 
                         title: "Cast: Regeneration",
                         key: "regeneration", 
                         type: constants.apl_action_types.ACTION_TYPE_SPELL,
