@@ -535,7 +535,6 @@ action::Action Unit::waitAction(double t, const std::string &str) const
     action::Action action{ action::TYPE_WAIT };
     action.value = t;
     action.str = str;
-    action.primary_action = true;
     return action;
 }
 
