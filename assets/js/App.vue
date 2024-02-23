@@ -2435,57 +2435,57 @@
                 timings.push({
                     name: "power_infusion",
                     title: "Power Infusion",
-                    icon: "https://www.wowhead.com/images/wow/icons/large/spell_holy_powerinfusion.jpg",
+                    icon: "https://wow.zamimg.com/images/wow/icons/large/spell_holy_powerinfusion.jpg",
                 });
                 timings.push({
                     name: "mana_tide",
                     title: "Mana Tide",
-                    icon: "https://www.wowhead.com/images/wow/icons/large/spell_frost_summonwaterelemental.jpg",
+                    icon: "https://wow.zamimg.com/images/wow/icons/large/spell_frost_summonwaterelemental.jpg",
                 });
                 timings.push({
                     name: "innervate",
                     title: "Innervate",
-                    icon: "https://www.wowhead.com/images/wow/icons/large/spell_nature_lightning.jpg",
+                    icon: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_lightning.jpg",
                 });
                 timings.push({
                     name: "mana_gem",
                     title: "Mana Gem",
-                    icon: "https://www.wowhead.com/images/wow/icons/large/inv_misc_gem_sapphire_02.jpg",
+                    icon: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_gem_sapphire_02.jpg",
                 });
                 timings.push({
                     name: "evocation",
                     title: "Evocation",
-                    icon: "https://www.wowhead.com/images/wow/icons/large/spell_nature_purge.jpg",
+                    icon: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_purge.jpg",
                 });
                 timings.push({
                     name: "berserking",
                     title: "Berserking",
-                    icon: "https://www.wowhead.com/images/wow/icons/large/racial_troll_berserk.jpg",
+                    icon: "https://wow.zamimg.com/images/wow/icons/large/racial_troll_berserk.jpg",
                 });
                 timings.push({
                     name: "presence_of_mind",
                     title: "Presence of Mind",
-                    icon: "https://www.wowhead.com/images/wow/icons/large/spell_nature_enchantarmor.jpg",
+                    icon: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_enchantarmor.jpg",
                 });
                 timings.push({
                     name: "arcane_power",
                     title: "Arcane Power",
-                    icon: "https://www.wowhead.com/images/wow/icons/large/spell_nature_lightning.jpg",
+                    icon: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_lightning.jpg",
                 });
                 timings.push({
                     name: "combustion",
                     title: "Combustion",
-                    icon: "https://www.wowhead.com/images/wow/icons/large/spell_fire_sealoffire.jpg",
+                    icon: "https://wow.zamimg.com/images/wow/icons/large/spell_fire_sealoffire.jpg",
                 });
                 timings.push({
                     name: "icy_veins",
                     title: "Icy Veins",
-                    icon: "https://www.wowhead.com/images/wow/icons/large/spell_frost_coldhearted.jpg",
+                    icon: "https://wow.zamimg.com/images/wow/icons/large/spell_frost_coldhearted.jpg",
                 });
                 timings.push({
                     name: "cold_snap",
                     title: "Cold Snap",
-                    icon: "https://www.wowhead.com/images/wow/icons/large/spell_frost_wizardmark.jpg",
+                    icon: "https://wow.zamimg.com/images/wow/icons/large/spell_frost_wizardmark.jpg",
                 });
                 timings.push({
                     name: "gneuro_linked_monocle",
@@ -2518,7 +2518,7 @@
                         trinkets.push({
                             id: trinket.id,
                             title: trinket.title,
-                            icon: "https://www.wowhead.com/images/wow/icons/large/"+trinket.icon+".jpg",
+                            icon: "https://wow.zamimg.com/images/wow/icons/large/"+trinket.icon+".jpg",
                         })
                     }
                 });
