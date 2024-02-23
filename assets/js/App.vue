@@ -689,7 +689,7 @@
                                     </select>
                                 </div>
                                 <div class="form-item">
-                                    <label>Talents (<a :href="config.build" target="_blank">link</a>)</label>
+                                    <label>Talents and runes (<a :href="config.build" target="_blank">link</a>)</label>
                                     <input type="text" v-model="config.build" @input="onBuildInput">
                                 </div>
                                 <div class="form-item">
@@ -3961,7 +3961,7 @@
                 }
                 else if (spec == "frost") {
                     this.config.rotation = constants.rotations.ROTATION_ST_FROST;
-                    if (this.config.player_level == 25)
+                    if (this.config.player_level == 40)
                         this.config.build = "https://www.wowhead.com/classic/talent-calc/mage/--0535000310230135_156j966jd76jh86r9a6rb";
                     else
                         this.config.build = "https://www.wowhead.com/classic/talent-calc/mage/--053500021_156jf76vca6ja";

@@ -401,7 +401,7 @@ bool Player::isFrozen() const
 
 bool Player::hasChillEffect(std::shared_ptr<spell::Spell> spell) const
 {
-    if (spell->id == spell::CONE_OF_COLD || spell->id == spell::FROSTBOLT || spell->id == spell::FROSTFIRE_BOLT)
+    if (spell->id == spell::CONE_OF_COLD || spell->id == spell::FROSTBOLT || spell->id == spell::FROSTFIRE_BOLT || spell->id == spell::SPELLFROST_BOLT)
         return true;
 
     return false;
