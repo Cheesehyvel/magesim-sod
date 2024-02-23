@@ -166,6 +166,13 @@
                         rune: "ice_lance",
                     },
                     { 
+                        title: "Cast: Icy Veins",
+                        key: "icy_veins", 
+                        type: constants.apl_action_types.ACTION_TYPE_BUFF,
+                        id: constants.spells.ICY_VEINS,
+                        rune: "icy_veins",
+                    },
+                    { 
                         title: "Cast: Living Bomb",
                         key: "living_bomb", 
                         type: constants.apl_action_types.ACTION_TYPE_SPELL,

@@ -262,7 +262,7 @@ namespace cooldown
         Dismantle()
         {
             id = DISMANTLE;
-            duration = 25;
+            duration = 1;
         }
 
     };
