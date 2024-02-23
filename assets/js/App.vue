@@ -860,13 +860,6 @@
                                         </label>
                                     </div>
                                     <div class="form-item">
-                                        <label>
-                                            <span>Scorching mages</span>
-                                            <help>Not counting yourself</help>
-                                        </label>
-                                        <input type="text" v-model.number="config.scorching_mages">
-                                    </div>
-                                    <div class="form-item">
                                         <label><input type="checkbox" v-model="config.rot_fire_blast_weave">
                                             <span>Fire Blast Weave</span>
                                         </label>
@@ -939,6 +932,13 @@
                                         <span>Judgement of Wisdom</span>
                                         <help>50% chance of restoring mana</help>
                                     </label>
+                                </div>
+                                <div class="form-item">
+                                    <label>
+                                        <span>Scorching mages</span>
+                                        <help>Not counting yourself</help>
+                                    </label>
+                                    <input type="text" v-model.number="config.scorching_mages">
                                 </div>
                             </fieldset>
                             <fieldset class="config-buffs">
