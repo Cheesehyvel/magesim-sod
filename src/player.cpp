@@ -514,9 +514,6 @@ std::vector<action::Action> Player::onCastSuccessProc(const State& state, std::s
         actions.push_back(spellAction<spell::FlamestrikeDRDot>());
     }
 
-    if (config.enchant_dismantle && !hasCooldown(cooldown::DISMANTLE) && random<int>(0, 4) == 0)
-        actions.push_back(spellCooldownAction<spell::Dismantle, cooldown::Dismantle>(target));
-
     if (hasBuff(buff::GHOST_FINGERS))
         actions.push_back(buffExpireAction<buff::GhostFingers>());
 
@@ -657,6 +654,9 @@ std::vector<action::Action> Player::onSpellImpactProc(const State& state, const 
                     actions.push_back(buffAction<buff::Combustion>());
                 }
             }
+
+            if (config.enchant_dismantle && !hasCooldown(cooldown::DISMANTLE) && random<int>(0, 9) == 0)
+                actions.push_back(spellCooldownAction<spell::Dismantle, cooldown::Dismantle>(target));
         }
     }
 

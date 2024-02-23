@@ -4950,6 +4950,7 @@
                     var config = _.cloneDeep(this.default_config);
                     this.config.timings = [];
                     this.config.interruptions = [];
+                    this.config.apl = {precombat: [], combat: []};
                     _.merge(config, _.pick(profile.config, _.keys(config)));
                     _.merge(this.config, config);
                     this.onLoadConfig(profile.config);
