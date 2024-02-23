@@ -324,8 +324,11 @@ double Player::manaCostMultiplier(std::shared_ptr<spell::Spell> spell) const
     if (spell->id == spell::ARCANE_MISSILES && hasBuff(buff::MISSILE_BARRAGE))
         return 0;
 
+    if ((spell->id == spell::FIREBALL || spell->id == spell::FROSTFIRE_BOLT) && hasBuff(buff::BRAIN_FREEZE))
+        return 0;
+
     if (talents.frost_channeling && spell->isSchool(SCHOOL_FROST))
-        multi*= 0.05 * talents.frost_channeling;
+        multi*= 1.0 - 0.05 * talents.frost_channeling;
 
     if (hasBuff(buff::CHARGED_INSPIRATION))
         multi*= 0.5;
