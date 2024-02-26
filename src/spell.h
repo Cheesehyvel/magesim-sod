@@ -258,7 +258,7 @@ namespace spell
             min_dmg = 78;
             max_dmg = 87;
             cast_time = 3;
-            coeff = 0.706; // 2.6 / 3.5 * 0.95
+            coeff = 0.814; // 3.0 / 3.5 * 0.95
             speed = 28;
             binary = true;
 
@@ -285,6 +285,7 @@ namespace spell
             }
             else {
                 cast_time = 2.6;
+                coeff = 0.706; // 2.6 / 3.5 * 0.95
             }
         }
     };
