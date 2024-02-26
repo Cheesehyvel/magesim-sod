@@ -1153,13 +1153,13 @@
                                     </select>
                                 </div>
                                 <div class="form-item">
-                                    <label><input type="checkbox" v-model="config.arcane_scroll_accuracy">
+                                    <label><input type="checkbox" v-model="config.arcane_scroll_accuracy" @click="dontStack($event, 'arcane_scroll_power')">
                                         <span>Arcane Scroll of Accuracy</span>
                                         <help>1% hit</help>
                                     </label>
                                 </div>
                                 <div class="form-item">
-                                    <label><input type="checkbox" v-model="config.arcane_scroll_power">
+                                    <label><input type="checkbox" v-model="config.arcane_scroll_power" @click="dontStack($event, 'arcane_scroll_accuracy')">
                                         <span>Arcane Scroll of Power</span>
                                         <help>1% crit</help>
                                     </label>
@@ -3595,7 +3595,7 @@
                 // Scrolls
                 if (this.config.arcane_scroll_accuracy)
                     stats.hit+= 1;
-                if (this.config.arcane_scroll_power)
+                else if (this.config.arcane_scroll_power)
                     stats.crit+= 1;
                 if (this.config.arcane_scroll_recovery)
                     stats.mp5+= 8;
