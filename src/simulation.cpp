@@ -194,8 +194,11 @@ SimulationResult Simulation::run(bool single)
         }
     }
 
-    for (int i=0; i<config.interruptions.size(); i++) {
-        pushInterruption(i);
+    // Let's no deal with interruptions with APL
+    if (config.rotation != ROTATION_APL) {
+        for (int i=0; i<config.interruptions.size(); i++) {
+            pushInterruption(i);
+        }
     }
 
     workCurrent();

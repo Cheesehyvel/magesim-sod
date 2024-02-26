@@ -9,5 +9,5 @@ assignees: ''
 
 Please include:
 * The item name in the title
-* Link to the item on any wotlk database (like wotlkdb.com or wowhead).
+* Link to the item on wowhead.
 * Where it drops and/or which phase it becomes available

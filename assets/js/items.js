@@ -357,7 +357,7 @@ var equip = {
         { id: 2620, title: "Augural Shroud", ilvl: 39, int: 10, sp: 11, q: "uncommon", phase: 2 },
         { id: 217257, title: "Enchanter's Cowl", ilvl: 33, int: 10, sp: 7, q: "uncommon", phase: 2 },
         // { id: 4322, title: "Enchanter's Cowl", ilvl: 33, int: 10, spi: 6, q: "uncommon", phase: 2 },
-        { id: 217300, title: "Whitemane's Chapeau", ilvl: 44, int: 14, spi: 14, q: "rare", phase: 2 },
+        { id: 217300, title: "Whitemane's Chapeau", ilvl: 44, int: 14, spi: 14, sp: 11, q: "rare", phase: 2 },
         // { id: 7720, title: "Whitemane's Chapeau", ilvl: 44, int: 14, spi: 14, q: "rare", phase: 2 },
         { id: 9429, title: "Miner's Hat of the Deep", ilvl: 44, int: 17, spi: 10, q: "rare", phase: 2 },
         { id: 10574, title: "Corpseshroud", ilvl: 40, int: 19, spi: 6, q: "rare", phase: 2 },
