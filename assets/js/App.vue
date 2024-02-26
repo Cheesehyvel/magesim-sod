@@ -1755,7 +1755,7 @@
                 duration: 60,
                 duration_variance: 5,
                 rng_seed: 0,
-                stat_weight_increment: 20,
+                stat_weight_increment: 10,
                 only_main_dmg: false,
                 avg_spell_dmg: false,
                 additional_data: false,
@@ -2059,6 +2059,7 @@
                 pin_dps: null,
                 ep_result: null,
                 ep_weight: "dps",
+                ep_increment: null,
                 is_running: false,
                 is_running_ep: false,
                 active_tab: "gear",
@@ -2409,7 +2410,7 @@
                 if (this.ep_weight == "dps") {
                     for (var stat in ep) {
                         if (this.ep_result[stat])
-                            ep[stat] = (this.ep_result[stat] - this.ep_result.base) / 10;
+                            ep[stat] = (this.ep_result[stat] - this.ep_result.base) / this.statWeightIncrement(stat);
                     }
                 }
                 else {
@@ -2418,10 +2419,14 @@
 
                     for (var stat in ep) {
                         if (this.ep_result[stat]) {
-                            if (stat == this.ep_weight)
+                            if (stat == this.ep_weight) {
                                 ep[stat] = 1;
-                            else
-                                ep[stat] = (this.ep_result[stat] - this.ep_result.base) / (this.ep_result[this.ep_weight] - this.ep_result.base);
+                            }
+                            else {
+                                var diff_stat = (this.ep_result[stat] - this.ep_result.base) / this.statWeightIncrement(stat);
+                                var diff_weight = (this.ep_result[this.ep_weight] - this.ep_result.base) / this.statWeightIncrement(this.ep_weight);
+                                ep[stat] = diff_stat / diff_weight;
+                            }
                         }
                     }
                 }
@@ -3044,6 +3049,7 @@
 
                 this.is_running_ep = true;
                 this.result = null;
+                this.ep_increment = this.config.stat_weight_increment;
                 this.ep_result = {
                     base: null,
                     intellect: null,
@@ -3056,17 +3062,25 @@
 
                 var rng_seed = Math.round(Math.random() * 100000);
                 var result;
-                var increment = this.config.stat_weight_increment;
-                if (increment < 1)
-                    increment = 20;
                 for (var stat in this.ep_result) {
-                    result = await this.runStat(stat, stat == "base" ? 0 : increment, rng_seed);
+                    result = await this.runStat(stat, this.statWeightIncrement(stat), rng_seed);
                     this.ep_result[stat] = result.avg_dps;
                     if (!this.is_running_ep)
                         break;
                 }
 
                 this.is_running_ep = false;
+            },
+
+            statWeightIncrement(stat) {
+                var inc = this.ep_increment;
+                if (inc < 1)
+                    inc = 10;
+                if (stat == "base")
+                    inc = 0;
+                else if (stat == "hit" || stat == "crit")
+                    inc = inc/10;
+                return inc;
             },
 
             async runComparisonFor(item_id) {
