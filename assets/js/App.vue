@@ -4572,19 +4572,8 @@
                     config: _.cloneDeep(this.config),
                 };
 
-                var errors = [];
-
-                var findRune = function(g) {
-                    if (_.isObject(g)) {
-                        if (g.spellID) {
-                            var gl = _.find(runes, {spellId: g.spellID});
-                            if (gl)
-                                return gl;
-                        }
-                        g = g.name;
-                    }
-                    return _.find(runes, {name: g});
-                };
+                var unknown_items = [];
+                var unknown_enchants = [];
 
                 if (this.import_profile.items) {
                     profile.equipped = {};
@@ -4607,7 +4596,7 @@
                             var slot = slots[i];
                             var item = this.getItem(slot, data.gear.items[i].id);
                             if (!item) {
-                                errors.push(data.gear.items[i].id);
+                                unknown_items.push(data.gear.items[i].id);
                                 continue;
                             }
                             profile.equipped[slot] = data.gear.items[i].id;
@@ -4615,7 +4604,7 @@
                             if (data.gear.items[i].enchant) {
                                 var enchant = this.getEnchantFromEnchantmentId(slot, data.gear.items[i].enchant);
                                 if (!enchant)
-                                    errors.push(data.gear.items[i].enchant);
+                                    unknown_enchants.push(data.gear.items[i].enchant);
                                 else
                                     profile.enchants[slot] = enchant.id;
                             }
@@ -4636,63 +4625,37 @@
                 }
 
                 if (this.import_profile.config && data.talents) {
-                    var tstring = "https://wowhead.com/classic/talent-calc/mage/"+data.talents;
+                    var tstring = "https://www.wowhead.com/classic/talent-calc/mage/"+data.talents;
                     var rotation = null;
 
-                    // TODO: Runes
-                    if (data.runes && false) {
-                        var encoding = "0123456789abcdefghjkmnpqrstvwxyz";
-                        var rune, str, id;
-                        tstring+= "_1";
-
-                        if (data.glyphs.major) {
-                            for (var i=0, n=0; i<data.glyphs.major.length; i++, n++) {
-                                glyph = findGlyph(data.glyphs.major[i]);
-                                if (!glyph)
-                                    continue;
-                                if (glyph.spellId == 56363)
-                                    rotation = constants.rotations.ROTATION_ST_ARCANE_AM;
-                                else if (glyph.spellId == 56368)
-                                    rotation = constants.rotations.ROTATION_ST_FIRE;
-                                else if (glyph.spellId == 61205)
-                                    rotation = constants.rotations.ROTATION_ST_FROSTFIRE;
-                                else if (glyph.spellId == 56370)
-                                    rotation = constants.rotations.ROTATION_ST_FROST;
-                                id = glyph.spellId;
-                                str = encoding[(id >> 15) & 31] + encoding[(id >> 10) & 31] + encoding[(id >> 5) & 31] + encoding[(id >> 0) & 31];
-                                tstring+= n + str;
-                            }
-                        }
-
-                        if (data.glyphs.minor) {
-                            for (var i=0, n=3; i<data.glyphs.minor.length; i++, n++) {
-                                glyph = findGlyph(data.glyphs.minor[i]);
-                                if (!glyph)
-                                    continue;
-                                id = glyph.spellId;
-                                str = encoding[(id >> 15) & 31] + encoding[(id >> 10) & 31] + encoding[(id >> 5) & 31] + encoding[(id >> 0) & 31];
-                                tstring+= n + str;
+                    var encoding = "0123456789abcdefghjkmnpqrstvwxyz";
+                    var rune_id, arr, rune, str;
+                    var rune_codes = [];
+                    for (var i=0; i<data.gear.items.length; i++) {
+                        rune_id = _.get(data.gear.items[i], "rune");
+                        if (rune_id) {
+                            var arr = runes.filter(r => r.description.indexOf("/spell="+rune_id+"/") != -1);
+                            if (arr.length) {
+                                rune = arr[0];
+                                str = encoding[(rune.id >> 10) & 31] + encoding[(rune.id >> 5) & 31] + encoding[(rune.id >> 0) & 31];
+                                rune_codes.push(encoding[rune.slots[0]] + str);
                             }
                         }
                     }
-
-                    if (rotation && rotation != this.config.rotation) {
-                        var main_rotations = [
-                            constants.rotations.ROTATION_ST_ARCANE,
-                            constants.rotations.ROTATION_ST_FIRE,
-                            constants.rotations.ROTATION_ST_FROST,
-                        ];
-
-                        if (main_rotations.indexOf(this.config.rotation) != -1)
-                            profile.config.rotation = rotation;
-                    }
+                    rune_codes.sort();
+                    if (rune_codes.length)
+                        tstring+= "_1"+rune_codes.join("");
 
                     profile.config.build = tstring;
                 }
 
-                if (errors.length) {
-                    errors.unshift("Following item(s) could not be found:");
-                    this.errorNotice("Warning", errors);
+                if (unknown_items.length) {
+                    unknown_items.unshift("Following item(s) could not be found:");
+                    this.errorNotice("Warning", unknown_items);
+                }
+                if (unknown_enchants.length) {
+                    unknown_enchants.unshift("Following enchant(s) could not be found:");
+                    this.errorNotice("Warning", unknown_enchants);
                 }
 
                 this.loadProfile(profile);
