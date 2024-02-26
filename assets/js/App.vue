@@ -4433,7 +4433,7 @@
                         "Ignite": [1, 2],
                         "Flame Throwing": [1, 3],
                         "Improved Fire Blast": [1, 4],
-                        "Incineration": [1, 5],
+                        "Incinerate": [1, 5],
                         "Improved Flamestrike": [1, 6],
                         "Pyroblast": [1, 7],
                         "Burning Soul": [1, 8],
