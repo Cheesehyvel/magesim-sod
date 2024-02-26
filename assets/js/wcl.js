@@ -3,7 +3,7 @@ import axios from "axios";
 class Wcl {
 
     constructor(client_id) {
-        this.base_url = "https://classic.warcraftlogs.com/api/v2/";
+        this.base_url = "https://sod.warcraftlogs.com/api/v2/";
         this.client_id = client_id;
         this.oauth_token = null;
         this.loadAccessToken();

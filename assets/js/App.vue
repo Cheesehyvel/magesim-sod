@@ -4237,7 +4237,7 @@
                         import_type = "wse";
                 }
                 catch (e) {
-                    var m = str.match(/https\:\/\/vanilla\.warcraftlogs\.com\/reports\/([a-z0-9]+)/i);
+                    var m = str.match(/https\:\/\/(vanilla|sod)\.warcraftlogs\.com\/reports\/([a-z0-9]+)/i);
                     if (m)
                         import_type = "wcl";
                     else
@@ -4249,7 +4249,7 @@
                 else if (import_type == "wse")
                     return this.importWSEString(str);
                 else if (import_type == "wcl") {
-                    this.importWCLReport(m[1]);
+                    this.importWCLReport(m[2]);
                     return true;
                 }
                 else if (import_type != "native")
@@ -4714,7 +4714,10 @@
                             throw new Error("Could not fetch any fights");
                     }
                     catch (e) {
-                        return this.wclException(e);
+                        if (_.get(e, "response.status") == 401)
+                            return this.wcl.unsetAccessToken();
+                        else
+                            return this.wclException(e);
                     }
 
                     this.import_wcl.loading = false;
