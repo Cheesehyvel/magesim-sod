@@ -243,7 +243,6 @@ double Player::buffHealMultiplier(std::shared_ptr<spell::Spell> spell, const Sta
 double Player::buffDmgMultiplier(std::shared_ptr<spell::Spell> spell, const State& state) const
 {
     double multi = Unit::buffDmgMultiplier(spell, state);
-    double additive = 1;
 
     if (config.dmf_dmg)
         multi*= 1.1;
@@ -262,10 +261,13 @@ double Player::buffDmgMultiplier(std::shared_ptr<spell::Spell> spell, const Stat
         multi *= 1.1;
 
     if (talents.arcane_instability)
-        multi *= 1 + talents.arcane_instability * 0.01;
+        multi *= 1.0 + talents.arcane_instability * 0.01;
 
     if (talents.piercing_ice && spell->isSchool(SCHOOL_FROST))
-        multi *= 1 + talents.piercing_ice * 0.02;
+        multi *= 1.0 + talents.piercing_ice * 0.02;
+    
+    if (talents.fire_power && spell->isSchool(SCHOOL_FIRE))
+        multi *= 1.0 + talents.fire_power * 0.02;
 
     if (spell->id == spell::CONE_OF_COLD && talents.imp_cone_of_cold)
         multi *= 1.05 + talents.imp_cone_of_cold * 0.1;
@@ -287,19 +289,10 @@ double Player::buffDmgMultiplier(std::shared_ptr<spell::Spell> spell, const Stat
     if (spell->snapshot_multi)
         multi *= spell->snapshot_multi;
 
-    // Additive category
-    // Unconfirmed if this is relevant in SoD
-    additive = 1;
-
-    if (talents.fire_power && spell->isSchool(SCHOOL_FIRE))
-        additive += talents.fire_power * 0.02;
-
     if (hasBuff(buff::ARCANE_POWER))
-        additive += 0.3;
+        multi *= 1.3;
     else if (hasBuff(buff::POWER_INFUSION))
-        additive += 0.2;
-
-    multi *= additive;
+        multi *= 1.2;
 
     return multi;
 }
