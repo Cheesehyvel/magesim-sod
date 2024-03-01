@@ -440,6 +440,12 @@ std::vector<action::Action> Player::onCastSuccessProc(const State& state, std::s
         return useManaGem();
 
     // Items
+    if (spell->id == spell::MILDLY_IRRADIATED_POTION) {
+        actions.push_back(manaAction((double) random<int>(262, 438), "Mildly Irradiated Rejuvenation Potion"));
+        actions.push_back(buffAction<buff::MildlyIrradiated>());
+        actions.push_back(cooldownAction<cooldown::MildlyIrradiatedPotion>());
+        return actions;
+    }
     if (spell->id == spell::ROBE_ARCHMAGE) {
         actions.push_back(manaAction((double) random<int>(375, 625), "Robe of the Archmage"));
         actions.push_back(cooldownAction<cooldown::RobeArchmage>());
@@ -959,18 +965,6 @@ std::vector<action::Action> Player::usePotion()
         actions.push_back(manaAction(mana, "Mana Potion"));
         actions.push_back(cooldownAction<cooldown::Potion>(120));
     }
-    else if (config.potion == POTION_MILDY_IRRATIATED) {
-        double mana = random<double>(262, 438);
-
-        if (hasTrinket(TRINKET_ALCHEMIST_STONE))
-            mana *= 1.33;
-
-        mana = round(mana);
-
-        actions.push_back(manaAction(mana, "Mana Potion"));
-        actions.push_back(buffAction<buff::MildlyIrradiated>());
-        actions.push_back(cooldownAction<cooldown::Potion>(120));
-    }
 
     return actions;
 }
@@ -1178,6 +1172,9 @@ action::Action Player::useCooldown(const State& state)
     }
     else if (config.item_hyperconductive_goldwrap && !hasCooldown(cooldown::COIN_FLIP) && useTimingIfPossible("hyperconductive_goldwrap", state)) {
         return spellAction<spell::CoinFlip>();
+    }
+    else if (!hasCooldown(cooldown::MILDLY_IRRADIATED_POTION) && useTimingIfPossible("mildly_irradiated_potion", state, true)) {
+        return spellAction<spell::MildlyIrradiatedPotion>();
     }
     else if (config.potion != POTION_NONE && !hasCooldown(cooldown::POTION) && !hasManaPotion() && useTimingIfPossible("potion", state)) {
         action::Action action { action::TYPE_POTION };
@@ -1748,6 +1745,8 @@ std::shared_ptr<spell::Spell> Player::APL_SpellFromID(spell::ID id)
         return std::make_shared<spell::Regeneration>(config.player_level);
 
     // Items
+    if (id == spell::MILDLY_IRRADIATED_POTION) 
+        return std::make_shared<spell::MildlyIrradiatedPotion>(config.player_level);
     if (id == spell::ELECTROMAGNETIC_GIGAFLUX_REACTIVATOR) 
         return std::make_shared<spell::ElectromagneticGigafluxReactivator>(config.player_level);
     if (id == spell::CHARGED_INSPIRATION) 
@@ -2166,6 +2165,8 @@ action::Action Player::APL_Action(APL::Action apl, const State& state)
             if (spell->id == spell::CELESTIAL_ORB && (!config.item_celestial_orb || hasCooldown(cooldown::CELESTIAL_ORB)))
                 return none;
             if (spell->id == spell::CHARGED_INSPIRATION && (!config.item_gneuro_linked_monocle || hasCooldown(cooldown::CHARGED_INSPIRATION)))
+                return none;
+            if (spell->id == spell::MILDLY_IRRADIATED_POTION && hasCooldown(cooldown::MILDLY_IRRADIATED_POTION))
                 return none;
             return spellAction(spell, state.targets[0]);
         }

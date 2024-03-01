@@ -299,6 +299,12 @@
                         type: constants.apl_action_types.ACTION_TYPE_CUSTOM,
                         str: "potion",
                     },
+                    { 
+                        title: "Use: Mildly Irradiated Rejuvenation Potion",
+                        key: "mildly_irradiated_potion", 
+                        type: constants.apl_action_types.ACTION_TYPE_SPELL,
+                        id: constants.spells.MILDLY_IRRADIATED_POTION,
+                    },
                 ],
             }
         },

@@ -48,6 +48,7 @@ namespace spell
         DISMANTLE = 439164,
 
         // Items
+        MILDLY_IRRADIATED_POTION = 435973,
         ELECTROMAGNETIC_GIGAFLUX_REACTIVATOR = 11826,
         CHARGED_INSPIRATION = 437327,
         COIN_FLIP = 437368,
@@ -870,6 +871,16 @@ namespace spell
         }
     };
 
+    struct MildlyIrradiatedPotion : Spell
+    {
+        MildlyIrradiatedPotion(int lvl) : Spell(MILDLY_IRRADIATED_POTION, "Mildly Irradiated Rejuvenation Potion", SCHOOL_PHYSICAL)
+        {
+            is_trigger = true;
+            gcd = 0;
+        }
+    };
+
+
     struct ElectromagneticGigafluxReactivator : Spell
     {
         ElectromagneticGigafluxReactivator(int lvl) : Spell(ELECTROMAGNETIC_GIGAFLUX_REACTIVATOR, "Electromagnetic Gigaflux Reactivator", SCHOOL_NATURE)
@@ -880,7 +891,6 @@ namespace spell
             gcd = 0;
         }
     };
-
 
     struct ChargedInspiration : public Spell
     {

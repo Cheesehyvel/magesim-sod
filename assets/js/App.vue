@@ -1116,7 +1116,6 @@
                                     <label>Potion</label>
                                     <select v-model="config.potion">
                                         <option :value="potions.POTION_NONE">None</option>
-                                        <option :value="potions.POTION_MILDY_IRRATIATED" v-if="lvl >= 35">Mildly Irradiated Rejuvenation Potion</option>
                                         <option :value="potions.POTION_MAJOR_MANA" v-if="lvl >= 49">Major Mana Potion</option>
                                         <option :value="potions.POTION_SUPERIOR_MANA" v-if="lvl >= 41">Superior Mana Potion</option>
                                         <option :value="potions.POTION_GREATER_MANA" v-if="lvl >= 31">Greater Mana Potion</option>
@@ -2346,8 +2345,8 @@
                 // Alchemy
                 if (this.isEquipped("trinket", this.items.ids.TRINKET_ALCHEMIST_STONE))
                     arr.push("Alchemist: Alchemist Stone equipped (Trinket)");
-                else if (this.config.potion == constants.potions.POTION_MILDY_IRRATIATED)
-                    arr.push("Alchemist: Mildly Irradiated Rejuvenation Potion selected");
+                else if (this.config.rotation != constants.rotations.ROTATION_APL && _.find(this.config.timings, {name: "mildly_irradiated_potion"}))
+                    arr.push("Alchemist: Mildly Irradiated Rejuvenation Potion");
 
                 // Tailoring
                 if (this.isEquipped("chest", this.items.ids.ROBE_ARCHMAGE))
@@ -2491,6 +2490,11 @@
                     name: "cold_snap",
                     title: "Cold Snap",
                     icon: "https://wow.zamimg.com/images/wow/icons/large/spell_frost_wizardmark.jpg",
+                });
+                timings.push({
+                    name: "mildly_irradiated_potion",
+                    title: "Mildly Irradiated Rejuvenation Potion",
+                    icon: "https://wow.zamimg.com/images/wow/icons/large/inv_alchemy_elixir_03.jpg",
                 });
                 timings.push({
                     name: "gneuro_linked_monocle",
@@ -2749,6 +2753,7 @@
             timingEnabled(name) {
                 var always = [
                     "evocation",
+                    "mildly_irradiated_potion",
                 ];
                 if (always.indexOf(name) != -1)
                     return true;

@@ -32,6 +32,7 @@ namespace cooldown
         DISMANTLE = 439164,
 
         // Items
+        MILDLY_IRRADIATED_POTION = 435973,
         CHARGED_INSPIRATION = 437327,
         COIN_FLIP = 437368,
         ELECTROMAGNETIC_GIGAFLUX_REACTIVATOR = 11826,
@@ -263,6 +264,18 @@ namespace cooldown
         {
             id = DISMANTLE;
             duration = 1;
+        }
+
+    };
+
+    class MildlyIrradiatedPotion : public Cooldown
+    {
+
+    public:
+        MildlyIrradiatedPotion()
+        {
+            id = MILDLY_IRRADIATED_POTION;
+            duration = 120;
         }
 
     };
