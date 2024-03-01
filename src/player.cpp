@@ -732,9 +732,9 @@ std::vector<action::Action> Player::onSpellImpactProc(const State& state, const 
         actions.push_back(buffAction<buff::BrainFreeze>());
 
     if (instance.dmg && instance.spell->isSchool(SCHOOL_ARCANE)) {
-        double heal = (instance.dmg + instance.resist)* 0.8;
-        if (instance.spell->id == spell::ARCANE_EXPLOSION)
-            heal*= 0.2;
+        double heal = (instance.dmg + instance.resist) * 0.8;
+        if (instance.spell->aoe)
+            heal *= 0.2;
         if (hasBuff(buff::TEMPORAL_BEACON)) {
             actions.push_back(spellAction<spell::TemporalBeacon>(heal));
         }

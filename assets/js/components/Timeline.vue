@@ -63,6 +63,7 @@
                     { title: "Arcane Power", color: "#48f" },
                     { title: "Arcane Surge", color: "#8210bc" },
                     { title: "Combustion", color: "#f84" },
+                    { title: "Fingers of Frost", color: "#69f" },
                     { title: "Power Infusion", color: "#dd0" },
                     { title: "Energized Hyperconductor", color: "#66f" },
                     { title: "Charged Inspiration", color: "#f66" },

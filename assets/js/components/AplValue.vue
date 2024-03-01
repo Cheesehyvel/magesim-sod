@@ -116,172 +116,148 @@
 
             cooldownOptions() {
                 var options = [
-                    { value: constants.cooldowns.POTION, title: "Potion" },
+                    { value: constants.cooldowns.NONE, title: "None" },
+                    { value: constants.cooldowns.ARCANE_POWER, title: "Arcane Power", talent: "arcane_power" },
+                    { value: constants.cooldowns.ARCANE_SURGE, title: "Arcane Surge", rune: "arcane_surge" },
+                    { value: constants.cooldowns.BERSERKING, title: "Berserking", race: constants.races.RACE_TROLL },
+                    { value: constants.cooldowns.BRAIN_FREEZE, title: "Brain Freeze", rune: "brain_freeze" },
+                    { value: constants.cooldowns.BLAST_WAVE, title: "Blast Wave", talent: "blast_wave" },
+                    { value: constants.cooldowns.COLD_SNAP, title: "Cold Snap", talent: "cold_snap" },
+                    { value: constants.cooldowns.COMBUSTION, title: "Combustion", talent: "combustion" },
                     { value: constants.cooldowns.CONE_OF_COLD, title: "Cone of Cold" },
+                    { value: constants.cooldowns.DEEP_FREEZE, title: "Deep Freeze", rune: "deep_freeze" },
+                    { value: constants.cooldowns.ELECTROMAGNETIC_GIGAFLUX_REACTIVATOR, title: "Electromagnetic Hyperflux Reactivator", config: "item_electromagnetic_hyperflux_reactivator" },
                     { value: constants.cooldowns.EVOCATION, title: "Evocation" },
                     { value: constants.cooldowns.FIRE_BLAST, title: "Fire Blast" },
+                    { value: constants.cooldowns.CHARGED_INSPIRATION, title: "Gneuro-Linked Arcano-Filament Monocle", config: "item_gneuro_linked_monocle" },
+                    { value: constants.cooldowns.COIN_FLIP, title: "Hyperconductive Goldwrap", config: "item_hyperconductive_goldwrap" },
+                    { value: constants.cooldowns.ICY_VEINS, title: "Icy Veins", rune: "icy_veins" },
+                    { value: constants.cooldowns.LIVING_FLAME, title: "Living Flame", rune: "living_flame" },
                     { value: constants.cooldowns.MANA_GEM, title: "Mana Gem" },
+                    { value: constants.cooldowns.POTION, title: "Potion" },
+                    { value: constants.cooldowns.PRESENCE_OF_MIND, title: "Presence of Mind", talent: "presence_of_mind" },
+                    { value: constants.cooldowns.ROBE_ARCHMAGE, title: "Robe of the Archmage", config: "item_robe_archmage" },
+                    { value: constants.cooldowns.CELESTIAL_ORB, title: "Celestial Orb", config: "item_celestial_orb" },
                 ];
 
-                if (this.$root.config.race == constants.races.RACE_TROLL)
-                    options.push({ value: constants.cooldowns.BERSERKING, title: "Berserking" });
+                options.forEach((opt) => {
+                    if (opt.hasOwnProperty("rune") && !this.$root.config.runes[opt.rune] ||
+                        opt.hasOwnProperty("talent") && !this.$root.config.talents[opt.talent] ||
+                        opt.hasOwnProperty("race") && this.$root.config.race != opt.race ||
+                        opt.hasOwnProperty("config") && !this.$root.config[opt.config])
+                    {
+                        opt.title+= " (inactive)";
+                    }
+                });
 
-                if (this.$root.config.talents.arcane_power)
-                    options.push({ value: constants.cooldowns.ARCANE_POWER, title: "Arcane Power" });
-                if (this.$root.config.talents.blast_wave)
-                    options.push({ value: constants.cooldowns.BLAST_WAVE, title: "Blast Wave" });
-                if (this.$root.config.talents.cold_snap)
-                    options.push({ value: constants.cooldowns.COLD_SNAP, title: "Cold Snap" });
-                if (this.$root.config.talents.combustion)
-                    options.push({ value: constants.cooldowns.COMBUSTION, title: "Combustion" });
-                if (this.$root.config.talents.presence_of_mind)
-                    options.push({ value: constants.cooldowns.PRESENCE_OF_MIND, title: "Presence of Mind" });
-
-                if (this.$root.config.runes.arcane_surge)
-                    options.push({ value: constants.cooldowns.ARCANE_SURGE, title: "Arcane Surge" });
-                if (this.$root.config.runes.brain_freeze)
-                    options.push({ value: constants.cooldowns.BRAIN_FREEZE, title: "Brain Freeze" });
-                if (this.$root.config.runes.deep_freeze)
-                    options.push({ value: constants.cooldowns.DEEP_FREEZE, title: "Deep Freeze" });
-                if (this.$root.config.runes.icy_veins)
-                    options.push({ value: constants.cooldowns.ICY_VEINS, title: "Icy Veins" });
-                if (this.$root.config.runes.living_flame)
-                    options.push({ value: constants.cooldowns.LIVING_FLAME, title: "Living Flame" });
-
-                if (this.$root.config.item_gneuro_linked_monocle)
-                    options.push({ value: constants.cooldowns.CHARGED_INSPIRATION, title: "Gneuro-Linked Arcano-Filament Monocle" });
-                if (this.$root.config.item_hyperconductive_goldwrap)
-                    options.push({ value: constants.cooldowns.COIN_FLIP, title: "Hyperconductive Goldwrap" });
-                if (this.$root.config.item_electromagnetic_hyperflux_reactivator)
-                    options.push({ value: constants.cooldowns.ELECTROMAGNETIC_GIGAFLUX_REACTIVATOR, title: "Electromagnetic Hyperflux Reactivator" });
-                if (this.$root.config.item_robe_archmage)
-                    options.push({ value: constants.cooldowns.ROBE_ARCHMAGE, title: "Robe of the Archmage" });
-                if (this.$root.config.item_celestial_orb)
-                    options.push({ value: constants.cooldowns.CELESTIAL_ORB, title: "Celestial Orb" });
-
-                // TODO: Trinket
-
-                return [{ value: constants.cooldowns.NONE, title: "None" }].concat(_.sortBy(options, "title"));
+                return options;
             },
 
             buffOptions() {
                 var options = [
+                    { value: 0, title: "None" },
+                    { value: constants.buffs.ARCANE_BLAST, title: "Arcane Blast", rune: "arcane_blast" },
+                    { value: constants.buffs.ARCANE_POWER, title: "Arcane Power", talent: "arcane_power" },
+                    { value: constants.buffs.ARCANE_SURGE, title: "Arcane Surge", rune: "arcane_surge" },
+                    { value: constants.buffs.BALEFIRE_BOLT, title: "Balefire Bolt", rune: "balefire_bolt" },
+                    { value: constants.buffs.BERSERKING, title: "Berserking", race: constants.races.RACE_TROLL },
+                    { value: constants.buffs.BRAIN_FREEZE, title: "Brain Freeze", rune: "brain_freeze" },
+                    { value: constants.buffs.CHARGED_INSPIRATION, title: "Charged Inspiration", config: "item_gneuro_linked_monocle" },
+                    { value: constants.buffs.CLEARCAST, title: "Clearcasting", talent: "clearcast" },
+                    { value: constants.buffs.COIN_FLIP_HEADS, title: "Coin Flip: Heads", config: "item_hyperconductive_goldwrap" },
+                    { value: constants.buffs.COIN_FLIP_TAILS, title: "Coin Flip: Tails", config: "item_hyperconductive_goldwrap" },
+                    { value: constants.buffs.COMBUSTION, title: "Combustion", talent: "combustion" },
+                    { value: constants.buffs.ENERGIZED_HYPERCONDUCTOR, title: "Energized Hyperconductor", config: "set_hyperconductive_wizard_3p" },
+                    { value: constants.buffs.ENIGMAS_ANSWER, title: "Enigma's Answer", config: "set_aq40_5p" },
+                    { value: constants.buffs.FINGERS_OF_FROST, title: "Fingers of Frost", rune: "fingers_of_frost" },
+                    { value: constants.buffs.GHOST_FINGERS, title: "Fingers of Frost (batch 3rd spell)", rune: "fingers_of_frost" },
+                    { value: constants.buffs.HEATING_UP, title: "Heating Up", rune: "hot_streak" },
+                    { value: constants.buffs.HOT_STREAK, title: "Hot Streak", rune: "hot_streak" },
+                    { value: constants.buffs.ICY_VEINS, title: "Icy Veins", rune: "icy_veins" },
                     { value: constants.buffs.INNERVATE, title: "Innervate" },
                     { value: constants.buffs.MANA_TIDE, title: "Mana Tide" },
+                    { value: constants.buffs.MISSILE_BARRAGE, title: "Missile Barrage", rune: "missile_barrage" },
+                    { value: constants.buffs.NETHERWIND_FOCUS, title: "Netherwind Focus", config: "set_t2_8p" },
                     { value: constants.buffs.POWER_INFUSION, title: "Power Infusion" },
+                    { value: constants.buffs.PRESENCE_OF_MIND, title: "Presence of Mind", talent: "presence_of_mind" },
+                    { value: constants.buffs.TEMPORAL_BEACON, title: "Temporal Beacon (single)", rune: "regeneration" },
+                    { value: constants.buffs.TEMPORAL_BEACON_PARTY, title: "Temporal Beacon (party)", rune: "mass_regeneration" },
                 ];
 
-                if (this.$root.config.race == constants.races.RACE_TROLL)
-                    options.push({ value: constants.buffs.BERSERKING, title: "Berserking" });
-                if (this.$root.config.talents.arcane_power)
-                    options.push({ value: constants.buffs.ARCANE_POWER, title: "Arcane Power" });
-                if (this.$root.config.talents.clearcast)
-                    options.push({ value: constants.buffs.CLEARCAST, title: "Clearcasting" });
-                if (this.$root.config.talents.combustion)
-                    options.push({ value: constants.buffs.COMBUSTION, title: "Combustion" });
-                if (this.$root.config.talents.presence_of_mind)
-                    options.push({ value: constants.buffs.PRESENCE_OF_MIND, title: "Presence of Mind" });
+                options.forEach((opt) => {
+                    if (opt.hasOwnProperty("rune") && !this.$root.config.runes[opt.rune] ||
+                        opt.hasOwnProperty("talent") && !this.$root.config.talents[opt.talent] ||
+                        opt.hasOwnProperty("race") && this.$root.config.race != opt.race ||
+                        opt.hasOwnProperty("config") && !this.$root.config[opt.config])
+                    {
+                        opt.title+= " (inactive)";
+                    }
+                });
 
-                if (this.$root.config.runes.arcane_blast)
-                    options.push({ value: constants.buffs.ARCANE_BLAST, title: "Arcane Blast" });
-                if (this.$root.config.runes.arcane_surge)
-                    options.push({ value: constants.buffs.ARCANE_SURGE, title: "Arcane Surge" });
-                if (this.$root.config.runes.balefire_bolt)
-                    options.push({ value: constants.buffs.BALEFIRE_BOLT, title: "Balefire Bolt" });
-                if (this.$root.config.runes.brain_freeze)
-                    options.push({ value: constants.buffs.BRAIN_FREEZE, title: "Brain Freeze" });
-                if (this.$root.config.runes.fingers_of_frost)
-                    options.push({ value: constants.buffs.FINGERS_OF_FROST, title: "Fingers of Frost" });
-                if (this.$root.config.runes.fingers_of_frost)
-                    options.push({ value: constants.buffs.GHOST_FINGERS, title: "Fingers of Frost (batch 3rd spell)" });
-                if (this.$root.config.runes.hot_streak) {
-                    options.push({ value: constants.buffs.HOT_STREAK, title: "Hot Streak" });
-                    options.push({ value: constants.buffs.HEATING_UP, title: "Heating Up" });
-                }
-                if (this.$root.config.runes.icy_veins)
-                    options.push({ value: constants.buffs.ICY_VEINS, title: "Icy Veins" });
-                if (this.$root.config.runes.missile_barrage)
-                    options.push({ value: constants.buffs.MISSILE_BARRAGE, title: "Missile Barrage" });
-                if (this.$root.config.runes.regeneration)
-                    options.push({ value: constants.buffs.TEMPORAL_BEACON, title: "Temporal Beacon (single)" });
-                if (this.$root.config.runes.mass_regeneration)
-                    options.push({ value: constants.buffs.TEMPORAL_BEACON_PARTY, title: "Temporal Beacon (party)" });
-
-                if (this.$root.config.item_gneuro_linked_monocle)
-                    options.push({ value: constants.buffs.CHARGED_INSPIRATION, title: "Charged Inspiration" });
-                if (this.$root.config.item_hyperconductive_goldwrap) {
-                    options.push({ value: constants.buffs.COIN_FLIP_HEADS, title: "Coin Flip: Heads" });
-                    options.push({ value: constants.buffs.COIN_FLIP_TAILS, title: "Coin Flip: Tails" });
-                }
-                if (this.$root.config.set_hyperconductive_wizard_3p)
-                    options.push({ value: constants.buffs.ENERGIZED_HYPERCONDUCTOR, title: "Energized Hyperconductor" });
-                if (this.$root.config.set_t2_8p)
-                    options.push({ value: constants.buffs.NETHERWIND_FOCUS, title: "Netherwind Focus" });
-                if (this.$root.config.set_aq40_5p)
-                    options.push({ value: constants.buffs.ENIGMAS_ANSWER, title: "Enigma's Answer" });
-
-                return [{ value: 0, title: "None" }].concat(_.sortBy(options, "title"));
+                return options;
             },
 
             debuffOptions() {
                 var options = [
-                    { value: constants.debuffs.IMPROVED_SCORCH, title: "Imp. Scorch" }
+                    { value: 0, title: "None" },
+                    { value: constants.debuffs.IMPROVED_SCORCH, title: "Imp. Scorch", talent: "imp_scorch" },
+                    { value: constants.debuffs.LIVING_BOMB, title: "Living Bomb", rune: "living_bomb" },
+                    { value: constants.debuffs.PYROBLAST, title: "Pyroblast", talent: "pyroblast" },
+                    { value: constants.debuffs.WINTERS_CHILL, title: "Winter's Chill", talent: "winters_chill" }
                 ];
 
-                if (this.$root.config.talents.pyroblast)
-                    options.push({ value: constants.debuffs.PYROBLAST, title: "Pyroblast" });
-                if (this.$root.config.talents.winters_chill)
-                    options.push({ value: constants.debuffs.WINTERS_CHILL, title: "Winter's Chill" });
-                if (this.$root.config.runes.living_bomb)
-                    options.push({ value: constants.debuffs.LIVING_BOMB, title: "Living Bomb" });
+                options.forEach((opt) => {
+                    if (opt.hasOwnProperty("rune") && !this.$root.config.runes[opt.rune] ||
+                        opt.hasOwnProperty("talent") && !this.$root.config.talents[opt.talent] ||
+                        opt.hasOwnProperty("race") && this.$root.config.race != opt.race ||
+                        opt.hasOwnProperty("config") && !this.$root.config[opt.config])
+                    {
+                        opt.title+= " (inactive)";
+                    }
+                });
 
-                return [{ value: 0, title: "None" }].concat(_.sortBy(options, "title"));
+                return options;
             },
 
             spellOptions() {
                 var options = [
+                    { value: 0, title: "None" },
+                    { value: constants.spells.ARCANE_BLAST, title: "Arcane Blast", rune: "arcane_blast" },
                     { value: constants.spells.ARCANE_EXPLOSION, title: "Arcane Explosion" },
                     { value: constants.spells.ARCANE_MISIILES, title: "Arcane Missiles" },
+                    { value: constants.spells.ARCANE_SURGE, title: "Arcane Surge", rune: "arcane_surge" },
+                    { value: constants.spells.BALEFIRE_BOLT, title: "Balefire Bolt", rune: "balefire_bolt" },
+                    { value: constants.spells.BLAST_WAVE, title: "Blast Wave", talent: "blast_wave" },
                     { value: constants.spells.BLIZZARD, title: "Blizzard" },
                     { value: constants.spells.CONE_OF_COLD, title: "Cone of Cold" },
+                    { value: constants.spells.DEEP_FREEZE, title: "Deep Freeze", rune: "deep_freeze" },
                     { value: constants.spells.FLAMESTRIKE, title: "Flamestrike" },
                     { value: constants.spells.FLAMESTRIKE_DR, title: "Flamestrike (Downranked)" },
                     { value: constants.spells.FIREBALL, title: "Fireball" },
                     { value: constants.spells.FIRE_BLAST, title: "Fire Blast" },
                     { value: constants.spells.FROSTBOLT, title: "Frostbolt" },
+                    { value: constants.spells.FROSTFIRE_BOLT, title: "Frostfire Bolt", rune: "frostfire_bolt" },
+                    { value: constants.spells.ICE_LANCE, title: "Ice Lance", rune: "ice_lance" },
+                    { value: constants.spells.LIVING_BOMB, title: "Living Bomb", rune: "living_bomb" },
+                    { value: constants.spells.LIVING_FLAME, title: "Living Flame", rune: "living_flame" },
+                    { value: constants.spells.MASS_REGENERATION, title: "Mass Regeneration", rune: "mass_regeneration" },
+                    { value: constants.spells.PYROBLAST, title: "Pyroblast", talent: "pyroblast" },
+                    { value: constants.spells.REGENERATION, title: "Regeneration", rune: "regeneration" },
+                    { value: constants.spells.SCORCH, title: "Scorch" },
+                    { value: constants.spells.SPELLFROST_BOLT, title: "Spellfrost Bolt", rune: "spellfrost_bolt" },
                 ];
 
-                if (this.$root.config.talents.blast_wave)
-                    options.push({ value: constants.spells.BLAST_WAVE, title: "Blast Wave" });
-                if (this.$root.config.talents.pyroblast)
-                    options.push({ value: constants.spells.PYROBLAST, title: "Pyroblast" });
+                options.forEach((opt) => {
+                    if (opt.hasOwnProperty("rune") && !this.$root.config.runes[opt.rune] ||
+                        opt.hasOwnProperty("talent") && !this.$root.config.talents[opt.talent] ||
+                        opt.hasOwnProperty("race") && this.$root.config.race != opt.race ||
+                        opt.hasOwnProperty("config") && !this.$root.config[opt.config])
+                    {
+                        opt.title+= " (inactive)";
+                    }
+                });
 
-                if (this.$root.config.runes.arcane_blast)
-                    options.push({ value: constants.spells.ARCANE_BLAST, title: "Arcane Blast" });
-                if (this.$root.config.runes.arcane_surge)
-                    options.push({ value: constants.spells.ARCANE_SURGE, title: "Arcane Surge" });
-                if (this.$root.config.runes.balefire_bolt)
-                    options.push({ value: constants.spells.BALEFIRE_BOLT, title: "Balefire Bolt" });
-                if (this.$root.config.runes.deep_freeze)
-                    options.push({ value: constants.spells.DEEP_FREEZE, title: "Deep Freeze" });
-                if (this.$root.config.runes.frostfire_bolt)
-                    options.push({ value: constants.spells.FROSTFIRE_BOLT, title: "Frostfire Bolt" });
-                if (this.$root.config.runes.ice_lance)
-                    options.push({ value: constants.spells.ICE_LANCE, title: "Ice Lance" });
-                if (this.$root.config.runes.living_bomb)
-                    options.push({ value: constants.spells.LIVING_BOMB, title: "Living Bomb" });
-                if (this.$root.config.runes.living_flame)
-                    options.push({ value: constants.spells.LIVING_FLAME, title: "Living Flame" });
-                if (this.$root.config.runes.mass_regeneration)
-                    options.push({ value: constants.spells.MASS_REGENERATION, title: "Mass Regeneration" });
-                if (this.$root.config.runes.regeneration)
-                    options.push({ value: constants.spells.REGENERATION, title: "Regeneration" });
-                if (this.$root.config.runes.scorch)
-                    options.push({ value: constants.spells.SCORCH, title: "Scorch" });
-                if (this.$root.config.runes.spellfrost_bolt)
-                    options.push({ value: constants.spells.SPELLFROST_BOLT, title: "Spellfrost Bolt" });
-
-                return [{ value: 0, title: "None" }].concat(_.sortBy(options, "title"));
+                return options;
             },
         },
 

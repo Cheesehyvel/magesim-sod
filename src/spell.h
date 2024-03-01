@@ -359,10 +359,10 @@ namespace spell
         {
             cost = 14;
             cost_base_mana = true;
-            min_dmg = 258 * defaultRuneScale(lvl);
-            max_dmg = 300 * defaultRuneScale(lvl);
+            min_dmg = 387 * defaultRuneScale(lvl);
+            max_dmg = 450 * defaultRuneScale(lvl);
             cast_time = 3;
-            coeff = 3/3.5;
+            coeff = 1;
             speed = 28;
         }
     };
@@ -387,10 +387,10 @@ namespace spell
         {
             cost = 12;
             cost_base_mana = true;
-            min_dmg = 203 * defaultRuneScale(lvl);
-            max_dmg = 237 * defaultRuneScale(lvl);
+            min_dmg = 304 * defaultRuneScale(lvl);
+            max_dmg = 355 * defaultRuneScale(lvl);
             cast_time = 2.5;
-            coeff = 2.5/3.5;
+            coeff = 0.814; // 3.0 / 3.5 * 0.95
             speed = 28;
         }
     };
@@ -823,6 +823,7 @@ namespace spell
             channeling = true;
             ticks = 3;
             cast_time = 3;
+            coeff = 0.457;
             min_heal = 82.0 * defaultHealingRuneScale(lvl);
             max_heal = 82.0 * defaultHealingRuneScale(lvl);
         }
@@ -837,6 +838,7 @@ namespace spell
             channeling = true;
             ticks = 3;
             cast_time = 3;
+            coeff = 0.153;
             min_heal = 42.0 * 5.0 * defaultHealingRuneScale(lvl);
             max_heal = 42.0 * 5.0 * defaultHealingRuneScale(lvl);
         }

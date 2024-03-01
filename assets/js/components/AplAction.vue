@@ -76,6 +76,13 @@
                         rune: "balefire_bolt",
                     },
                     { 
+                        title: "Cast: Berserking",
+                        key: "berserking", 
+                        type: constants.apl_action_types.ACTION_TYPE_BUFF,
+                        id: constants.buffs.BERSERKING,
+                        race: constants.races.RACE_TROLL,
+                    },
+                    { 
                         title: "Cast: Blast Wave",
                         key: "blast_wave", 
                         type: constants.apl_action_types.ACTION_TYPE_SPELL,
@@ -298,17 +305,20 @@
 
         computed: {
             actionOptions() {
-                return this.action_options.filter((opt) => {
-                    if (opt.hasOwnProperty("rune") && !this.$root.config.runes[opt.rune])
-                        return false;
-                    if (opt.hasOwnProperty("talent") && !this.$root.config.talents[opt.talent])
-                        return false;
-                    if (opt.hasOwnProperty("config") && !this.$root.config[opt.config])
-                        return false;
-                    if (opt.type == constants.apl_action_types.ACTION_TYPE_SEQUENCE && this.child)
-                        return false;
-                    return true;
+                var options = _.cloneDeep(this.action_options);
+
+                options.forEach((opt) => {
+                    if (opt.hasOwnProperty("rune") && !this.$root.config.runes[opt.rune] ||
+                        opt.hasOwnProperty("talent") && !this.$root.config.talents[opt.talent] ||
+                        opt.hasOwnProperty("race") && this.$root.config.race != opt.race ||
+                        opt.hasOwnProperty("config") && !this.$root.config[opt.config] ||
+                        opt.type == constants.apl_action_types.ACTION_TYPE_SEQUENCE && this.child)
+                    {
+                        opt.title+= " (inactive)";
+                    }
                 });
+
+                return options;
             },
 
             hasSequence() {
