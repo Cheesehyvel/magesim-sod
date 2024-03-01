@@ -2135,7 +2135,7 @@ action::Action Player::APL_Action(APL::Action apl, const State& state)
                 return none;
             if (spell->id == spell::ARCANE_SURGE && (!runes.arcane_blast || hasCooldown(cooldown::ARCANE_SURGE)))
                 return none;
-            if (spell->id == spell::BALEFIRE_BOLT && buffStacks(buff::BALEFIRE_BOLT) == 9)
+            if (spell->id == spell::BALEFIRE_BOLT && (!runes.balefire_bolt || buffStacks(buff::BALEFIRE_BOLT) == 9))
                 return none;
             if (spell->id == spell::BLAST_WAVE && (!talents.blast_wave || hasCooldown(cooldown::BLAST_WAVE)))
                 return none;
@@ -2235,13 +2235,13 @@ action::Action Player::APL_Action(APL::Action apl, const State& state)
     else if (apl.type == APL::ACTION_TYPE_SEQUENCE) {
         for (int i=0; i<apl.sequence.size(); i++) {
             if (apl.sequence[i].type != APL::ACTION_TYPE_SEQUENCE)
-                apl_sequence.push(&apl.sequence[i]);
+                apl_sequence.push(apl.sequence[i]);
         }
 
         if (apl_sequence.size() > 0) {
-            auto ptr = apl_sequence.front();
+            auto apl_action = apl_sequence.front();
             apl_sequence.pop();
-            return APL_Action(*ptr, state);
+            return APL_Action(apl_action, state);
         }
     }
 
@@ -2258,9 +2258,9 @@ action::Action Player::APL_ActionFromItem(APL::Item item, const State& state)
 action::Action Player::APL_NextAction(std::vector<APL::Item> apl, const State& state)
 {
     while (apl_sequence.size() > 0) {
-        auto ptr = apl_sequence.front();
+        auto apl_action = apl_sequence.front();
         apl_sequence.pop();
-        auto action = APL_Action(*ptr, state);
+        auto action = APL_Action(apl_action, state);
         if (action.type != action::TYPE_NONE)
             return action;
     }

@@ -16,7 +16,7 @@ private:
     const Timing* getNextTiming(const std::string& name) const;
     void useTiming(const Timing* timing);
 
-    std::queue<APL::Action*> apl_sequence;
+    std::queue<APL::Action> apl_sequence;
 
 public:
     const Talents talents;
