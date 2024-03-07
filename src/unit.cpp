@@ -410,6 +410,10 @@ double Unit::getSpellPower(School school) const
         sp+= stats.sp_frost + buff_stats.sp_frost;
     else if (school == SCHOOL_SPELLFIRE)
         sp+= std::max(stats.sp_arcane + buff_stats.sp_arcane, stats.sp_fire + buff_stats.sp_fire);
+    else if (school == SCHOOL_FROSTFIRE)
+        sp+= std::max(stats.sp_frost + buff_stats.sp_frost, stats.sp_fire + buff_stats.sp_fire);
+    else if (school == SCHOOL_SPELLFROST)
+        sp+= std::max(stats.sp_arcane + buff_stats.sp_arcane, stats.sp_frost + buff_stats.sp_frost);
 
     if (get_raid_buffs) {
         if (config.demonic_pact && config.demonic_pact_bonus > 0)
