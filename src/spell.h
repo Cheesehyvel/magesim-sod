@@ -703,7 +703,7 @@ namespace spell
             else
                 speed = distance / flame_hit * flames_per_second;
             
-            ticks = 20 - std::ceil(flame_hit / flames_per_second);
+            ticks = 10 - std::ceil(flame_hit / flames_per_second);
 
             aoe = true;
             cost_base_mana = true;

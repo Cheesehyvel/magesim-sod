@@ -215,7 +215,7 @@ namespace cooldown
         LivingFlame()
         {
             id = LIVING_FLAME;
-            duration = 60;
+            duration = 30;
         }
 
     };
