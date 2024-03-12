@@ -144,8 +144,8 @@ namespace spell
         {
             cost_base_mana = true;
             cost = 7;
-            min_dmg = 386.0 * defaultRuneScale(lvl);
-            max_dmg = 449.0 * defaultRuneScale(lvl);
+            min_dmg = 453.0 * defaultRuneScale(lvl);
+            max_dmg = 527.0 * defaultRuneScale(lvl);
             cast_time = 2.5;
             coeff = 2.5/3.5;
         }
