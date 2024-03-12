@@ -693,7 +693,7 @@ namespace spell
     {
         LivingFlame(int lvl, double distance) : Spell(LIVING_FLAME, "Living Flame", SCHOOL_SPELLFIRE)
         {
-            double diameter = 4;
+            double diameter = 3;
             double flames_per_second = 2;
             double flame_hit = std::floor(distance / diameter);
 
