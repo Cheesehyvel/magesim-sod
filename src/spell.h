@@ -79,7 +79,6 @@ namespace spell
         double coeff = 1;
         double gcd = 1.5;
         double speed = 0;
-        double snapshot_multi = 0;
         bool cost_base_mana = false;
         bool channeling = false;
         bool dot = false;
