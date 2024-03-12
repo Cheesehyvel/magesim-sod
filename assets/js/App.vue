@@ -1016,6 +1016,12 @@
                                         <help>Blessing of Kings<br>Aspect of the Lion</help>
                                     </label>
                                 </div>
+                                <div class="form-item" v-if="lvl >= 40">
+                                    <label><input type="checkbox" v-model="config.moonkin_aura">
+                                        <span>Moonkin Aura</span>
+                                        <help>3% crit</help>
+                                    </label>
+                                </div>
                                 <div class="form-item">
                                     <label>
                                         <input type="checkbox" v-model="config.demonic_pact">
@@ -1779,6 +1785,7 @@
                 blessing_of_kings: true,
                 blessing_of_wisdom: false,
                 imp_blessing_of_wisdom: false,
+                moonkin_aura: false,
                 demonic_pact: false,
                 demonic_pact_bonus: 0,
                 atiesh_mage: false,
@@ -3529,6 +3536,9 @@
                     stats.intellect+= x;
                     stats.spirit+= x;
                 }
+
+                if (this.config.moonkin_aura && this.lvl >= 40)
+                    stats.crit+= 3;
 
                 // Runes
                 if (this.config.runes.burnout)
