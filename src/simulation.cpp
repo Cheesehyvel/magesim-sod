@@ -194,6 +194,34 @@ SimulationResult Simulation::run(bool single)
         }
     }
 
+    if (config.winters_chill_mages > 0) {
+        int n = 0;
+        int p = player->talents.winters_chill;
+        if (p == 0)
+            p = 5;
+        // Assume ffb mages
+        for (double t=3.0; t<state.duration;) {
+            if (n < 5) {
+                for (int i=0; i<config.winters_chill_mages; i++) {
+                    if (p == 5 || random<int>(0, 4) < p) {
+                        pushDebuffGain(state.targets[0], std::make_shared<debuff::WintersChill>(), t);
+                        n++;
+                        if (n == 5)
+                            break;
+                    }
+                }
+            }
+            else {
+                pushDebuffGain(state.targets[0], std::make_shared<debuff::WintersChill>(), t);
+            }
+
+            if (n < 5)
+                t+= 3.0;
+            else
+                t+= 10.0;
+        }
+    }
+
     // Let's no deal with interruptions with APL
     if (config.rotation != ROTATION_APL) {
         for (int i=0; i<config.interruptions.size(); i++) {

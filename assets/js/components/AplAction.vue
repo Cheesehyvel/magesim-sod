@@ -58,7 +58,7 @@
                         title: "Cast: Arcane Power",
                         key: "arcane_power", 
                         type: constants.apl_action_types.ACTION_TYPE_BUFF,
-                        id: constants.spells.ARCANE_POWER,
+                        id: constants.buffs.ARCANE_POWER,
                         talent: "arcane_power",
                     },
                     { 

@@ -940,6 +940,13 @@
                                     </label>
                                     <input type="text" v-model.number="config.scorching_mages">
                                 </div>
+                                <div class="form-item">
+                                    <label>
+                                        <span>Winter's Chill mages</span>
+                                        <help>Not counting yourself</help>
+                                    </label>
+                                    <input type="text" v-model.number="config.winters_chill_mages">
+                                </div>
                             </fieldset>
                             <fieldset class="config-buffs">
                                 <legend>Buffs</legend>
@@ -1849,6 +1856,7 @@
                 },
                 maintain_imp_scorch: true,
                 scorching_mages: 0,
+                winters_chill_mages: 0,
                 rot_fire_blast_weave: true,
                 rot_combustion_fb: true,
                 rot_ice_lance: false,

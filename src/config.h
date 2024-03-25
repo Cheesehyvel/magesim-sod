@@ -64,6 +64,7 @@ struct Config
     Rotation rotation = ROTATION_ST_FIRE;
     bool maintain_imp_scorch = false;
     int scorching_mages = 0;
+    int winters_chill_mages = 0;
     bool rot_fire_blast_weave = false;
     bool rot_combustion_fb = false;
     bool rot_ice_lance = false;
