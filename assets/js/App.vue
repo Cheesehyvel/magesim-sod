@@ -4955,6 +4955,12 @@
                     this.config.interruptions = [];
                     this.config.apl = {precombat: [], combat: []};
                     _.merge(config, _.pick(profile.config, _.keys(config)));
+                    if (_.get(config, "apl.combat")) {
+                        for (var i=0; i<config.apl.combat.length; i++) {
+                            if (!config.apl.combat[i].hasOwnProperty("status"))
+                                config.apl.combat[i].status = true;
+                        }
+                    }
                     _.merge(this.config, config);
                     this.onLoadConfig(profile.config);
                     this.profile_status.config = true;
@@ -4964,10 +4970,9 @@
                 this.saveCurrentProfile();
                 this.refreshTooltips();
 
-                var self = this;
                 clearTimeout(this.profile_status.timeout);
-                this.profile_status.timeout = setTimeout(function() {
-                    self.profile_status.open = false;
+                this.profile_status.timeout = setTimeout(() => {
+                    this.profile_status.open = false;
                 }, 4000);
             },
 

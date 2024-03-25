@@ -68,10 +68,12 @@ onmessage = (event) => {
 
             var combat = new m.APLItemVector();
             for (var row of data.config.apl.combat) {
-                combat.push_back({
-                    condition: aplCondition(row.condition),
-                    action: aplAction(row.action),
-                });
+                if (row.status) {
+                    combat.push_back({
+                        condition: aplCondition(row.condition),
+                        action: aplAction(row.action),
+                    });
+                }
             }
 
             config.apl = {

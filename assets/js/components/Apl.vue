@@ -20,6 +20,16 @@
                 <div class="move move-down" v-if="index < modelValue.length-1" @click="move(index, 1)">
                     <span class="material-icons">&#xe5db;</span>
                 </div>
+                <div class="status" :class="[item.status ? 'active' : 'inactive']" @click="statusItem(index)">
+                    <span v-if="item.status">
+                        <span class="material-icons">&#xe8f4;</span>
+                        <tooltip position="l">Disable</tooltip>
+                    </span>
+                    <span v-else>
+                        <span class="material-icons">&#xe8f5;</span>
+                        <tooltip position="l">Enable</tooltip>
+                    </span>
+                </div>
                 <div class="delete" @click="deleteItem(index)">
                     <span class="material-icons">&#xe5cd;</span>
                 </div>
@@ -53,6 +63,11 @@
                 this.$emit("update:modelValue", arr);
             },
 
+            statusItem(index) {
+                this.modelValue[index].status = !this.modelValue[index].status;
+                this.$emit("update:modelValue", this.modelValue);
+            },
+
             deleteItem(index) {
                 this.$emit("update:modelValue", this.modelValue.slice(0, index).concat(this.modelValue.slice(index+1)));
 
@@ -76,6 +91,7 @@
             newItem() {
                 return {
                     id: this.$root.uuid(),
+                    status: true,
                     action: {
                         type: constants.apl_action_types.ACTION_TYPE_NONE,
                         str: "",
