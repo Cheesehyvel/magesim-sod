@@ -267,15 +267,15 @@ double Player::buffDmgMultiplier(std::shared_ptr<spell::Spell> spell, const Stat
     if (spell->id == spell::ICE_LANCE && isFrozen())
         multi *= 3;
 
-    if (spell->id == spell::BALEFIRE_BOLT)
-        multi *= (1.0 + buffStacks(buff::BALEFIRE_BOLT) * 0.1);
-
     if (hasBuff(buff::POWER_INFUSION) && !hasBuff(buff::ARCANE_POWER))
         multi *= 1.2;
 
     // Additive category
     additive = 1;
 
+
+    if (spell->id == spell::BALEFIRE_BOLT)
+        additive += buffStacks(buff::BALEFIRE_BOLT) * 0.1;
     if (talents.arcane_instability)
         additive += talents.arcane_instability * 0.01;
     if (talents.piercing_ice && spell->isSchool(SCHOOL_FROST))

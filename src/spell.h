@@ -404,7 +404,7 @@ namespace spell
             min_dmg = 280 * defaultRuneScale(lvl);
             max_dmg = 420 * defaultRuneScale(lvl);
             cast_time = 2.5;
-            coeff = 3/3.5;
+            coeff = 3.0/3.5;
             speed = 28;
         }
     };
