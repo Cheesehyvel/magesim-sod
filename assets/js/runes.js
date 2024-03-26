@@ -190,6 +190,17 @@ export default [
         slots: [8],
     },
     {
+        id: 6726,
+        enchant: 6726,
+        spell: 401726,
+        name: "Advanced Warding",
+        description:
+            'Gain the Advanced Warding ability:<br /><br /><span class="tooltip-inside-icon" style="background-image: url(//wow.zamimg.com/images/wow/icons/small/spell_arcane_arcaneresilience.jpg)"></span><br /><a href="/classic/spell=428738/advanced-warding" target="_blank">Increases the magnitude of your Mana Shield, Frost Ward, and Fire Ward by 100%, and decreases mana drained by Mana Shield by 50% per damage done.</a>',
+        icon: "spell_arcane_arcaneresilience",
+        classes: [8],
+        slots: [1],
+    },
+    {
         id: 6732,
         enchant: 6732,
         spell: 401735,

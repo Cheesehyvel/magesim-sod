@@ -378,6 +378,7 @@ EMSCRIPTEN_BINDINGS(my_module)
         .field("displacement", &Runes::displacement)
         .field("deep_freeze", &Runes::deep_freeze)
         .field("temporal_anomaly", &Runes::temporal_anomaly)
+        .field("advanced_warding", &Runes::advanced_warding)
         ;
 
     emscripten::class_<unit::Player>("Player")

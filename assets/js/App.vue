@@ -1085,6 +1085,12 @@
                                     </label>
                                 </div>
                                 <div class="form-item">
+                                    <label><input type="checkbox" v-model="config.fervor_temple_explorer">
+                                        <span>Fervor of the Temple Explorer</span>
+                                        <help>5% crit + 65 sp + 8% stats</help>
+                                    </label>
+                                </div>
+                                <div class="form-item">
                                     <label><input type="checkbox" v-model="config.spark_of_inspiration">
                                         <span>Spark of Inspiration</span>
                                         <help>4% crit + 42 sp</help>
@@ -1167,55 +1173,55 @@
                                 <div class="form-item">
                                     <label><input type="checkbox" v-model="config.arcane_scroll_accuracy" @click="dontStack($event, 'arcane_scroll_power')">
                                         <span>Arcane Scroll of Accuracy</span>
-                                        <help>1% hit</help>
+                                        <help position="t">1% hit</help>
                                     </label>
                                 </div>
                                 <div class="form-item">
                                     <label><input type="checkbox" v-model="config.arcane_scroll_power" @click="dontStack($event, 'arcane_scroll_accuracy')">
                                         <span>Arcane Scroll of Power</span>
-                                        <help>1% crit</help>
+                                        <help position="t">1% crit</help>
                                     </label>
                                 </div>
                                 <div class="form-item">
                                     <label><input type="checkbox" v-model="config.arcane_scroll_recovery">
                                         <span>Arcane Scroll of Recovery</span>
-                                        <help>8 mp5</help>
+                                        <help position="t">8 mp5</help>
                                     </label>
                                 </div>
                                 <div class="form-item">
                                     <label><input type="checkbox" v-model="config.elixir_firepower" @click="dontStack($event, 'elixir_greater_firepower')">
                                         <span>Elixir of Firepower</span>
-                                        <help>10 fire spell power</help>
+                                        <help position="t">10 fire spell power</help>
                                     </label>
                                 </div>
                                 <div class="form-item" v-if="lvl >= 40 && lvlPhase >= 3" @click="dontStack($event, 'elixir_firepower')">
                                     <label><input type="checkbox" v-model="config.elixir_greater_firepower">
                                         <span>Elixir of Greater Firepower</span>
-                                        <help>40 fire spell power</help>
+                                        <help position="t">40 fire spell power</help>
                                     </label>
                                 </div>
                                 <div class="form-item" v-if="lvl >= 28">
                                     <label><input type="checkbox" v-model="config.elixir_frost_power">
                                         <span>Elixir of Frost Power</span>
-                                        <help>15 frost spell power</help>
+                                        <help position="t">15 frost spell power</help>
                                     </label>
                                 </div>
                                 <div class="form-item" v-if="lvl >= 28" @click="dontStack($event, ['elixir_arcane', 'elixir_greater_arcane'])">
                                     <label><input type="checkbox" v-model="config.elixir_lesser_arcane">
                                         <span>Lesser Arcane Elixir</span>
-                                        <help>14 spell power</help>
+                                        <help position="t">14 spell power</help>
                                     </label>
                                 </div>
                                 <div class="form-item" v-if="lvl >= 37 && lvlPhase >= 3" @click="dontStack($event, ['elixir_lesser_arcane', 'elixir_greater_arcane'])">
                                     <label><input type="checkbox" v-model="config.elixir_arcane">
                                         <span>Arcane Elixir</span>
-                                        <help>20 spell power</help>
+                                        <help position="t">20 spell power</help>
                                     </label>
                                 </div>
                                 <div class="form-item" v-if="lvl >= 47" @click="dontStack($event, ['elixir_arcane', 'elixir_lesser_arcane'])">
                                     <label><input type="checkbox" v-model="config.elixir_greater_arcane">
                                         <span>Greater Arcane Elixir</span>
-                                        <help>35 spell power</help>
+                                        <help position="t">35 spell power</help>
                                     </label>
                                 </div>
                             </fieldset>
@@ -1810,6 +1816,7 @@
                 rallying_cry: false,
                 spirit_of_zandalar: false,
                 warchiefs_blessing: false,
+                fervor_temple_explorer: false,
                 spark_of_inspiration: true,
                 boon_blackfathom: false,
                 ashenvale_cry: false,
@@ -1984,6 +1991,7 @@
                     // Head
                     deep_freeze: false,
                     temporal_anomaly: false,
+                    advanced_warding: false,
                 },
 
                 tooltips: false,
@@ -3649,6 +3657,10 @@
                 }
                 if (this.config.rallying_cry && this.lvl >= 60)
                     stats.crit+= 10;
+                if (this.config.fervor_temple_explorer) {
+                    stats.crit+= 5;
+                    stats.sp+= 65;
+                }
                 if (this.config.spark_of_inspiration) {
                     stats.crit+= 4;
                     stats.sp+= 42;
@@ -3676,6 +3688,10 @@
                 if (this.config.blessing_of_kings) {
                     stats.intellect*= 1.1;
                     stats.spirit*= 1.1;
+                }
+                if (this.config.fervor_temple_explorer) {
+                    stats.intellect*= 1.08;
+                    stats.spirit*= 1.08;
                 }
 
                 stats.intellect = Math.round(stats.intellect);

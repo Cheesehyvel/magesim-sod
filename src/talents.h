@@ -96,4 +96,5 @@ struct Runes
     // Head
     bool deep_freeze = false;
     bool temporal_anomaly = false;
+    bool advanced_warding = false;
 };
