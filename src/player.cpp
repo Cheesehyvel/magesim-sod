@@ -661,6 +661,9 @@ std::vector<action::Action> Player::onSpellImpactProc(const State& state, const 
 
             if (config.enchant_dismantle && !hasCooldown(cooldown::DISMANTLE) && random<int>(0, 9) == 0)
                 actions.push_back(spellCooldownAction<spell::Dismantle, cooldown::Dismantle>(target));
+
+            if (config.atalai_mojo_forbidden_magic && !hasCooldown(cooldown::ATALAI_SHADOW_BOLT) && random<int>(0, 3) == 0)
+                actions.push_back(spellCooldownAction<spell::AtalaiShadowBolt, cooldown::AtalaiShadowBolt>(target));
         }
     }
 

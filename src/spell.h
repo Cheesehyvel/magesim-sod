@@ -54,6 +54,7 @@ namespace spell
         COIN_FLIP = 437368,
         ROBE_ARCHMAGE = 18385,
         CELESTIAL_ORB = 9253,
+        ATALAI_SHADOW_BOLT = 446258,
     };
 
     enum Result : int
@@ -924,6 +925,20 @@ namespace spell
         {
             is_trigger = true;
             gcd = 0;
+        }
+    };
+
+    struct AtalaiShadowBolt : public Spell
+    {
+        AtalaiShadowBolt(int lvl) : Spell(ATALAI_SHADOW_BOLT, "Shadow Bolt", SCHOOL_SHADOW)
+        {
+            active_use = false;
+            min_dmg = 204;
+            max_dmg = 236;
+            gcd = 0;
+            coeff = 0.56;
+            can_proc = false;
+            proc = true;
         }
     };
 

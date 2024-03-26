@@ -281,6 +281,7 @@ EMSCRIPTEN_BINDINGS(my_module)
         .property("pre_cast", &Config::pre_cast)
 
         .property("potion", &Config::potion)
+        .property("atalai_mojo_forbidden_magic", &Config::atalai_mojo_forbidden_magic)
 
         .property("trinket1", &Config::trinket1)
         .property("trinket2", &Config::trinket2)

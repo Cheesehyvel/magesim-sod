@@ -1234,6 +1234,7 @@ var enchants = {
     shoulder: [
         { id: 29467, enchantmentId: 2721, title: "Power of the Scourge", sp: 15, crit: 1, phase: 4 },
         { id: 24421, enchantmentId: 2605, title: "Zandalar Signet of Mojo", sp: 18, phase: 4 },
+        { id: 446459, enchantmentId: 7325, title: "Atal'ai Signet of Mojo", sp: 9, phase: 3 },
     ],
     chest: [
         { id: 20025, enchantmentId: 1891, title: "Greater Stats", int: 4, spi: 4, phase: 3 },

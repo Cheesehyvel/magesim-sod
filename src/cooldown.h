@@ -38,6 +38,7 @@ namespace cooldown
         ELECTROMAGNETIC_GIGAFLUX_REACTIVATOR = 11826,
         ROBE_ARCHMAGE = 18385,
         CELESTIAL_ORB = 9253,
+        ATALAI_SHADOW_BOLT = 446258,
     };
 
 
@@ -336,6 +337,18 @@ namespace cooldown
         {
             id = CELESTIAL_ORB;
             duration = 1800;
+        }
+
+    };
+
+    class AtalaiShadowBolt : public Cooldown
+    {
+
+    public:
+        AtalaiShadowBolt()
+        {
+            id = ATALAI_SHADOW_BOLT;
+            duration = 40;
         }
 
     };

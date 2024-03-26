@@ -55,7 +55,9 @@ struct Config
 
     bool pre_cast = false;
 
+    // Consumes
     Potion potion = POTION_NONE;
+    bool atalai_mojo_forbidden_magic = false;
 
     Trinket trinket1 = TRINKET_NONE;
     Trinket trinket2 = TRINKET_NONE;

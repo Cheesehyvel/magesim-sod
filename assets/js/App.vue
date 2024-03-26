@@ -1084,13 +1084,13 @@
                                         <help>10 mp5</help>
                                     </label>
                                 </div>
-                                <div class="form-item">
+                                <div class="form-item" v-if="lvlPhase >= 3">
                                     <label><input type="checkbox" v-model="config.fervor_temple_explorer">
                                         <span>Fervor of the Temple Explorer</span>
                                         <help>5% crit + 65 sp + 8% stats</help>
                                     </label>
                                 </div>
-                                <div class="form-item">
+                                <div class="form-item" v-if="lvlPhase >= 2">
                                     <label><input type="checkbox" v-model="config.spark_of_inspiration">
                                         <span>Spark of Inspiration</span>
                                         <help>4% crit + 42 sp</help>
@@ -1114,10 +1114,28 @@
                                         <help>10% dmg from Darkmoon Faire</help>
                                     </label>
                                 </div>
+                                <div class="form-item" v-if="lvlPhase >= 3">
+                                    <label><input type="checkbox" v-model="config.atalai_mojo_forbidden_magic">
+                                        <span>Atal'ai Mojo of Forbidden Magic</span>
+                                        <help>40 sp + 25% chance to proc shadowbolt</help>
+                                    </label>
+                                </div>
+                                <div class="form-item" v-if="lvlPhase >= 3">
+                                    <label><input type="checkbox" v-model="config.flask_restless_dreams">
+                                        <span>Flask of Restless Dreams</span>
+                                        <help>30 sp + 12 mp5, alchemist only</help>
+                                    </label>
+                                </div>
+                                <div class="form-item" v-if="lvlPhase >= 3">
+                                    <label><input type="checkbox" v-model="config.enchanted_sigil_living_dreams" @click="dontStack($event, 'enchanted_sigil_innovation')">
+                                        <span>Enchanted Sigil: Living Dreams</span>
+                                        <help>30 sp, enchanter only</help>
+                                    </label>
+                                </div>
                                 <div class="form-item">
-                                    <label><input type="checkbox" v-model="config.enchanted_sigil_innovation">
+                                    <label><input type="checkbox" v-model="config.enchanted_sigil_innovation" @click="dontStack($event, 'enchanted_sigil_living_dreams')">
                                         <span>Enchanted Sigil: Innovation</span>
-                                        <help>+20 sp, enchanter only</help>
+                                        <help>20 sp, enchanter only</help>
                                     </label>
                                 </div>
                             </fieldset>
@@ -1821,7 +1839,6 @@
                 boon_blackfathom: false,
                 ashenvale_cry: false,
                 dmf_dmg: false,
-                enchanted_sigil_innovation: false,
 
                 // Consumes
                 arcane_scroll_accuracy: false,
@@ -1837,6 +1854,10 @@
                 flask: 0,
                 potion: constants.potions.POTION_GREATER_MANA,
                 food: constants.foods.FOOD_MP6,
+                atalai_mojo_forbidden_magic: false,
+                flask_restless_dreams: false,
+                enchanted_sigil_living_dreams: false,
+                enchanted_sigil_innovation: false,
 
                 pre_cast: true,
 
@@ -2366,7 +2387,9 @@
                 var arr = [];
 
                 // Alchemy
-                if (this.isEquipped("trinket", this.items.ids.TRINKET_ALCHEMIST_STONE))
+                if (this.config.flask_restless_dreams)
+                    arr.push("Alchemist: Flask of Restless Dreams selected");
+                else if (this.isEquipped("trinket", this.items.ids.TRINKET_ALCHEMIST_STONE))
                     arr.push("Alchemist: Alchemist Stone equipped (Trinket)");
                 else if (this.config.rotation != constants.rotations.ROTATION_APL && _.find(this.config.timings, {name: "mildly_irradiated_potion"}))
                     arr.push("Alchemist: Mildly Irradiated Rejuvenation Potion");
@@ -2377,7 +2400,9 @@
                 else if (this.isEquipped("head", this.items.ids.GNEURO_LINKED_MONOCLE))
                     arr.push("Tailoring: Gneuro-Linked Arcano-Filament Monocle equipped (Head)");
 
-                if (this.config.enchanted_sigil_innovation)
+                if (this.config.enchanted_sigil_living_dreams)
+                    arr.push("Enchanting: Enchanted Sigil: Living Dreams selected");
+                else if (this.config.enchanted_sigil_innovation)
                     arr.push("Enchanting: Enchanted Sigil: Innovation selected");
 
                 // Engineering
@@ -3575,6 +3600,8 @@
                     stats.sp+= 20;
                 else if (this.config.elixir_greater_arcane && this.lvl >= 47 && this.lvlPhase >= 3)
                     stats.sp+= 35;
+                if (this.config.atalai_mojo_forbidden_magic)
+                    stats.sp+= 40;
 
                 if (this.config.food == this.foods.FOOD_INT10 && this.lvl >= 45)
                     stats.intellect+= 10;
@@ -3677,7 +3704,13 @@
                 }
 
                 // Profs
-                if (this.config.enchanted_sigil_innovation)
+                if (this.config.flask_restless_dreams) {
+                    stats.sp+= 30;
+                    stats.mp5+= 12;
+                }
+                if (this.config.enchanted_sigil_living_dreams)
+                    stats.sp+= 30;
+                else if (this.config.enchanted_sigil_innovation)
                     stats.sp+= 20;
 
                 // Attribute multipliers
