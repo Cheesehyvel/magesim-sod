@@ -47,6 +47,7 @@ var ids = {
     SET_HYPERCONDUCTIVE_MENDER: 1588,
     SET_MALEVOLENT_PROPHET: 1639,
     SET_BENEVOLENT_PROPHET: 1638,
+    SET_EMERALD_ENCHANTED: 1660,
 
     ENCHANT_DISMANTLE: 435481,
 
@@ -373,6 +374,7 @@ var equip = {
         { id: 223326, title: "Hakkari Shroud", ilvl: 55, sp_fire: 29, q: "rare", phase: 3 },
         // { id: 10782, title: "Hakkari Shroud", ilvl: 55, int: 15, q: "uncommon", phase: 3 },
         { id: 220523, title: "Visage of the Exiled", ilvl: 55, int: 20, spi: 15, sp: 21, hit: 1, q: "rare", phase: 3 },
+        { id: 221425, itemset: ids.SET_EMERALD_ENCHANTED, title: "Emerald Enchanted Circlet", ilvl: 50, int: 10, spi: 9, crit: 1, q: "rare", phase: 3 },
         { id: 220907, itemset: ids.SET_BLOOD_GUARD, title: "Blood Guard's Dreadweave Hat", ilvl: 55, int: 11, spi: 11, crit: 1, q: "rare", faction: "h", pvp: true, phase: 3 },
         { id: 220889, itemset: ids.SET_KNIGHT_LIEUTENANT, title: "Knight-Lieutenant's Dreadweave Hat", ilvl: 55, int: 11, spi: 11, crit: 1, q: "rare", faction: "a", pvp: true, phase: 3 },
         { id: 223193, title: "Crown of the Dreamweaver", ilvl: 55, spi: 13, q: "rare", phase: 3 },
@@ -518,6 +520,7 @@ var equip = {
         { id: ids.FRACTURED_MIND_PAULDRONS, title: "Fractured Mind Pauldrons", ilvl: 55, int: 14, spi: 12, sp: 18, prof: "tailoring", phase: 3 },
         { id: ids.SHOULDERPADS_DERANGED, title: "Shoulderpads of the Deranged", ilvl: 55, int: 13, sp: 13, prof: "tailoring", phase: 3 },
         { id: ids.MANTLE_INSANITY, title: "Mantle of Insanity", ilvl: 55, int: 13, spi: 12, prof: "tailoring", phase: 3 },
+        { id: 221431, itemset: ids.SET_EMERALD_ENCHANTED, title: "Emerald Enchanted Shoulders", ilvl: 50, int: 10, spi: 5, sp: 9, q: "rare", phase: 3 },
         { id: 220905, itemset: ids.SET_BLOOD_GUARD, title: "Blood Guard's Dreadweave Mantle", ilvl: 55, int: 13, sp: 11, q: "rare", faction: "h", pvp: true, phase: 3 },
         { id: 220887, itemset: ids.SET_KNIGHT_LIEUTENANT, title: "Knight-Lieutenant's Dreadweave Mantle", ilvl: 55, int: 13, sp: 11, q: "rare", faction: "a", pvp: true, phase: 3 },
         { id: 11624, title: "Kentic Amice", ilvl: 52, int: 13, spi: 6, sp: 14, q: "rare", phase: 3 },
@@ -645,6 +648,7 @@ var equip = {
         { id: 22301, itemset: ids.SET_IRONWEAVE, title: "Ironweave Robe", ilvl: 63, int: 15, q: "rare", phase: 4 },
 
         { id: 220680, itemset: ids.SET_MALEVOLENT_PROPHET, title: "Malevolent Prophet's Vest", ilvl: 55, int: 11, sp: 23, crit: 1, q: "rare", phase: 3 },
+        { id: 221430, itemset: ids.SET_EMERALD_ENCHANTED, title: "Emerald Enchanted Robes", ilvl: 50, int: 11, spi: 11, crit: 1, q: "rare", phase: 3 },
         { id: 220535, title: "Garments of the Atal'ai Prophet", ilvl: 55, int: 11, sp: 32, q: "rare", phase: 3 },
         { id: 220683, itemset: ids.SET_BENEVOLENT_PROPHET, title: "Benevolent Prophet's Vest", ilvl: 55, int: 14, mp5: 6, q: "rare", phase: 3 },
         { id: 220904, itemset: ids.SET_BLOOD_GUARD, title: "Stone Guard's Dreadweave Vest", ilvl: 53, int: 15, crit: 1, q: "rare", faction: "h", pvp: true, phase: 3 },
@@ -821,6 +825,7 @@ var equip = {
         { id: 14543, title: "Darkshade Gloves", ilvl: 62, int: 7, spi: 6, q: "rare", phase: 4 },
 
         { id: 220548, title: "Atal'ai Hexxer's Gloves", ilvl: 55, int: 16, sp: 19, q: "rare", phase: 3 },
+        { id: 221427, itemset: ids.SET_EMERALD_ENCHANTED, title: "Emerald Enchanted Gloves", ilvl: 50, int: 9, spi: 8, sp: 13, q: "rare", phase: 3 },
         { id: 220908, itemset: ids.SET_BLOOD_GUARD, title: "First Sergeant's Dreadweave Gloves", ilvl: 51, sp: 19, q: "rare", faction: "h", pvp: true, phase: 3 },
         { id: 220890, itemset: ids.SET_KNIGHT_LIEUTENANT, title: "Sergeant Major's Dreadweave Gloves", ilvl: 51, sp: 19, q: "rare", faction: "a", pvp: true, phase: 3 },
         { id: 220547, title: "Gloves of the Fallen Atal'ai Prophet", ilvl: 55, int: 12, spi: 13, q: "rare", phase: 3 },
@@ -1000,6 +1005,7 @@ var equip = {
 
         { id: 220679, itemset: ids.SET_MALEVOLENT_PROPHET, title: "Malevolent Prophet's Leggings", ilvl: 55, int: 19, sp: 23, q: "rare", phase: 3 },
         { id: 220556, title: "Kilt of the Fallen Atal'ai Prophet", ilvl: 55, int: 18, sp: 21, q: "rare", phase: 3 },
+        { id: 221429, itemset: ids.SET_EMERALD_ENCHANTED, title: "Emerald Enchanted Pants", ilvl: 50, int: 10, spi: 12, sp: 13, q: "rare", phase: 3 },
         { id: 220684, itemset: ids.SET_BENEVOLENT_PROPHET,title: "Benevolent Prophet's Leggings", ilvl: 55, int: 12, spi: 11, q: "rare", phase: 3 },
         { id: 220906, itemset: ids.SET_BLOOD_GUARD, title: "Stone Guard's Dreadweave Leggings", ilvl: 53, int: 10, spi: 13, sp: 16, q: "rare", faction: "h", pvp: true, phase: 3 },
         { id: 220888, itemset: ids.SET_KNIGHT_LIEUTENANT, title: "Knight's Dreadweave Leggings", ilvl: 53, int: 10, spi: 13, sp: 16, q: "rare", faction: "a", pvp: true, phase: 3 },
@@ -1081,6 +1087,7 @@ var equip = {
         { id: 8284, title: "Arcane Boots", ilvl: 57, int: 4, spi: 16, q: "uncommon", phase: 4 },
 
         { id: 220681, itemset: ids.SET_MALEVOLENT_PROPHET, title: "Malevolent Prophet's Sandals", ilvl: 55, int: 9, spi: 10, sp: 15, hit: 1, q: "rare", phase: 3 },
+        { id: 221426, itemset: ids.SET_EMERALD_ENCHANTED, title: "Emerald Enchanted Boots", ilvl: 50, int: 10, spi: 9, sp: 8, q: "rare", phase: 3 },
         { id: 220685, itemset: ids.SET_BENEVOLENT_PROPHET, title: "Benevolent Prophet's Sandals", ilvl: 55, int: 20, q: "rare", phase: 3 },
         { id: 220909, itemset: ids.SET_BLOOD_GUARD, title: "First Sergeant's Dreadweave Boots", ilvl: 51, int: 12, sp: 9, q: "rare", faction: "h", pvp: true, phase: 3 },
         { id: 220891, itemset: ids.SET_KNIGHT_LIEUTENANT, title: "Sergeant Major's Dreadweave Boots", ilvl: 51, int: 12, sp: 9, q: "rare", faction: "a", pvp: true, phase: 3 },
@@ -1185,9 +1192,9 @@ var equip = {
         { id: 13392, itemset: ids.SET_POSTMASTER, title: "The Postmaster's Seal", ilvl: 61, int: 3, spi: 17, q: "rare", unique: true, phase: 4 },
 
         { id: ids.ROAR_OF_THE_DREAM, title: "Roar of the Dream", ilvl: 50, unique: true, phase: 3 },
-        { id: 221452, title: "Bloodfocused Arcane Band", ilvl: 50, int: 4, sp_arcane: 17, unique: true, phase: 3 },
-        { id: 221453, title: "Band of Boiling Blood", ilvl: 50, int: 4, sp_fire: 17, unique: true, phase: 3 },
-        { id: 221454, title: "Glacial Blood Band", ilvl: 50, int: 4, sp_frost: 17, unique: true, phase: 3 },
+        { id: 221452, title: "Bloodfocused Arcane Band", ilvl: 50, int: 4, sp_arcane: 17, unique: "blood_moon", phase: 3 },
+        { id: 221453, title: "Band of Boiling Blood", ilvl: 50, int: 4, sp_fire: 17, unique: "blood_moon", phase: 3 },
+        { id: 221454, title: "Glacial Blood Band", ilvl: 50, int: 4, sp_frost: 17, unique: "blood_moon", phase: 3 },
         { id: 220628, title: "Drakeclaw Band of the Harbinger", ilvl: 55, int: 11, spi: 12, sp: 15, phase: 3 },
         { id: 220630, title: "Drakeclaw Band of the Juggernaut", ilvl: 55, hit: 1, phase: 3 },
         { id: 220627, title: "Drakeclaw Band of the Stalker", ilvl: 55, hit: 1, phase: 3 },
@@ -1371,8 +1378,9 @@ var itemsets = [
     { id: ids.SET_IRRADIATED, set2: { crit: 1 }, set3: { sp: 11 }},
     { id: ids.SET_HYPERCONDUCTIVE_WIZARD, set2: { hit: 1 }},
     { id: ids.SET_HYPERCONDUCTIVE_MENDER, set2: { spi: 14 }, set3: { mp5: 7 }},
-    { id: ids.SET_MALEVOLENT_PROPHET, set2: { crit: 1 }, set3: { sp: 18 }},
+    { id: ids.SET_MALEVOLENT_PROPHET, set2: { hit: 1 }, set3: { sp: 18 }},
     { id: ids.SET_BENEVOLENT_PROPHET, set2: { mp5: 4 }},
+    { id: ids.SET_EMERALD_ENCHANTED, set6: { sp: 12 }},
 ];
 
 export default { ids, equip, enchants, itemsets };
