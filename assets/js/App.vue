@@ -1876,6 +1876,7 @@
                 item_fractured_mind_pauldrons: false,
                 item_shoulderpads_deranged: false,
                 item_mantle_insanity: false,
+                item_roar_of_the_dream: false,
 
                 trinket1: 0,
                 trinket2: 0,
@@ -3558,6 +3559,7 @@
                 this.config.item_fractured_mind_pauldrons = this.isEquipped("shoulder", this.items.ids.FRACTURED_MIND_PAULDRONS);
                 this.config.item_shoulderpads_deranged = this.isEquipped("shoulder", this.items.ids.SHOULDERPADS_DERANGED);
                 this.config.item_mantle_insanity = this.isEquipped("shoulder", this.items.ids.MANTLE_INSANITY);
+                this.config.item_roar_of_the_dream = this.isEquipped("finger", this.items.ids.ROAR_OF_THE_DREAM);
             },
 
             simStats() {

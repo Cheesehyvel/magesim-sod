@@ -609,6 +609,10 @@ std::vector<action::Action> Player::onCastSuccessProc(const State& state, std::s
         actions.push_back(buffExpireAction<buff::ChaosFire>());
     }
 
+    if (is_harmful && config.item_roar_of_the_dream && random<int>(0, 19) == 0) {
+        actions.push_back(buffAction<buff::RoarOfTheDream>());
+    }
+
     return actions;
 }
 

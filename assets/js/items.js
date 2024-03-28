@@ -57,6 +57,7 @@ var ids = {
     ATIESH: 22589,
     ROBE_ARCHMAGE: 14152,
     CELESTIAL_ORB: 7515,
+    ROAR_OF_THE_DREAM: 221440,
 
     FRACTURED_MIND_PAULDRONS: 220750,
     SHOULDERPADS_DERANGED: 220751,
@@ -1183,6 +1184,10 @@ var equip = {
         { id: 18398, title: "Tidal Loop", ilvl: 63, int: 7, spi: 4, q: "rare", phase: 4 },
         { id: 13392, itemset: ids.SET_POSTMASTER, title: "The Postmaster's Seal", ilvl: 61, int: 3, spi: 17, q: "rare", unique: true, phase: 4 },
 
+        { id: ids.ROAR_OF_THE_DREAM, title: "Roar of the Dream", ilvl: 50, unique: true, phase: 3 },
+        { id: 221452, title: "Bloodfocused Arcane Band", ilvl: 50, int: 4, sp_arcane: 17, unique: true, phase: 3 },
+        { id: 221453, title: "Band of Boiling Blood", ilvl: 50, int: 4, sp_fire: 17, unique: true, phase: 3 },
+        { id: 221454, title: "Glacial Blood Band", ilvl: 50, int: 4, sp_frost: 17, unique: true, phase: 3 },
         { id: 220628, title: "Drakeclaw Band of the Harbinger", ilvl: 55, int: 11, spi: 12, sp: 15, phase: 3 },
         { id: 220630, title: "Drakeclaw Band of the Juggernaut", ilvl: 55, hit: 1, phase: 3 },
         { id: 220627, title: "Drakeclaw Band of the Stalker", ilvl: 55, hit: 1, phase: 3 },

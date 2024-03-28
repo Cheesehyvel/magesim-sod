@@ -282,6 +282,7 @@ EMSCRIPTEN_BINDINGS(my_module)
         .property("item_fractured_mind_pauldrons", &Config::item_fractured_mind_pauldrons)
         .property("item_shoulderpads_deranged", &Config::item_shoulderpads_deranged)
         .property("item_mantle_insanity", &Config::item_mantle_insanity)
+        .property("item_roar_of_the_dream", &Config::item_roar_of_the_dream)
 
         .property("pre_cast", &Config::pre_cast)
 

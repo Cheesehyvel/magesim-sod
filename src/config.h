@@ -55,6 +55,7 @@ struct Config
     bool item_fractured_mind_pauldrons = false;
     bool item_shoulderpads_deranged = false;
     bool item_mantle_insanity = false;
+    bool item_roar_of_the_dream = false;
 
     bool pre_cast = false;
 

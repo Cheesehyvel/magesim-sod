@@ -75,6 +75,7 @@
                     { title: "Echoes of Insanity", color: "#a8a" },
                     { title: "Netherwind Focus", color: "#44d" },
                     { title: "Enigma's Answer", color: "#44d" },
+                    { title: "Roar of the Dream", color: "#4d9" },
                 ],
                 trinkets: [
                     { title: "Essence of Sapphiron", color: "#fe9" },

@@ -55,6 +55,7 @@ enum ID : int
     ECHOES_OF_MADNESS = 446528,
     ECHOES_OF_DEPRAVED = 446572,
     ECHOES_OF_INSANITY = 446541,
+    ROAR_OF_THE_DREAM = 446706,
 };
 
 
@@ -395,6 +396,13 @@ class EchoesOfInsanity : public Buff
 
 public:
     EchoesOfInsanity();
+};
+
+class RoarOfTheDream : public Buff
+{
+
+public:
+    RoarOfTheDream();
 };
 
 }

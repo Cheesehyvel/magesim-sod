@@ -374,4 +374,12 @@ EchoesOfInsanity::EchoesOfInsanity()
     duration = 10;
 }
 
+RoarOfTheDream::RoarOfTheDream()
+{
+    id = ROAR_OF_THE_DREAM;
+    name = "Roar of the Dream";
+    duration = 10;
+    stats.sp = 66;
+}
+
 }
