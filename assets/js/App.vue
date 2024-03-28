@@ -5019,6 +5019,8 @@
                         for (var i=0; i<config.apl.combat.length; i++) {
                             if (!config.apl.combat[i].hasOwnProperty("status"))
                                 config.apl.combat[i].status = true;
+                            if (!config.apl.combat[i].id || typeof(config.apl.combat[i].id) == "number" || config.apl.combat[i].id.length < 5)
+                                config.apl.combat[i].id = this.uuid();
                         }
                     }
                     _.merge(this.config, config);
