@@ -6,8 +6,11 @@
 
         <input type="text" v-model.number="modelValue.value" v-if="type.input == 'number'" @input="changed">
 
-        <select v-model="modelValue.id" @change="changed" v-if="idOptions.length" @input="changed">
+        <select v-model.number="modelValue.id" @change="changed" v-if="idOptions.length" @input="changed">
             <option v-for="opt in idOptions" :value="opt.value">{{ opt.title }}</option>
+        </select>
+        <select v-model="modelValue.str" @change="changed" v-if="strOptions.length" @input="changed">
+            <option v-for="opt in strOptions" :value="opt.value">{{ opt.title }}</option>
         </select>
     </div>
 </template>
@@ -99,8 +102,6 @@
             },
 
             idOptions() {
-                if (this.type.input == "talents")
-                    return this.talent_options;
                 if (this.type.input == "runes")
                     return this.rune_options;
                 if (this.type.input == "cooldowns")
@@ -112,6 +113,12 @@
                 if (this.type.input == "spells")
                     return this.spellOptions;
 
+                return [];
+            },
+
+            strOptions() {
+                if (this.type.input == "talents")
+                    return this.talent_options;
                 return [];
             },
 
