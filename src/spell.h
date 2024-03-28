@@ -44,6 +44,10 @@ namespace spell
         REWIND_TIME = 401462,
         TEMPORAL_BEACON = 400735,
 
+        // Trinkets
+        CHAOS_FIRE = 24389,
+        MANA_INFUSION = 28760,
+
         // Enchants
         DISMANTLE = 439164,
 
@@ -854,6 +858,24 @@ namespace spell
             min_heal = heal;
             max_heal = heal;
             coeff = 0;
+        }
+    };
+
+    struct ChaosFire : Spell
+    {
+        ChaosFire(int lvl) : Spell(CHAOS_FIRE, "Chaos Fire", SCHOOL_PHYSICAL)
+        {
+            is_trigger = true;
+            gcd = 0;
+        }
+    };
+
+    struct ManaInfusion : Spell
+    {
+        ManaInfusion(int lvl) : Spell(MANA_INFUSION, "Mana Infusion", SCHOOL_PHYSICAL)
+        {
+            is_trigger = true;
+            gcd = 0;
         }
     };
 

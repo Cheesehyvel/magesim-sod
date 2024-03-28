@@ -20,6 +20,10 @@
                 <div class="move move-down" v-if="index < modelValue.length-1" @click="move(index, 1)">
                     <span class="material-icons">&#xe5db;</span>
                 </div>
+                <div class="clone" @click="clone(index)">
+                    <span class="material-icons">&#xe14d;</span>
+                    <tooltip position="l">Clone</tooltip>
+                </div>
                 <div class="status" :class="[item.status ? 'active' : 'inactive']" @click="statusItem(index)">
                     <span v-if="item.status">
                         <span class="material-icons">&#xe8f4;</span>
@@ -61,6 +65,13 @@
                 var arr = this.modelValue;
                 arr.splice(index+diff, 0, arr.splice(index, 1)[0]);
                 this.$emit("update:modelValue", arr);
+            },
+
+            clone(index) {
+                var item = _.cloneDeep(this.modelValue[index]);
+                item.id = this.$root.uuid();
+                this.modelValue.splice(index, 0, item);
+                this.$emit("update:modelValue", this.modelValue);
             },
 
             statusItem(index) {

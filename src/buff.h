@@ -35,12 +35,14 @@ enum ID : int
     ESSENCE_OF_SAPPHIRON = 28779,
     MQG = 23723,
     UNSTABLE_POWER = 24658,
+    EPHEMERAL_POWER = 23271,
     ARCANE_POTENCY = 24544,
     OBSIDIAN_INSIGHT = 26166,
     BLUE_DRAGON = 23688,
     NAT_PAGLE = 24610,
     CHROMATIC_INFUSION = 27675,
     BURST_OF_KNOWLEDGE = 15646,
+    UNRESTRAINED_POWER = 446303,
     CHAOS_FIRE = 24389,
 
     NETHERWIND_FOCUS = 22007,
@@ -50,6 +52,9 @@ enum ID : int
     COIN_FLIP_HEADS = 437698,
     COIN_FLIP_TAILS = 437699,
     MILDLY_IRRADIATED = 435973,
+    ECHOES_OF_MADNESS = 446528,
+    ECHOES_OF_DEPRAVED = 446572,
+    ECHOES_OF_INSANITY = 446541,
 };
 
 
@@ -259,6 +264,13 @@ public:
     UnstablePower();
 };
 
+class EphemeralPower : public Buff
+{
+
+public:
+    EphemeralPower();
+};
+
 class ArcanePotency : public Buff
 {
 
@@ -299,6 +311,13 @@ class BurstOfKnowledge : public Buff
 
 public:
     BurstOfKnowledge();
+};
+
+class UnrestrainedPower : public Buff
+{
+
+public:
+    UnrestrainedPower();
 };
 
 class ChaosFire : public Buff
@@ -355,6 +374,27 @@ class MildlyIrradiated : public Buff
 
 public:
     MildlyIrradiated();
+};
+
+class EchoesOfMadness : public Buff
+{
+
+public:
+    EchoesOfMadness();
+};
+
+class EchoesOfDepraved : public Buff
+{
+
+public:
+    EchoesOfDepraved();
+};
+
+class EchoesOfInsanity : public Buff
+{
+
+public:
+    EchoesOfInsanity();
 };
 
 }

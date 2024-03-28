@@ -15,6 +15,7 @@
 #include <memory>
 #include <vector>
 #include <iomanip>
+#include <map>
 #include <unordered_map>
 #include <sstream>
 #include <algorithm>
@@ -1123,7 +1124,7 @@ void Simulation::onDebuffExpire(std::shared_ptr<target::Target> target, std::sha
     target->removeDebuff(debuff->id);
 }
 
-void Simulation::onCooldownGain(std::shared_ptr<unit::Unit> unit, std::shared_ptr<cooldown::Cooldown> cooldown, bool mod)
+void Simulation::onCooldownGain(std::shared_ptr<unit::Unit> unit, std::shared_ptr<cooldown::Cooldown> cooldown, bool mod, bool trigger_shared)
 {
     if (mod)
         cooldown->duration += unit->cooldownMod(*cooldown);
@@ -1136,11 +1137,37 @@ void Simulation::onCooldownGain(std::shared_ptr<unit::Unit> unit, std::shared_pt
         removeCooldownExpiration(unit, *cooldown);
         pushCooldownExpire(unit, cooldown);
     }
+
+    if (trigger_shared)
+        triggerSharedCooldowns(unit, cooldown);
 }
 
 void Simulation::onCooldownExpire(std::shared_ptr<unit::Unit> unit, std::shared_ptr<cooldown::Cooldown> cooldown)
 {
     unit->removeCooldown(cooldown->id);
+}
+
+void Simulation::triggerSharedCooldowns(std::shared_ptr<unit::Unit> unit, std::shared_ptr<cooldown::Cooldown> cooldown)
+{
+    std::map<cooldown::ID, double> trinkets = {
+        {cooldown::ESSENCE_OF_SAPPHIRON, 20},
+        {cooldown::MQG, 20},
+        {cooldown::UNSTABLE_POWER, 20},
+        {cooldown::EPHEMERAL_POWER, 15},
+        {cooldown::ARCANE_POTENCY, 20},
+        {cooldown::OBSIDIAN_INSIGHT, 30},
+        {cooldown::CHROMATIC_INFUSION, 15},
+        {cooldown::UNRESTRAINED_POWER, 20},
+        {cooldown::CHAOS_FIRE, 15},
+    };
+
+    auto entry = trinkets.find(cooldown->id);
+    if (entry != trinkets.end()) {
+        for (auto itr = trinkets.begin(); itr != trinkets.end(); itr++) {
+            if (itr->first != cooldown->id)
+                onCooldownGain(unit, std::make_shared<cooldown::Cooldown>(itr->first, entry->second), false, false);
+        }
+    }
 }
 
 void Simulation::usePotion(std::shared_ptr<unit::Unit> unit)

@@ -224,6 +224,14 @@ UnstablePower::UnstablePower()
     stats.sp = 17;
 }
 
+EphemeralPower::EphemeralPower()
+{
+    id = EPHEMERAL_POWER;
+    name = "Ephemeral Power";
+    duration = 15;
+    stats.sp = 175;
+}
+
 ArcanePotency::ArcanePotency()
 {
     id = ARCANE_POTENCY;
@@ -268,6 +276,17 @@ BurstOfKnowledge::BurstOfKnowledge()
     id = BURST_OF_KNOWLEDGE;
     name = "Burst of Knowledge";
     duration = 10;
+}
+
+UnrestrainedPower::UnrestrainedPower()
+{
+    id = UNRESTRAINED_POWER;
+    name = "Unrestrained Power";
+    max_stacks = 24;
+    stack_increment = -1;
+    stack_refresh = false;
+    duration = 20;
+    stats.sp = 8;
 }
 
 ChaosFire::ChaosFire()
@@ -331,6 +350,28 @@ MildlyIrradiated::MildlyIrradiated()
     name = "Mildly Irradiated";
     duration = 15;
     stats.sp = 35;
+}
+
+EchoesOfMadness::EchoesOfMadness()
+{
+    id = ECHOES_OF_MADNESS;
+    name = "Echoes of Madness";
+    duration = 10;
+}
+
+EchoesOfDepraved::EchoesOfDepraved()
+{
+    id = ECHOES_OF_DEPRAVED;
+    name = "Echoes of Depraved";
+    duration = 10;
+    stats.sp = 30;
+}
+
+EchoesOfInsanity::EchoesOfInsanity()
+{
+    id = ECHOES_OF_INSANITY;
+    name = "Echoes of Insanity";
+    duration = 10;
 }
 
 }

@@ -1873,6 +1873,9 @@
                 item_electromagnetic_hyperflux_reactivator: false,
                 item_robe_archmage: false,
                 item_celestial_orb: false,
+                item_fractured_mind_pauldrons: false,
+                item_shoulderpads_deranged: false,
+                item_mantle_insanity: false,
 
                 trinket1: 0,
                 trinket2: 0,
@@ -2385,34 +2388,37 @@
 
             activeProfessions() {
                 var arr = [];
+                var profs = {
+                    alchemy: null,
+                    enchanting: null,
+                    engineering: null,
+                    tailoring: null,
+                };
 
                 // Alchemy
                 if (this.config.flask_restless_dreams)
-                    arr.push("Alchemist: Flask of Restless Dreams selected");
-                else if (this.isEquipped("trinket", this.items.ids.TRINKET_ALCHEMIST_STONE))
-                    arr.push("Alchemist: Alchemist Stone equipped (Trinket)");
+                    profs.alchemy = "Flask of Restless Dreams selected";
                 else if (this.config.rotation != constants.rotations.ROTATION_APL && _.find(this.config.timings, {name: "mildly_irradiated_potion"}))
-                    arr.push("Alchemist: Mildly Irradiated Rejuvenation Potion");
+                    profs.alchemy = "Alchemist: Mildly Irradiated Rejuvenation Potion";
 
-                // Tailoring
-                if (this.isEquipped("chest", this.items.ids.ROBE_ARCHMAGE))
-                    arr.push("Tailoring: Robe of the Archmage equipped (Chest)");
-                else if (this.isEquipped("head", this.items.ids.GNEURO_LINKED_MONOCLE))
-                    arr.push("Tailoring: Gneuro-Linked Arcano-Filament Monocle equipped (Head)");
-
+                // Enchanting
                 if (this.config.enchanted_sigil_living_dreams)
-                    arr.push("Enchanting: Enchanted Sigil: Living Dreams selected");
+                    profs.enchanting = "Enchanting: Enchanted Sigil: Living Dreams selected";
                 else if (this.config.enchanted_sigil_innovation)
-                    arr.push("Enchanting: Enchanted Sigil: Innovation selected");
+                    profs.enchanting = "Enchanting: Enchanted Sigil: Innovation selected";
 
-                // Engineering
-                if (this.isEquipped("waist", this.items.ids.HYPERCONDUCTIVE_GOLDWRAP)) {
-                    arr.push("Engineering: Hyperconductive Goldwrap equipped (Waist)");
+                for (var slot in this.equipped) {
+                    if (this.equipped[slot]) {
+                        var item = this.getItem(slot, this.equipped[slot]);
+                        var prof = _.get(item, "prof", null);
+                        if (prof)
+                            profs[prof] = _.upperFirst(prof+": "+item.title+" equipped");
+                    }
                 }
-                else if (this.equipped.head) {
-                    var head = this.getItem("head", this.equipped.head);
-                    if (head.title.indexOf("Goggles") != -1)
-                        arr.push("Engineering: "+head.title+" equipped (Waist)");
+
+                for (var key in profs) {
+                    if (profs[key])
+                        arr.push(profs[key]);
                 }
 
                 return arr;
@@ -3549,6 +3555,9 @@
                 this.config.item_electromagnetic_hyperflux_reactivator = this.isEquipped("head", this.items.ids.ELECTROMAGNETIC_GIGAFLUX_REACTIVATOR);
                 this.config.item_robe_archmage = this.isEquipped("chest", this.items.ids.ROBE_ARCHMAGE);
                 this.config.item_celestial_orb = this.isEquipped("off_hand", this.items.ids.CELESTIAL_ORB);
+                this.config.item_fractured_mind_pauldrons = this.isEquipped("shoulder", this.items.ids.FRACTURED_MIND_PAULDRONS);
+                this.config.item_shoulderpads_deranged = this.isEquipped("shoulder", this.items.ids.SHOULDERPADS_DERANGED);
+                this.config.item_mantle_insanity = this.isEquipped("shoulder", this.items.ids.MANTLE_INSANITY);
             },
 
             simStats() {

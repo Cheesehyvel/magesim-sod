@@ -185,9 +185,11 @@ public:
 
     void onDebuffExpire(std::shared_ptr<target::Target> target, std::shared_ptr<debuff::Debuff> debuff);
 
-    void onCooldownGain(std::shared_ptr<unit::Unit> unit, std::shared_ptr<cooldown::Cooldown> cooldown, bool mod = true);
+    void onCooldownGain(std::shared_ptr<unit::Unit> unit, std::shared_ptr<cooldown::Cooldown> cooldown, bool mod = true, bool trigger_shared = true);
 
     void onCooldownExpire(std::shared_ptr<unit::Unit> unit, std::shared_ptr<cooldown::Cooldown> cooldown);
+
+    void triggerSharedCooldowns(std::shared_ptr<unit::Unit> unit, std::shared_ptr<cooldown::Cooldown> cooldown);
 
     void usePotion(std::shared_ptr<unit::Unit> unit);
 

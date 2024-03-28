@@ -52,6 +52,9 @@ struct Config
     bool item_electromagnetic_hyperflux_reactivator = false;
     bool item_robe_archmage = false;
     bool item_celestial_orb = false;
+    bool item_fractured_mind_pauldrons = false;
+    bool item_shoulderpads_deranged = false;
+    bool item_mantle_insanity = false;
 
     bool pre_cast = false;
 

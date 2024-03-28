@@ -28,6 +28,20 @@ namespace cooldown
         BRAIN_FREEZE = 400731,
         DEEP_FREEZE = 428739,
 
+        // Trinkets
+        ESSENCE_OF_SAPPHIRON = 28779,
+        MANA_INFUSION = 28760,
+        MQG = 23723,
+        UNSTABLE_POWER = 24658,
+        EPHEMERAL_POWER = 23271,
+        ARCANE_POTENCY = 24544,
+        OBSIDIAN_INSIGHT = 26166,
+        NAT_PAGLE = 24610,
+        CHROMATIC_INFUSION = 27675,
+        BURST_OF_KNOWLEDGE = 15646,
+        UNRESTRAINED_POWER = 446303,
+        CHAOS_FIRE = 24389,
+
         // Enchants
         DISMANTLE = 439164,
 
@@ -39,6 +53,9 @@ namespace cooldown
         ROBE_ARCHMAGE = 18385,
         CELESTIAL_ORB = 9253,
         ATALAI_SHADOW_BOLT = 446258,
+        ECHOES_OF_MADNESS = 446528,
+        ECHOES_OF_DEPRAVED = 446572,
+        ECHOES_OF_INSANITY = 446541,
     };
 
 
@@ -257,6 +274,150 @@ namespace cooldown
 
     };
 
+    class EssenceOfSapphiron : public Cooldown
+    {
+
+    public:
+        EssenceOfSapphiron()
+        {
+            id = ESSENCE_OF_SAPPHIRON;
+            duration = 120;
+        }
+
+    };
+
+    class ManaInfusion : public Cooldown
+    {
+
+    public:
+        ManaInfusion()
+        {
+            id = MANA_INFUSION;
+            duration = 180;
+        }
+
+    };
+
+    class MindQuickening : public Cooldown
+    {
+
+    public:
+        MindQuickening()
+        {
+            id = MQG;
+            duration = 300;
+        }
+
+    };
+
+    class UnstablePower : public Cooldown
+    {
+
+    public:
+        UnstablePower()
+        {
+            id = UNSTABLE_POWER;
+            duration = 120;
+        }
+
+    };
+
+    class EphemeralPower : public Cooldown
+    {
+
+    public:
+        EphemeralPower()
+        {
+            id = EPHEMERAL_POWER;
+            duration = 90;
+        }
+
+    };
+
+    class ArcanePotency : public Cooldown
+    {
+
+    public:
+        ArcanePotency()
+        {
+            id = ARCANE_POTENCY;
+            duration = 180;
+        }
+
+    };
+
+    class ObsidianInsight : public Cooldown
+    {
+
+    public:
+        ObsidianInsight()
+        {
+            id = OBSIDIAN_INSIGHT;
+            duration = 180;
+        }
+
+    };
+
+    class NatPagle : public Cooldown
+    {
+
+    public:
+        NatPagle()
+        {
+            id = NAT_PAGLE;
+            duration = 75;
+        }
+
+    };
+
+    class ChromaticInfusion : public Cooldown
+    {
+
+    public:
+        ChromaticInfusion()
+        {
+            id = CHROMATIC_INFUSION;
+            duration = 75;
+        }
+
+    };
+
+    class BurstOfKnowledge : public Cooldown
+    {
+
+    public:
+        BurstOfKnowledge()
+        {
+            id = BURST_OF_KNOWLEDGE;
+            duration = 900;
+        }
+
+    };
+
+    class UnrestrainedPower : public Cooldown
+    {
+
+    public:
+        UnrestrainedPower()
+        {
+            id = UNRESTRAINED_POWER;
+            duration = 120;
+        }
+
+    };
+
+    class ChaosFire : public Cooldown
+    {
+
+    public:
+        ChaosFire()
+        {
+            id = CHAOS_FIRE;
+            duration = 180;
+        }
+
+    };
+
     class Dismantle : public Cooldown
     {
 
@@ -348,6 +509,42 @@ namespace cooldown
         AtalaiShadowBolt()
         {
             id = ATALAI_SHADOW_BOLT;
+            duration = 40;
+        }
+
+    };
+
+    class EchoesOfMadness : public Cooldown
+    {
+
+    public:
+        EchoesOfMadness()
+        {
+            id = ECHOES_OF_MADNESS;
+            duration = 40;
+        }
+
+    };
+
+    class EchoesOfDepraved : public Cooldown
+    {
+
+    public:
+        EchoesOfDepraved()
+        {
+            id = ECHOES_OF_DEPRAVED;
+            duration = 40;
+        }
+
+    };
+
+    class EchoesOfInsanity : public Cooldown
+    {
+
+    public:
+        EchoesOfInsanity()
+        {
+            id = ECHOES_OF_INSANITY;
             duration = 40;
         }
 

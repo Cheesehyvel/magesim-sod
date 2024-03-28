@@ -17,6 +17,7 @@
 
 <script>
     import constants from "../constants";
+    import items from "../items";
 
     export default {
         props: ["modelValue", "child"],
@@ -201,18 +202,18 @@
                         rune: "mass_regeneration",
                     },
                     { 
-                        title: "Cast: Pyroblast",
-                        key: "pyroblast", 
-                        type: constants.apl_action_types.ACTION_TYPE_SPELL,
-                        id: constants.spells.PYROBLAST,
-                        talent: "pyroblast",
-                    },
-                    { 
                         title: "Cast: Presence of Mind",
                         key: "presence_of_mind", 
                         type: constants.apl_action_types.ACTION_TYPE_BUFF,
                         id: constants.buffs.PRESENCE_OF_MIND,
                         talent: "presence_of_mind",
+                    },
+                    { 
+                        title: "Cast: Pyroblast",
+                        key: "pyroblast", 
+                        type: constants.apl_action_types.ACTION_TYPE_SPELL,
+                        id: constants.spells.PYROBLAST,
+                        talent: "pyroblast",
                     },
                     { 
                         title: "Cast: Regeneration",
@@ -269,6 +270,90 @@
                         id: constants.spells.ROBE_ARCHMAGE,
                         config: "item_robe_archmage",
                     },
+                    {
+                        title: "Trinket: "+this.trinketTitle(items.ids.TRINKET_ATALAI_BLOOD_RITUAL_CHARM),
+                        key: "trinket_"+items.ids.TRINKET_ATALAI_BLOOD_RITUAL_CHARM,
+                        type: constants.apl_action_types.ACTION_TYPE_BUFF,
+                        id: constants.buffs.UNRESTRAINED_POWER,
+                        trinket: items.ids.TRINKET_ATALAI_BLOOD_RITUAL_CHARM,
+                    },
+                    {
+                        title: "Trinket: "+this.trinketTitle(items.ids.TRINKET_BURST_OF_KNOWLEDGE),
+                        key: "trinket_"+items.ids.TRINKET_BURST_OF_KNOWLEDGE,
+                        type: constants.apl_action_types.ACTION_TYPE_BUFF,
+                        id: constants.buffs.BURST_OF_KNOWLEDGE,
+                        trinket: items.ids.TRINKET_BURST_OF_KNOWLEDGE,
+                    },
+                    {
+                        title: "Trinket: "+this.trinketTitle(items.ids.TRINKET_DRACONIC_EMBLEM),
+                        key: "trinket_"+items.ids.TRINKET_DRACONIC_EMBLEM,
+                        type: constants.apl_action_types.ACTION_TYPE_BUFF,
+                        id: constants.buffs.CHROMATIC_INFUSION,
+                        trinket: items.ids.TRINKET_DRACONIC_EMBLEM,
+                    },
+                    {
+                        title: "Trinket: "+this.trinketTitle(items.ids.TRINKET_EYE_OF_MOAM),
+                        key: "trinket_"+items.ids.TRINKET_EYE_OF_MOAM,
+                        type: constants.apl_action_types.ACTION_TYPE_BUFF,
+                        id: constants.buffs.OBSIDIAN_INSIGHT,
+                        trinket: items.ids.TRINKET_EYE_OF_MOAM,
+                    },
+                    {
+                        title: "Trinket: "+this.trinketTitle(items.ids.TRINKET_FIRE_RUBY),
+                        key: "trinket_"+items.ids.TRINKET_FIRE_RUBY,
+                        type: constants.apl_action_types.ACTION_TYPE_SPELL,
+                        id: constants.spells.CHAOS_FIRE,
+                        trinket: items.ids.TRINKET_FIRE_RUBY,
+                    },
+                    {
+                        title: "Trinket: "+this.trinketTitle(items.ids.TRINKET_HAZZARAH),
+                        key: "trinket_"+items.ids.TRINKET_HAZZARAH,
+                        type: constants.apl_action_types.ACTION_TYPE_BUFF,
+                        id: constants.buffs.ARCANE_POTENCY,
+                        trinket: items.ids.TRINKET_HAZZARAH,
+                    },
+                    {
+                        title: "Trinket: "+this.trinketTitle(items.ids.TRINKET_MQG),
+                        key: "trinket_"+items.ids.TRINKET_MQG,
+                        type: constants.apl_action_types.ACTION_TYPE_BUFF,
+                        id: constants.buffs.MQG,
+                        trinket: items.ids.TRINKET_MQG,
+                    },
+                    {
+                        title: "Trinket: "+this.trinketTitle(items.ids.TRINKET_NAT_PAGLE),
+                        key: "trinket_"+items.ids.TRINKET_NAT_PAGLE,
+                        type: constants.apl_action_types.ACTION_TYPE_BUFF,
+                        id: constants.buffs.NAT_PAGLE,
+                        trinket: items.ids.TRINKET_NAT_PAGLE,
+                    },
+                    {
+                        title: "Trinket: "+this.trinketTitle(items.ids.TRINKET_RESTRAINED_ESSENCE),
+                        key: "trinket_"+items.ids.TRINKET_RESTRAINED_ESSENCE,
+                        type: constants.apl_action_types.ACTION_TYPE_BUFF,
+                        id: constants.buffs.ESSENCE_OF_SAPPHIRON,
+                        trinket: items.ids.TRINKET_RESTRAINED_ESSENCE,
+                    },
+                    {
+                        title: "Trinket: "+this.trinketTitle(items.ids.TRINKET_TOEP),
+                        key: "trinket_"+items.ids.TRINKET_TOEP,
+                        type: constants.apl_action_types.ACTION_TYPE_BUFF,
+                        id: constants.buffs.EPHEMERAL_POWER,
+                        trinket: items.ids.TRINKET_TOEP,
+                    },
+                    {
+                        title: "Trinket: "+this.trinketTitle(items.ids.TRINKET_ZHC),
+                        key: "trinket_"+items.ids.TRINKET_ZHC,
+                        type: constants.apl_action_types.ACTION_TYPE_BUFF,
+                        id: constants.buffs.UNSTABLE_POWER,
+                        trinket: items.ids.TRINKET_ZHC,
+                    },
+                    {
+                        title: "Trinket: "+this.trinketTitle(items.ids.TRINKET_WARMTH_OF_FORGIVENESS),
+                        key: "trinket_"+items.ids.TRINKET_WARMTH_OF_FORGIVENESS,
+                        type: constants.apl_action_types.ACTION_TYPE_SPELL,
+                        id: constants.spells.MANA_INFUSION,
+                        trinket: items.ids.TRINKET_WARMTH_OF_FORGIVENESS,
+                    },
                     { 
                         title: "External: Innervate",
                         key: "innervate", 
@@ -318,6 +403,7 @@
                         opt.hasOwnProperty("talent") && !this.$root.config.talents[opt.talent] ||
                         opt.hasOwnProperty("race") && this.$root.config.race != opt.race ||
                         opt.hasOwnProperty("config") && !this.$root.config[opt.config] ||
+                        opt.hasOwnProperty("trinket") && !this.$root.isEquipped("trinket", opt.trinket) ||
                         opt.type == constants.apl_action_types.ACTION_TYPE_SEQUENCE && this.child)
                     {
                         opt.title+= " (inactive)";
@@ -333,6 +419,14 @@
         },
 
         methods: {
+            trinketTitle(id) {
+                return _.get(this.trinket(id), "title", null);
+            },
+
+            trinket(id) {
+                return _.find(items.equip.trinket, {id: id});
+            },
+
             changed() {
                 this.$emit("update:modelValue", this.modelValue);
             },

@@ -70,20 +70,25 @@
                     { title: "Coin Flip: Heads", color: "#aaa" },
                     { title: "Coin Flip: Tails", color: "#aaa" },
                     { title: "Mildly Irradiated", color: "#6f6" },
+                    { title: "Echoes of Madness", color: "#a8a" },
+                    { title: "Echoes of the Depraved", color: "#a8a" },
+                    { title: "Echoes of Insanity", color: "#a8a" },
+                    { title: "Netherwind Focus", color: "#44d" },
+                    { title: "Enigma's Answer", color: "#44d" },
                 ],
                 trinkets: [
                     { title: "Essence of Sapphiron", color: "#fe9" },
                     { title: "Mind Quickening", color: "#fe9" },
                     { title: "Unstable Power", color: "#fe9" },
+                    { title: "Ephemeral Power", color: "#fe9" },
                     { title: "Arcane Potency", color: "#fe9" },
                     { title: "Obsidian Insight", color: "#fe9" },
                     { title: "Aura of the Blue Dragon", color: "#a08" },
                     { title: "Pagle's Broken Reel", color: "#fe9" },
                     { title: "Chromatic Infusion", color: "#fe9" },
                     { title: "Burst of Knowledge", color: "#fe9" },
+                    { title: "Unrestrained Power", color: "#fe9" },
                     { title: "Chaos Fire", color: "#f33" },
-                    { title: "Netherwind Focus", color: "#44d" },
-                    { title: "Enigma's Answer", color: "#44d" },
                 ],
                 mana_gains: [
                     { title: "Mana Gem", color: "#5f5" },
@@ -136,7 +141,7 @@
                             for (end = logs.shift(); end && end.text.indexOf("Player lost ") != 0; end = logs.shift());
                             event.events.push({
                                 start: start.t,
-                                end: end ? end.t : this.result.t,
+                                end: end ? (end.t == start.t ? end.t+0.5 : end.t) : this.result.t,
                             });
                             uptime+= (end ? end.t : this.result.t) - start.t;
                         }
@@ -161,7 +166,7 @@
                             for (end = logs.shift(); end && end.text.indexOf("Player lost ") != 0; end = logs.shift());
                             event.events.push({
                                 start: start.t,
-                                end: end ? end.t : this.result.t,
+                                end: end ? (end.t == start.t ? end.t+0.5 : end.t) : this.result.t,
                             });
                             uptime+= (end ? end.t : this.result.t) - start.t;
                         }

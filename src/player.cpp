@@ -161,6 +161,8 @@ double Player::castHaste() const
         haste *= 1.2;
     if (hasBuff(buff::BERSERKING))
         haste *= 1.1;
+    if (hasBuff(buff::ECHOES_OF_MADNESS))
+        haste *= 1.1;
 
     return 1.0 / haste;
 }
@@ -444,6 +446,18 @@ std::vector<action::Action> Player::onCastSuccessProc(const State& state, std::s
     if (spell->id == spell::MANA_GEM)
         return useManaGem();
 
+    // Trinkets
+    if (spell->id == spell::CHAOS_FIRE) {
+        actions.push_back(manaAction((double) random<int>(1, 500), "Fire Ruby"));
+        actions.push_back(buffCooldownAction<buff::ChaosFire, cooldown::ChaosFire>());
+        return actions;
+    }
+    if (spell->id == spell::MANA_INFUSION) {
+        actions.push_back(manaAction(500, "Warmth of Forgiveness"));
+        actions.push_back(cooldownAction<cooldown::ManaInfusion>());
+        return actions;
+    }
+
     // Items
     if (spell->id == spell::MILDLY_IRRADIATED_POTION) {
         actions.push_back(manaAction((double) random<int>(262, 438), "Mildly Irradiated Rejuvenation Potion"));
@@ -573,10 +587,22 @@ std::vector<action::Action> Player::onCastSuccessProc(const State& state, std::s
 
         if (config.set_hyperconductive_wizard_3p && random<int>(0, 9) == 0)
             actions.push_back(buffAction<buff::EnergizedHyperconductor>());
+
+        if (config.item_fractured_mind_pauldrons && !hasCooldown(cooldown::ECHOES_OF_MADNESS) && random<int>(0, 9) < 3)
+            actions.push_back(buffCooldownAction<buff::EchoesOfMadness, cooldown::EchoesOfMadness>());
+
+        if (config.item_shoulderpads_deranged && !hasCooldown(cooldown::ECHOES_OF_DEPRAVED) && random<int>(0, 9) < 3)
+            actions.push_back(buffCooldownAction<buff::EchoesOfDepraved, cooldown::EchoesOfDepraved>());
+
+        if (config.item_mantle_insanity && !hasCooldown(cooldown::ECHOES_OF_INSANITY) && random<int>(0, 9) < 3)
+            actions.push_back(buffCooldownAction<buff::EchoesOfInsanity, cooldown::EchoesOfInsanity>());
     }
 
     if (is_harmful && hasBuff(buff::UNSTABLE_POWER)) {
         actions.push_back(buffAction<buff::UnstablePower>());
+    }
+    if (is_harmful && hasBuff(buff::UNRESTRAINED_POWER)) {
+        actions.push_back(buffAction<buff::UnrestrainedPower>());
     }
 
     if (is_harmful && hasBuff(buff::CHAOS_FIRE) && spell->isSchool(SCHOOL_FIRE)) {
@@ -988,6 +1014,12 @@ bool Player::trinketSharesCD(Trinket trinket) const
 {
     if (trinket == TRINKET_BURST_OF_KNOWLEDGE)
         return false;
+    if (trinket == TRINKET_WARMTH_OF_FORGIVENESS)
+        return false;
+    if (trinket == TRINKET_NAT_PAGLE)
+        return false;
+    if (trinket == TRINKET_RECOMBO)
+        return false;
     return true;
 }
 
@@ -1010,6 +1042,8 @@ bool Player::isUseTrinket(Trinket trinket) const
     if (trinket == TRINKET_DRACONIC_EMBLEM)
         return true;
     if (trinket == TRINKET_BURST_OF_KNOWLEDGE)
+        return true;
+    if (trinket == TRINKET_ATALAI_BLOOD_RITUAL_CHARM)
         return true;
     if (trinket == TRINKET_FIRE_RUBY)
         return true;
@@ -1121,6 +1155,9 @@ std::vector<action::Action> Player::useTrinket(Trinket trinket, std::shared_ptr<
     else if (trinket == TRINKET_BURST_OF_KNOWLEDGE) {
         buff = std::make_shared<buff::BurstOfKnowledge>();
         cooldown->duration = 900;
+    }
+    else if (trinket == TRINKET_ATALAI_BLOOD_RITUAL_CHARM) {
+        buff = std::make_shared<buff::UnrestrainedPower>();
     }
     else if (trinket == TRINKET_FIRE_RUBY) {
         actions.push_back(manaAction((double) random<int>(1, 500), "Fire Ruby"));
@@ -1752,6 +1789,12 @@ std::shared_ptr<spell::Spell> Player::APL_SpellFromID(spell::ID id)
     if (id == spell::REGENERATION) 
         return std::make_shared<spell::Regeneration>(config.player_level);
 
+    // Trinkets
+    if (id == spell::CHAOS_FIRE) 
+        return std::make_shared<spell::ChaosFire>(config.player_level);
+    if (id == spell::MANA_INFUSION) 
+        return std::make_shared<spell::ManaInfusion>(config.player_level);
+
     // Items
     if (id == spell::MILDLY_IRRADIATED_POTION) 
         return std::make_shared<spell::MildlyIrradiatedPotion>(config.player_level);
@@ -1931,6 +1974,8 @@ bool Player::APL_RuneExists(std::string str) const
         return runes.deep_freeze;
     if (str == "temporal_anomaly")
         return runes.temporal_anomaly;
+    if (str == "advanced_warding")
+        return runes.advanced_warding;
 
     return false;
 }
@@ -2176,6 +2221,8 @@ action::Action Player::APL_Action(APL::Action apl, const State& state)
                 return none;
             if (spell->id == spell::MILDLY_IRRADIATED_POTION && hasCooldown(cooldown::MILDLY_IRRADIATED_POTION))
                 return none;
+            if (id == spell::CHAOS_FIRE && (!hasTrinket(TRINKET_FIRE_RUBY) || hasCooldown(cooldown::CHAOS_FIRE)))
+                return none;
             return spellAction(spell, state.targets[0]);
         }
     }
@@ -2206,6 +2253,36 @@ action::Action Player::APL_Action(APL::Action apl, const State& state)
         }
         else if (id == buff::POWER_INFUSION) {
             return buffAction<buff::PowerInfusion>(true);
+        }
+        else if (id == buff::UNRESTRAINED_POWER && hasTrinket(TRINKET_ATALAI_BLOOD_RITUAL_CHARM) && !hasCooldown(cooldown::UNRESTRAINED_POWER)) {
+            return buffCooldownAction<buff::UnrestrainedPower, cooldown::UnrestrainedPower>(true);
+        }
+        else if (id == buff::BURST_OF_KNOWLEDGE && hasTrinket(TRINKET_BURST_OF_KNOWLEDGE) && !hasCooldown(cooldown::BURST_OF_KNOWLEDGE)) {
+            return buffCooldownAction<buff::BurstOfKnowledge, cooldown::BurstOfKnowledge>(true);
+        }
+        else if (id == buff::CHROMATIC_INFUSION && hasTrinket(TRINKET_DRACONIC_EMBLEM) && !hasCooldown(cooldown::CHROMATIC_INFUSION)) {
+            return buffCooldownAction<buff::ChromaticInfusion, cooldown::ChromaticInfusion>(true);
+        }
+        else if (id == buff::OBSIDIAN_INSIGHT && hasTrinket(TRINKET_EYE_OF_MOAM) && !hasCooldown(cooldown::OBSIDIAN_INSIGHT)) {
+            return buffCooldownAction<buff::ObsidianInsight, cooldown::ObsidianInsight>(true);
+        }
+        else if (id == buff::ARCANE_POTENCY && hasTrinket(TRINKET_HAZZARAH) && !hasCooldown(cooldown::ARCANE_POTENCY)) {
+            return buffCooldownAction<buff::ArcanePotency, cooldown::ArcanePotency>(true);
+        }
+        else if (id == buff::MQG && hasTrinket(TRINKET_MQG) && !hasCooldown(cooldown::MQG)) {
+            return buffCooldownAction<buff::MindQuickening, cooldown::MindQuickening>(true);
+        }
+        else if (id == buff::NAT_PAGLE && hasTrinket(TRINKET_NAT_PAGLE) && !hasCooldown(cooldown::NAT_PAGLE)) {
+            return buffCooldownAction<buff::NatPagle, cooldown::NatPagle>(true);
+        }
+        else if (id == buff::ESSENCE_OF_SAPPHIRON && hasTrinket(TRINKET_RESTRAINED_ESSENCE) && !hasCooldown(cooldown::ESSENCE_OF_SAPPHIRON)) {
+            return buffCooldownAction<buff::EssenceOfSapphiron, cooldown::EssenceOfSapphiron>(true);
+        }
+        else if (id == buff::EPHEMERAL_POWER && hasTrinket(TRINKET_TOEP) && !hasCooldown(cooldown::EPHEMERAL_POWER)) {
+            return buffCooldownAction<buff::EphemeralPower, cooldown::EphemeralPower>(true);
+        }
+        else if (id == buff::UNSTABLE_POWER && hasTrinket(TRINKET_ZHC) && !hasCooldown(cooldown::UNSTABLE_POWER)) {
+            return buffCooldownAction<buff::UnstablePower, cooldown::UnstablePower>(true);
         }
     }
 

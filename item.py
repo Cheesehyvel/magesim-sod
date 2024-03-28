@@ -70,6 +70,8 @@ def getItem(item_id, phase = 1, faction = None, pvp = False):
             stats["sp"] = equip["spldmg"]
         if "splcritstrkpct" in equip:
             stats["crit"] = equip["splcritstrkpct"]
+        elif "rgdcritstrkpct" in equip:
+            stats["crit"] = equip["rgdcritstrkpct"]
         if "splhitpct" in equip:
             stats["hit"] = equip["splhitpct"]
         elif "splhitrtng" in equip:
