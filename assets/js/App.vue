@@ -18,6 +18,17 @@
                     </div>
                 </div>
             </div>
+            <div class="success-notice notice" v-if="success_notice.open" @click="success_notice.open = false">
+                <div class="inner">
+                    <div class="title mb-2" v-if="success_notice.title">{{ success_notice.title }}</div>
+                    <div class="text" v-if="success_notice.text">
+                        <div v-for="text in success_notice.text">{{ text }}</div>
+                    </div>
+                    <div class="checklist text" v-if="success_notice.checklist.length">
+                        <check-item :value="true" v-for="text in success_notice.checklist">{{ text }}</check-item>
+                    </div>
+                </div>
+            </div>
             <div class="profile-status notice" v-if="profile_status.open" @click="profile_status.open = false">
                 <div class="inner">
                     <div class="title">Profile loaded</div>
@@ -850,7 +861,48 @@
                                     </select>
                                 </div>
                                 <template v-if="config.rotation == rotations.ROTATION_APL">
-                                    <apl v-model="config.apl.combat" />
+                                    <div class="btn mt-1" @click="openAPL()">
+                                        Edit rotation
+                                        <template v-if="aplInfo">
+                                            {{ aplInfo }}
+                                        </template>
+                                    </div>
+                                    <div class="profiles mt-3 pt-1 hr">
+                                        <div class="profile" v-for="(row, index) in apl_profiles" :key="row.id">
+                                            <div class="name" @click="loadAPL(row)">{{ row.name }}</div>
+                                            <div class="actions">
+                                                <div class="move move-up" @click="moveAPL(index, -1)">
+                                                    <span class="material-icons">&#xe316;</span>
+                                                    <tooltip position="t">Move up</tooltip>
+                                                </div>
+                                                <div class="move move-down" @click="moveAPL(index, 1)">
+                                                    <span class="material-icons">&#xe313;</span>
+                                                    <tooltip position="t">Move down</tooltip>
+                                                </div>
+                                                <div class="save" @click="saveAPL(row)">
+                                                    <span class="material-icons">&#xe161;</span>
+                                                    <tooltip position="t">Save rotation</tooltip>
+                                                </div>
+                                                <div class="delete" @click="deleteAPL(row)">
+                                                    <span class="material-icons">&#xe872;</span>
+                                                    <tooltip position="t">Delete rotation</tooltip>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="new-profile mt-1">
+                                            <input type="text" v-model="new_apl" placeholder="Save your current rotation" @keydown.enter="newAPL()">
+                                            <div class="btn" :class="[new_apl ? '' : 'disabled']" @click="newAPL()">
+                                                <span>
+                                                    New rotation
+                                                    <tooltip position="r">Save your APL rotation</tooltip>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="buttons mt-2">
+                                        <div class="btn" @click="openAPLExport">Export</div>
+                                        <div class="btn ml-n" @click="openAPLImport">Import</div>
+                                    </div>
                                 </template>
                                 <template v-else>
                                     <div class="form-item" v-if="config.talents.imp_scorch">
@@ -1473,7 +1525,7 @@
                         <div class="description my-2">
                             In order to fetch data from the API, you need to authorize the application.<br><br>
                         </div>
-                        <div class="btn btn-primary" @click="wcl.oauthInit()">Continue to WCL</div>
+                        <div class="btn" @click="wcl.oauthInit()">Continue to WCL</div>
                     </template>
                     <template v-else-if="!import_wcl.fight">
                         <div class="description">
@@ -1509,7 +1561,7 @@
                             </div>
                         </template>
                         <div v-else class="mt-2">Loading log data...</div>
-                        <div class="btn btn-primary mt-2" :class="{disabled: !import_wcl.fight_id || !import_wcl.player_id || import_wcl.loading}" @click="importWCLFight()">Continue</div>
+                        <div class="btn mt-2" :class="{disabled: !import_wcl.fight_id || !import_wcl.player_id || import_wcl.loading}" @click="importWCLFight()">Continue</div>
                     </template>
                     <template v-else>
                         <div class="description">
@@ -1528,7 +1580,7 @@
                                 </check-item>
                             </div>
                         </div>
-                        <div class="btn btn-primary mt-2" @click="importWCLConfirm()">Confirm and import</div>
+                        <div class="btn mt-2" @click="importWCLConfirm()">Confirm and import</div>
                     </template>
                 </div>
             </div>
@@ -1715,6 +1767,37 @@
                 </div>
             </div>
 
+            <div class="lightbox flexible" v-show="apl_open">
+                <div class="closer" @click="closeAPL"></div>
+                <div class="inner">
+                    <div class="title">APL - Edit rotation</div>
+                    <apl v-model="config.apl.combat" />
+                    <div class="btn wide mt-3" @click="closeAPL">Close</div>
+                </div>
+            </div>
+
+            <div class="lightbox" v-if="export_apl.open">
+                <div class="closer" @click="closeAPLExport()"></div>
+                <div class="inner">
+                    <div class="title">Export APL</div>
+                    <div class="form-item">
+                        <textarea v-model="export_apl.string" ref="export_apl_input"></textarea>
+                    </div>
+                    <div class="btn mt-2 wide" @click="closeAPLExport()">Close</div>
+                </div>
+            </div>
+
+            <div class="lightbox" v-if="import_apl.open">
+                <div class="closer" @click="closeAPLImport"></div>
+                <div class="inner">
+                    <div class="title">Import APL</div>
+                    <div class="form-item">
+                        <textarea v-model="import_apl.string" ref="import_apl_input"></textarea>
+                    </div>
+                    <div class="btn mt-2 wide" :class="[import_apl.string ? '' : 'disabled']" @click="doAPLImport">Import</div>
+                </div>
+            </div>
+
         </div>
     </div>
 </template>
@@ -1776,6 +1859,7 @@
             this.loadCurrentProfile();
             this.loadDefaultProfiles();
             this.loadProfiles();
+            this.loadAPLs();
             this.calcStats();
             this.checkDonation();
             this.betaWarning();
@@ -2073,6 +2157,13 @@
                     missing_items: [],
                     config: true,
                 },
+                success_notice: {
+                    open: false,
+                    timeout: null,
+                    title: null,
+                    text: [],
+                    checklist: [],
+                },
                 error_notice: {
                     open: false,
                     timeout: null,
@@ -2096,11 +2187,22 @@
                     spen: null,
                     twohand: false,
                 },
+                export_apl: {
+                    open: false,
+                    string: null,
+                },
+                import_apl: {
+                    open: false,
+                    string: null,
+                },
                 custom_item_open: false,
                 custom_item_error: null,
                 custom_stats_open: false,
                 equiplist_open: false,
                 equiplist_string: null,
+                apl_open: false,
+                new_apl: null,
+                apl_profiles: [],
                 display_stats: null,
                 result: null,
                 pin_dps: null,
@@ -2740,6 +2842,25 @@
                 if (this.lvl >= 44)
                     return 60;
                 return 0;
+            },
+
+            aplInfo() {
+                var arr = [];
+
+                if (this.config.apl && this.config.apl.combat) {
+                    if (this.config.apl.combat.length == 1)
+                        arr.push(this.config.apl.combat.length+" action");
+                    else
+                        arr.push(this.config.apl.combat.length+" actions");
+
+                    var item = _.last(this.config.apl.combat);
+                    if (item && item.action) {
+                        if (item.action.title && item.action.title.indexOf("Cast:") === 0)
+                            arr.push(item.action.title.substr(6));
+                    }
+                }
+
+                return arr.length ? "("+arr.join(", ")+")" : null;
             },
         },
 
@@ -4257,6 +4378,29 @@
                 return Math.round(num);
             },
 
+            successNotice(title, text, checklist) {
+                if (typeof(text) == "string")
+                    text = [text];
+                if (text === null)
+                    text = [];
+
+                if (typeof(checklist) == "string")
+                    checklist = [checklist];
+                if (checklist === null)
+                    checklist = [];
+
+                this.success_notice.open = true;
+                this.success_notice.title = title;
+                this.success_notice.text = text;
+                this.success_notice.checklist = checklist;
+
+                var self = this;
+                clearTimeout(this.success_notice.timeout);
+                this.success_notice.timeout = setTimeout(function() {
+                    self.success_notice.open = false;
+                }, 10000);
+            },
+
             errorNotice(title, text) {
                 if (typeof(text) == "string")
                     text = [text];
@@ -4270,6 +4414,158 @@
                 this.error_notice.timeout = setTimeout(function() {
                     self.error_notice.open = false;
                 }, 10000);
+            },
+
+
+            /**
+             * APL profiles
+             */
+            openAPL() {
+                this.apl_open = true;
+            },
+
+            closeAPL() {
+                this.apl_open = false;
+            },
+
+            newAPL() {
+                if (!this.new_apl)
+                    return;
+
+                var apl_profile = {
+                    id: this.uuid(),
+                    name: this.new_apl,
+                    apl: {
+                        combat: [],
+                        precombat: [],
+                    }
+                };
+
+                this.new_apl = null;
+
+                this.saveAPL(apl_profile);
+            },
+
+            saveAPL(apl_profile, confirm) {
+                var index = _.findIndex(this.apl_profiles, {id: apl_profile.id});
+                if (index != -1 && !window.confirm("Override "+apl_profile.name+"?") && !confirm)
+                    return;
+                apl_profile.apl.combat = _.cloneDeep(this.config.apl.combat);
+                apl_profile.apl.precombat = _.cloneDeep(this.config.apl.precombat);
+
+                if (index != -1)
+                    this.apl_profiles.splice(index, 1, apl_profile);
+                else
+                    this.apl_profiles.push(apl_profile);
+
+                this.saveAPLs();
+            },
+
+            loadAPL(apl_profile) {
+                this.config.apl = this.parseAPL(apl_profile.apl);
+            },
+
+            saveAPLs() {
+                window.localStorage.setItem("magesim_sod_apl_profiles", JSON.stringify(this.apl_profiles));
+            },
+
+            loadAPLs() {
+                var str = window.localStorage.getItem("magesim_sod_apl_profiles");
+                if (str) {
+                    var apl_profiles = JSON.parse(str);
+                    if (apl_profiles)
+                        this.apl_profiles = apl_profiles;
+                }
+            },
+
+            moveAPL(index, dir) {
+                var pos = (this.apl_profiles.length + index + dir) % this.apl_profiles.length;
+                this.apl_profiles.splice(pos, 0, this.apl_profiles.splice(index, 1)[0]);
+                this.saveAPLs();
+            },
+
+            deleteAPL(apl_profile) {
+                var index = _.findIndex(this.apl_profiles, {id: apl_profile.id});
+                if (index != -1) {
+                    this.apl_profiles.splice(index, 1);
+                    this.saveAPLs();
+                }
+            },
+
+            openAPLExport() {
+                this.export_apl.open = true;
+                this.export_apl.string = btoa(JSON.stringify({
+                    export: "apl",
+                    apl: _.cloneDeep(this.config.apl),
+                }));
+
+                this.$nextTick(function() {
+                    this.$refs.export_apl_input.select();
+                });
+            },
+
+            closeAPLExport() {
+                this.export_apl.open = false;
+                this.export_apl.string = null;
+            },
+
+            openAPLImport() {
+                this.import_apl.open = true;
+
+                this.$nextTick(function() {
+                    this.$refs.import_apl_input.select();
+                });
+            },
+
+            closeAPLImport() {
+                this.import_apl.open = false;
+                this.import_apl.string = null;
+            },
+
+            importAPL(apl) {
+                this.config.apl = apl;
+                this.config.rotation = constants.rotations.ROTATION_APL;
+            },
+
+            importAPLString(str) {
+                try {
+                    var json = atob(str);
+                    var apl_profile = JSON.parse(json);
+                }
+                catch(e) {
+                    return this.importError("Could not parse import string");
+                }
+
+                if (_.get(apl_profile, "export") != "apl" || !apl_profile.hasOwnProperty("apl"))
+                    return this.importError("Could not parse import string");
+
+                this.importAPL(apl_profile.apl);
+
+                this.successNotice("APL", null, "Rotation imported");
+
+                return true;
+            },
+
+            doAPLImport() {
+                if (this.import_apl.string && this.importAPLString(this.import_apl.string))
+                    this.closeAPLImport();
+            },
+
+            parseAPL(apl) {
+                apl = _.cloneDeep(apl);
+                if (apl.hasOwnProperty(apl))
+                    apl = apl.apl;
+
+                if (apl && apl.combat) {
+                    for (var i=0; i<apl.combat.length; i++) {
+                        if (!apl.combat[i].hasOwnProperty("status"))
+                            apl.combat[i].status = true;
+                        if (!apl.combat[i].id || typeof(apl.combat[i].id) == "number" || apl.combat[i].id.length < 5)
+                            apl.combat[i].id = this.uuid();
+                    }
+                }
+
+                return apl;
             },
 
 
@@ -4356,6 +4652,9 @@
 
                 if (!data)
                     return this.importError("Could not parse import string");
+
+                if (_.get(data, "export") == "apl")
+                    return this.importAPLString(str);
 
                 if (!data.equipped && !data.enchants && !data.config)
                     return this.importError("Invalid import string");
@@ -5015,14 +5314,8 @@
                     this.config.interruptions = [];
                     this.config.apl = {precombat: [], combat: []};
                     _.merge(config, _.pick(profile.config, _.keys(config)));
-                    if (_.get(config, "apl.combat")) {
-                        for (var i=0; i<config.apl.combat.length; i++) {
-                            if (!config.apl.combat[i].hasOwnProperty("status"))
-                                config.apl.combat[i].status = true;
-                            if (!config.apl.combat[i].id || typeof(config.apl.combat[i].id) == "number" || config.apl.combat[i].id.length < 5)
-                                config.apl.combat[i].id = this.uuid();
-                        }
-                    }
+                    if (config.apl)
+                        config.apl = this.parseAPL(config.apl);
                     _.merge(this.config, config);
                     this.onLoadConfig(profile.config);
                     this.profile_status.config = true;

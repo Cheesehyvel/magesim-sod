@@ -248,6 +248,10 @@ a {
     }
 }
 
+.hr {
+    border-top: 1px solid $color_stroke;
+}
+
 input[type="text"],
 input[type="number"],
 textarea,
@@ -1148,204 +1152,6 @@ table {
                 }
             }
         }
-
-        .apl {
-            margin-top: 5px;
-
-            .apl-notice {
-                margin-bottom: 25px;
-                color: #fa0;
-            }
-
-            .apl-item {
-                position: relative;
-                padding: 10px;
-                border: 1px solid rgba(200,200,200,0.2);
-
-                &:nth-child(n+2) {
-                    margin-top: 20px;
-                }
-
-                > .add {
-                    position: absolute;
-                    top: -23px;
-                    left: -3px;
-                    right: 0;
-                    line-height: 20px;
-                    color: $color_primary;
-                    cursor: pointer;
-                    transition: color 0.2s ease;
-
-                    &:hover {
-                        color: $color_primary_hover;
-
-                        > span:last-child,
-                        &:after {
-                            opacity: 1;
-                        }
-                    }
-
-                    > span:first-child {
-                        font-size: 20px;
-                        vertical-align: middle;
-                    }
-
-                    > span:last-child {
-                        position: relative;
-                        font-size: 10px;
-                        letter-spacing: 0.5px;
-                        text-transform: uppercase;
-                        vertical-align: middle;
-                        opacity: 0;
-                        transition: opacity 0.2s ease;
-                    }
-
-                    &:after {
-                        content: "";
-                        display: block;
-                        position: absolute;
-                        height: 1px;
-                        left: 80px;
-                        right: 0;
-                        top: 11px;
-                        background: $color_primary_hover;
-                        opacity: 0;
-                        transition: opacity 0.2s ease;
-                    }
-                }
-
-                > .clone {
-                    position: absolute;
-                    right: 48px;
-                    bottom: 100%;
-                    margin-bottom: 2px;
-                    color: #fff;
-                    font-size: 16px;
-                    line-height: 1;
-                    cursor: pointer;
-                }
-
-                > .status {
-                    position: absolute;
-                    right: 25px;
-                    bottom: 100%;
-                    margin-bottom: 2px;
-                    color: #fff;
-                    font-size: 16px;
-                    line-height: 1;
-                    cursor: pointer;
-
-                    &.inactive {
-                        color: #c00;
-                    }
-                }
-
-                > .delete {
-                    position: absolute;
-                    right: 0;
-                    bottom: 100%;
-                    color: #f00;
-                    font-size: 18px;
-                    line-height: 1;
-                    cursor: pointer;
-                }
-
-                > .move {
-                    position: absolute;
-                    right: -22px;
-                    color: $color_primary;
-                    font-size: 20px;
-                    width: 20px;
-                    text-align: center;
-                    line-height: 1;
-                    cursor: pointer;
-                    transition: color 0.2s ease;
-                    user-select: none;
-
-                    &:hover {
-                        color: $color_primary_hover;
-                    }
-
-                    &.move-up {
-                        top: 15px;
-                    }
-                    &.move-down {
-                        top: 45px;
-                    }
-                }
-
-                .apl-condition {
-                    position: relative;
-
-                    > select + .apl-condition {
-                        margin-top: 10px;
-                    }
-
-                    .apl-condition {
-                        padding-left: 20px;
-                        margin-top: 5px;
-                    }
-
-                    .apl-condition-values {
-                        display: grid;
-                        grid-gap: 5px;
-
-                        > * {
-                            grid-row: 1;
-                        }
-                    }
-
-                    .apl-value {
-                        display: grid;
-                        grid-gap: 5px;
-
-                        > * {
-                            grid-row: 1;
-                        }
-
-                        input {
-                            width: 60px;
-                        }
-                    }
-
-                    > .delete {
-                        position: absolute;
-                        left: 0;
-                        top: 0;
-                        color: #f00;
-                        line-height: 28px;
-                        cursor: pointer;
-                    }
-
-                    > .btn.smaller {
-                        margin-top: 10px;
-                    }
-                }   
-
-                > .apl-action {
-                    margin-top: 15px;
-                }
-
-                .apl-sequence {
-                    margin-top: 5px;
-
-                    .apl-action {
-                        position: relative;
-                        margin-bottom: 5px;
-                        padding-left: 20px;
-
-                        > .delete {
-                            position: absolute;
-                            left: 0;
-                            top: 0;
-                            color: #f00;
-                            line-height: 28px;
-                            cursor: pointer;
-                        }
-                    }
-                }
-            }
-        }
     }
 
     .profiles {
@@ -1474,21 +1280,13 @@ table {
     }
 
     .lightbox {
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
+        @include position-cover(fixed);
         background: rgba(0,0,0,0.6);
         z-index: 200;
         animation: fade 0.4s ease forwards;
 
         > .closer {
-            position: absolute;
-            left: 0;
-            top: 0;
-            right: 0;
-            bottom: 0;
+            @include position-cover(fixed);
         }
 
         > .inner {
@@ -1532,6 +1330,32 @@ table {
             }
         }
 
+        &.flexible {
+            overflow: auto;
+            background: rgba(0,0,0,0.8);
+
+            > .inner {
+                position: relative;
+                left: auto;
+                top: auto;
+                right: auto;
+                bottom: auto;
+                max-width: 100%;
+                width: 700px;
+                margin: 5vh auto;
+                padding: $spacer*0.75;
+                background: #080720;
+            }
+
+            input[type="text"],
+            input[type="number"],
+            textarea,
+            select {
+                padding: 5px 8px;
+                background: rgba(255,255,255,0.1);
+            }
+        }
+
         &.warning {
             > .inner {
                 margin: 10vh auto;
@@ -1564,6 +1388,256 @@ table {
             text-align: center;
         }
     }
+
+    .apl {
+        margin-top: 40px;
+
+        .apl-item {
+            position: relative;
+            padding: 10px;
+            border: 1px solid rgba(200,200,200,0.2);
+
+            .tooltip {
+                font-size: 14px;
+            }
+
+            &:nth-child(n+2) {
+                margin-top: 20px;
+            }
+
+            &.collapsed {
+                background: rgba(200,200,200,0.1);
+
+                .move {
+                    font-size: 16px;
+
+                    &.move-up {
+                        top: 0;
+                    }
+                    &.move-down {
+                        top: 20px;
+                    }
+                }
+            }
+
+            > .add {
+                position: absolute;
+                top: -23px;
+                left: -3px;
+                right: 30%;
+                line-height: 20px;
+                color: $color_primary;
+                cursor: pointer;
+                transition: color 0.2s ease;
+
+                &:hover {
+                    color: $color_primary_hover;
+
+                    > span:last-child,
+                    &:after {
+                        opacity: 1;
+                    }
+                }
+
+                > span:first-child {
+                    font-size: 20px;
+                    vertical-align: middle;
+                }
+
+                > span:last-child {
+                    position: relative;
+                    font-size: 10px;
+                    letter-spacing: 0.5px;
+                    text-transform: uppercase;
+                    vertical-align: middle;
+                    opacity: 0;
+                    transition: opacity 0.2s ease;
+                }
+
+                &:after {
+                    content: "";
+                    display: block;
+                    position: absolute;
+                    height: 1px;
+                    left: 80px;
+                    right: 0;
+                    top: 11px;
+                    background: $color_primary_hover;
+                    opacity: 0;
+                    transition: opacity 0.2s ease;
+                }
+            }
+
+            .apl-title {
+                cursor: pointer;
+
+                .material-icons {
+                    font-size: 16px;
+                }
+
+                > span {
+                    vertical-align: middle;
+
+                    &:last-child {
+                        font-weight: 600;
+                    }
+                }
+            }
+
+            > .collapse {
+                position: absolute;
+                left: -25px;
+                top: 50%;
+                margin-top: -10px;
+                color: $color_primary;
+                font-size: 20px;
+                line-height: 1;
+                cursor: pointer;
+            }
+
+            > .expand {
+                position: absolute;
+                right: 70px;
+                bottom: 100%;
+                margin-bottom: 2px;
+                color: #fff;
+                font-size: 16px;
+                line-height: 1;
+                cursor: pointer;
+            }
+
+            > .clone {
+                position: absolute;
+                right: 48px;
+                bottom: 100%;
+                margin-bottom: 2px;
+                color: #fff;
+                font-size: 16px;
+                line-height: 1;
+                cursor: pointer;
+            }
+
+            > .status {
+                position: absolute;
+                right: 25px;
+                bottom: 100%;
+                margin-bottom: 2px;
+                color: #fff;
+                font-size: 16px;
+                line-height: 1;
+                cursor: pointer;
+
+                &.inactive {
+                    color: #c00;
+                }
+            }
+
+            > .delete {
+                position: absolute;
+                right: 0;
+                bottom: 100%;
+                color: #f00;
+                font-size: 18px;
+                line-height: 1;
+                cursor: pointer;
+            }
+
+            > .move {
+                position: absolute;
+                right: -22px;
+                color: $color_primary;
+                font-size: 20px;
+                width: 20px;
+                text-align: center;
+                line-height: 1;
+                cursor: pointer;
+                transition: color 0.2s ease;
+                user-select: none;
+
+                &:hover {
+                    color: $color_primary_hover;
+                }
+
+                &.move-up {
+                    top: 15px;
+                }
+                &.move-down {
+                    top: 45px;
+                }
+            }
+
+            .apl-condition {
+                position: relative;
+
+                > select + .apl-condition {
+                    margin-top: 10px;
+                }
+
+                .apl-condition {
+                    padding-left: 20px;
+                    margin-top: 5px;
+                }
+
+                .apl-condition-values {
+                    display: grid;
+                    grid-gap: 5px;
+
+                    > * {
+                        grid-row: 1;
+                    }
+                }
+
+                .apl-value {
+                    display: grid;
+                    grid-gap: 5px;
+
+                    > * {
+                        grid-row: 1;
+                    }
+
+                    input {
+                        width: 60px;
+                    }
+                }
+
+                > .delete {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    color: #f00;
+                    line-height: 28px;
+                    cursor: pointer;
+                }
+
+                > .btn.smaller {
+                    margin-top: 10px;
+                }
+            }   
+
+            > .apl-action {
+                margin-top: 15px;
+            }
+
+            .apl-sequence {
+                margin-top: 5px;
+
+                .apl-action {
+                    position: relative;
+                    margin-bottom: 5px;
+                    padding-left: 20px;
+
+                    > .delete {
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        color: #f00;
+                        line-height: 28px;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+    }   
 }
 
 .notice {
@@ -1579,6 +1653,18 @@ table {
     &.notice-alt {
         right: 50%;
         margin-right: -175px;
+    }
+
+    &.success-notice {
+        > .inner {
+            .title {
+                text-align: left;
+            }
+        }
+    }
+
+    .check-item.checked .material-icons {
+        color: #0f0;
     }
 
     > .inner {
