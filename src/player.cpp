@@ -637,8 +637,6 @@ std::vector<action::Action> Player::onSpellImpactProc(const State& state, const 
     if (instance.result != spell::MISS) {
         if (talents.imp_scorch && instance.spell->id == spell::SCORCH && (talents.imp_scorch == 3 || random<int>(0, 2) < talents.imp_scorch))
             actions.push_back(debuffAction<debuff::ImprovedScorch>(target));
-        if (talents.winters_chill && instance.spell->isSchool(SCHOOL_FROST))
-            actions.push_back(debuffAction<debuff::WintersChill>(target));
 
         if (instance.spell->id == spell::FIREBALL)
             actions.push_back(spellAction<spell::FireballDot>(target));
@@ -676,6 +674,9 @@ std::vector<action::Action> Player::onSpellImpactProc(const State& state, const 
                     actions.push_back(manaAction(m, "Judgement of Wisdom"));
                 }
             }
+            
+            if (talents.winters_chill && instance.spell->isSchool(SCHOOL_FROST))
+                actions.push_back(debuffAction<debuff::WintersChill>(target));
 
             if (hasBuff(buff::COMBUSTION) && instance.spell->isSchool(SCHOOL_FIRE)) {
                 if (instance.result == spell::CRIT)
