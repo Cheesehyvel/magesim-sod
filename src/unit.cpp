@@ -398,7 +398,7 @@ double Unit::getSpirit() const
     return stats.spirit + buff_stats.spirit;
 }
 
-double Unit::getSpellPower(School school) const
+double Unit::getSpellPower(School school, std::shared_ptr<target::Target> target) const
 {
     double sp = stats.sp + buff_stats.sp;
 
@@ -418,6 +418,10 @@ double Unit::getSpellPower(School school) const
     if (get_raid_buffs) {
         if (config.demonic_pact && config.demonic_pact_bonus > 0)
             sp += config.demonic_pact_bonus;
+    }
+
+    if (target != NULL) {
+        sp += target->getSpellPower(school);
     }
 
     return sp;

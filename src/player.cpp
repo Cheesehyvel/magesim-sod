@@ -609,8 +609,14 @@ std::vector<action::Action> Player::onCastSuccessProc(const State& state, std::s
         actions.push_back(buffExpireAction<buff::ChaosFire>());
     }
 
+    // Unconfirmed, on cast sucess
     if (is_harmful && config.item_roar_of_the_dream && random<int>(0, 19) == 0) {
         actions.push_back(buffAction<buff::RoarOfTheDream>());
+    }
+
+    // Unconfirmed, on cast sucess
+    if (is_harmful && config.set_malevolent_prophet_3p && random<int>(0, 4) == 0) {
+        actions.push_back(debuffAction<debuff::Malevolence>(target));
     }
 
     return actions;

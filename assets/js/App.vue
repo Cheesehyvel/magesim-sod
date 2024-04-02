@@ -1181,7 +1181,7 @@
                                 <div class="form-item" v-if="lvlPhase >= 3">
                                     <label><input type="checkbox" v-model="config.enchanted_sigil_living_dreams" @click="dontStack($event, 'enchanted_sigil_innovation')">
                                         <span>Enchanted Sigil: Living Dreams</span>
-                                        <help>30 sp, enchanter only</help>
+                                        <help>50 sp, enchanter only</help>
                                     </label>
                                 </div>
                                 <div class="form-item">
@@ -1951,6 +1951,7 @@
                 set_aq40_5p: false,
                 set_zg_5p: false,
                 set_hyperconductive_wizard_3p: false,
+                set_malevolent_prophet_3p: false,
                 enchant_dismantle: false,
                 item_gneuro_linked_monocle: false,
                 item_hyperconductive_goldwrap: false,
@@ -3670,6 +3671,9 @@
                 num = this.numEquippedSet(this.items.ids.SET_HYPERCONDUCTIVE_WIZARD);
                 this.config.set_hyperconductive_wizard_3p = num > 2;
 
+                num = this.numEquippedSet(this.items.ids.SET_MALEVOLENT_PROPHET);
+                this.config.set_malevolent_prophet_3p = num > 2;
+
                 this.config.enchant_dismantle = this.isEnchanted("weapon", this.items.ids.ENCHANT_DISMANTLE);
 
                 this.config.item_gneuro_linked_monocle = this.isEquipped("head", this.items.ids.GNEURO_LINKED_MONOCLE);
@@ -3841,7 +3845,7 @@
                     stats.mp5+= 12;
                 }
                 if (this.config.enchanted_sigil_living_dreams)
-                    stats.sp+= 30;
+                    stats.sp+= 50;
                 else if (this.config.enchanted_sigil_innovation)
                     stats.sp+= 20;
 

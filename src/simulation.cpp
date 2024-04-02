@@ -1385,7 +1385,7 @@ double Simulation::spellDmg(const std::shared_ptr<unit::Unit> unit, std::shared_
         return dmg;
 
     if (spell->coeff) {
-        auto const sp = unit->getSpellPower(spell->school);
+        auto const sp = unit->getSpellPower(spell->school, target);
         double coeff = spell->coeff + unit->spellCoeffMod(spell);
 
         dmg += sp * coeff;

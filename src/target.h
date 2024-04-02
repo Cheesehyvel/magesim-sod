@@ -19,9 +19,6 @@ public:
     int id;
     std::string name;
     unsigned long long dmg;
-    double t_ignite;
-    double t_living_bomb;
-    double t_pyroblast;
 
     std::unordered_map<debuff::ID, std::shared_ptr<debuff::Debuff>> debuffs;
 
@@ -34,6 +31,8 @@ public:
     bool hasDebuff(debuff::ID id) const;
     int addDebuff(std::shared_ptr<debuff::Debuff> debuff);
     void removeDebuff(debuff::ID id);
+    
+    double getSpellPower(School school = SCHOOL_NONE) const;
 };
 
 }

@@ -10,6 +10,7 @@ namespace debuff
         WINTERS_CHILL = 12579,
         PYROBLAST = 11366,
         LIVING_BOMB = 400613,
+        MALEVOLENCE = 449920,
     };
 
     // Prolonged ownership by Event, State and Unit. TODO: Do Event and Unit really need the same copy (i.e. pointer)?
@@ -78,6 +79,17 @@ namespace debuff
             id = LIVING_BOMB;
             name = "Living Bomb";
             duration = 12;
+        }
+    };
+
+    class Malevolence : public Debuff
+    {
+    public:
+        Malevolence()
+        {
+            id = MALEVOLENCE;
+            name = "Malevolence";
+            duration = 30;
         }
     };
 

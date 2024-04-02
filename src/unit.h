@@ -135,7 +135,7 @@ public:
 
     virtual double getSpirit() const;
 
-    virtual double getSpellPower(School school = SCHOOL_NONE) const;
+    virtual double getSpellPower(School school = SCHOOL_NONE, std::shared_ptr<target::Target> target = NULL) const;
 
     virtual double getSpellPenetration(School school = SCHOOL_NONE) const;
 

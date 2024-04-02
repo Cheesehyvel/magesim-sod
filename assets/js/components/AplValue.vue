@@ -102,8 +102,6 @@
             },
 
             idOptions() {
-                if (this.type.input == "runes")
-                    return this.rune_options;
                 if (this.type.input == "cooldowns")
                     return this.cooldownOptions;
                 if (this.type.input == "buffs")
@@ -119,6 +117,8 @@
             strOptions() {
                 if (this.type.input == "talents")
                     return this.talent_options;
+                if (this.type.input == "runes")
+                    return this.rune_options;
                 return [];
             },
 

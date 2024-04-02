@@ -17,9 +17,6 @@ Target::Target(const Config& _config, int _id)
 void Target::reset()
 {
     dmg = 0;
-    t_ignite = -20;
-    t_living_bomb = -20;
-    t_pyroblast = -20;
 
     debuffs.clear();
 }
@@ -62,6 +59,16 @@ int Target::addDebuff(std::shared_ptr<debuff::Debuff> debuff)
 void Target::removeDebuff(debuff::ID id)
 {
     debuffs.erase(id);
+}
+
+double Target::getSpellPower(School school) const
+{
+    double sp = 0;
+
+    if (hasDebuff(debuff::MALEVOLENCE))
+        sp+= 50;
+
+    return sp;
 }
 
 }

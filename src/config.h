@@ -46,6 +46,7 @@ struct Config
     bool set_aq40_5p = false;
     bool set_zg_5p = false;
     bool set_hyperconductive_wizard_3p = false;
+    bool set_malevolent_prophet_3p = false;
     bool enchant_dismantle = false;
     bool item_gneuro_linked_monocle = false;
     bool item_hyperconductive_goldwrap = false;
