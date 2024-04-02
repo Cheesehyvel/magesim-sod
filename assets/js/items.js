@@ -236,6 +236,9 @@ var equip = {
         { id: 4696, title: "Lapidis Tankard of Tidesippe", ilvl: 59, int: 5, spi: 16, q: "rare", phase: 4 },
         { id: 18536, title: "Milli's Lexicon", ilvl: 59, int: 7, mp5: 6, q: "rare", phase: 4 },
 
+        { id: 220599, title: "Drakestone of the Blood Prophet", ilvl: 55, sp_fire: 23, sp: 7, q: "rare", phase: 3 },
+        { id: 220598, title: "Drakestone of the Nightmare Harbinger", ilvl: 55, sp_arcane: 23, sp: 7, q: "rare", phase: 3 },
+        { id: 220597, title: "Drakestone of the Dream Harbinger", ilvl: 55, sp_frost: 23, sp: 7, q: "rare", phase: 3 },
         { id: 223533, title: "Desertwalker Cane", ilvl: 47, int: 4, sp: 15, q: "rare", phase: 3 },
         // { id: 12471, title: "Desertwalker Cane", ilvl: 47, int: 4, spi: 13, q: "rare", phase: 3 },
         { id: 223539, title: "Enthralled Sphere", ilvl: 53, int: 9, sp: 8, hit: 1, q: "rare", phase: 3 },
