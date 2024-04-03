@@ -1216,7 +1216,7 @@
                                     <label>Food</label>
                                     <select v-model="config.food">
                                         <option :value="foods.FOOD_NONE">None</option>
-                                        <option :value="foods.FOOD_INT10" v-if="lvl >= 45">+10 Intellect</option>
+                                        <option :value="foods.FOOD_INT10" v-if="lvlPhase == 4">+10 Intellect</option>
                                         <option :value="foods.FOOD_SPIRIT12" v-if="lvl >= 35">+12 Spirit/stam</option>
                                         <option :value="foods.FOOD_SPIRIT8">+8 Spirit/stam</option>
                                         <option :value="foods.FOOD_SPIRIT6">+6 Spirit/stam</option>
@@ -3741,7 +3741,7 @@
                 if (this.config.atalai_mojo_forbidden_magic)
                     stats.sp+= 40;
 
-                if (this.config.food == this.foods.FOOD_INT10 && this.lvl >= 45)
+                if (this.config.food == this.foods.FOOD_INT10 && this.lvlPhase == 4)
                     stats.intellect+= 10;
                 else if (this.config.food == this.foods.FOOD_SPIRIT6)
                     stats.spirit+= 6;
