@@ -138,7 +138,6 @@ var equip = {
         // { id: 11784, title: "Arbiter's Blade", ilvl: 53, int: 5, sp: 8, q: "rare", phase: 3 },
         { id: 18082, title: "Zum'rah's Vexing Cane", ilvl: 47, int: 10, sp: 21, twohand: true, q: "rare", phase: 3 },
         { id: 223538, title: "Kindling Stave", ilvl: 53, int: 12, sp: 15, crit: 1, twohand: true, q: "rare", phase: 3 },
-        { id: 220585, title: "Degraded Dire Nail", ilvl: 55, crit: 1, phase: 3 },
         { id: 220583, title: "Vile Blade of the Wretched", ilvl: 55, hit: 1, q: "rare", phase: 3 },
         { id: 220587, title: "Sacrificial Dream Dagger", ilvl: 55, int: 4, q: "rare", phase: 3 },
         { id: 223329, title: "Lifeforce Dirk", ilvl: 55, q: "rare" },
