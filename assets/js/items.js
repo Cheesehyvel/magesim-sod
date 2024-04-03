@@ -356,7 +356,6 @@ var equip = {
         { id: 22302, itemset: ids.SET_IRONWEAVE, title: "Ironweave Cowl", ilvl: 63, int: 15, q: "rare", phase: 4 },
         { id: 22267, title: "Spellweaver's Turban", ilvl: 63, int: 9, sp: 36, hit: 1, q: "rare", phase: 4 },
         { id: 18727, title: "Crimson Felt Hat", ilvl: 59, int: 8, spi: 8, sp: 30, q: "rare", phase: 4 },
-        { id: 3075, title: "Eye of Flame", ilvl: 55, int: 10, spi: 10, sp_fire: 43, phase: 4 },
         { id: 10041, title: "Dreamweave Circlet", ilvl: 50, int: 10, spi: 12, sp: 21, q: "rare", phase: 4 },
         { id: 23032, title: "Glacial Headdress", ilvl: 83, int: 21, sp: 18, phase: 4 },
         { id: 15999, title: "Spellpower Goggles Xtreme Plus", ilvl: 54, sp: 27, q: "uncommon", prof: "engineering", phase: 4 },
@@ -378,6 +377,7 @@ var equip = {
         { id: 12752, title: "Cap of the Scarlet Savant", ilvl: 62, int: 20, crit: 2, phase: 4 },
         { id: 19999, title: "Bloodvine Goggles", ilvl: 65, crit: 1, hit: 2, mp5: 9, q: "rare", prof: "engineering", phase: 4 },
 
+        { id: 3075, title: "Eye of Flame", ilvl: 55, int: 10, spi: 10, sp_fire: 43, phase: 3 },
         { id: 223328, title: "Gemburst Circlet", ilvl: 55, int: 17, sp: 22, q: "rare", phase: 3 },
         { id: 223326, title: "Hakkari Shroud", ilvl: 55, sp_fire: 29, q: "rare", phase: 3 },
         // { id: 10782, title: "Hakkari Shroud", ilvl: 55, int: 15, q: "uncommon", phase: 3 },
@@ -923,6 +923,7 @@ var equip = {
         { id: 223192, title: "Cord of the Untamed", ilvl: 55, int: 9, sp: 14, hit: 1, q: "rare", phase: 3 },
         { id: 220549, title: "Dawnspire Strap", ilvl: 55, int: 9, spi: 9, q: "rare", phase: 3 },
         { id: 11662, title: "Ban'thok Sash", ilvl: 54, int: 11, sp: 12, hit: 1, q: "rare", phase: 3 },
+        { id: "14304:1892", title: "Bonecaster's Belt of Fiery Wrath", ilvl: 55, sp_fire: 26, q: "uncommon", phase: 3 },
         { id: 20165, title: "Defiler's Cloth Girdle", ilvl: 53, int: 5, sp: 9, crit: 1, q: "rare", faction: "h", pvp: true, phase: 3 },
         { id: 20097, title: "Highlander's Cloth Girdle", ilvl: 53, int: 5, sp: 9, crit: 1, q: "rare", faction: "a", pvp: true, phase: 3 },
         // { id: 12466, title: "Dawnspire Cord", ilvl: 53, int: 19, spi: 8, q: "rare", phase: 3 },
