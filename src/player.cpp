@@ -701,6 +701,11 @@ std::vector<action::Action> Player::onSpellImpactProc(const State& state, const 
 
             if (config.atalai_mojo_forbidden_magic && !hasCooldown(cooldown::ATALAI_SHADOW_BOLT) && random<int>(0, 3) == 0)
                 actions.push_back(spellCooldownAction<spell::AtalaiShadowBolt, cooldown::AtalaiShadowBolt>(target));
+
+            if (config.item_blade_of_eternal_darkness && random<int>(0, 9) == 0) {
+                actions.push_back(manaAction(100, "Blade of Eternal Darkness"));
+                actions.push_back(spellAction<spell::EngulfingShadows>(target));
+            }
         }
     }
 

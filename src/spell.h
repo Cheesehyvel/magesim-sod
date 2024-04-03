@@ -59,6 +59,7 @@ namespace spell
         ROBE_ARCHMAGE = 18385,
         CELESTIAL_ORB = 9253,
         ATALAI_SHADOW_BOLT = 446258,
+        ENGULFING_SHADOWS = 27860,
     };
 
     enum Result : int
@@ -959,6 +960,21 @@ namespace spell
             max_dmg = 236;
             gcd = 0;
             coeff = 0.56;
+            can_proc = false;
+            proc = true;
+            speed = 24;
+        }
+    };
+
+    struct EngulfingShadows : public Spell
+    {
+        EngulfingShadows(int lvl) : Spell(ENGULFING_SHADOWS, "Engulfing Shadows", SCHOOL_SHADOW)
+        {
+            active_use = false;
+            min_dmg = 100;
+            max_dmg = 100;
+            gcd = 0;
+            coeff = 0;
             can_proc = false;
             proc = true;
         }

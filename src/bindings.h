@@ -284,6 +284,7 @@ EMSCRIPTEN_BINDINGS(my_module)
         .property("item_shoulderpads_deranged", &Config::item_shoulderpads_deranged)
         .property("item_mantle_insanity", &Config::item_mantle_insanity)
         .property("item_roar_of_the_dream", &Config::item_roar_of_the_dream)
+        .property("item_blade_of_eternal_darkness", &Config::item_blade_of_eternal_darkness)
 
         .property("pre_cast", &Config::pre_cast)
 

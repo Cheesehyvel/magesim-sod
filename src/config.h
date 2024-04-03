@@ -57,6 +57,7 @@ struct Config
     bool item_shoulderpads_deranged = false;
     bool item_mantle_insanity = false;
     bool item_roar_of_the_dream = false;
+    bool item_blade_of_eternal_darkness = false;
 
     bool pre_cast = false;
 

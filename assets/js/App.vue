@@ -1962,6 +1962,7 @@
                 item_shoulderpads_deranged: false,
                 item_mantle_insanity: false,
                 item_roar_of_the_dream: false,
+                item_blade_of_eternal_darkness: false,
 
                 trinket1: 0,
                 trinket2: 0,
@@ -3685,6 +3686,7 @@
                 this.config.item_shoulderpads_deranged = this.isEquipped("shoulder", this.items.ids.SHOULDERPADS_DERANGED);
                 this.config.item_mantle_insanity = this.isEquipped("shoulder", this.items.ids.MANTLE_INSANITY);
                 this.config.item_roar_of_the_dream = this.isEquipped("finger", this.items.ids.ROAR_OF_THE_DREAM);
+                this.config.item_blade_of_eternal_darkness = this.isEquipped("weapon", this.items.ids.BLADE_OF_ETERNAL_DARKNESS);
             },
 
             simStats() {
