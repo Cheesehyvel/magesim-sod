@@ -1293,7 +1293,7 @@ double Simulation::critChance(std::shared_ptr<unit::Unit> unit, std::shared_ptr<
         return crit;
 
     if (target->hasDebuff(debuff::WINTERS_CHILL) && spell->isSchool(SCHOOL_FROST) && spell->max_dmg > 0.0)
-        crit += target->debuffStacks(debuff::WINTERS_CHILL);
+        crit += target->debuffStacks(debuff::WINTERS_CHILL) * 2.0;
 
     crit = std::min(crit, 100.0);
 
