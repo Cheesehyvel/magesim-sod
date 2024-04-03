@@ -25,7 +25,7 @@ namespace spell
         FIREBALL_DOT = 840000, // fake id
         FROSTFIRE_BOLT = 401502,
         FROSTFIRE_BOLT_DOT = 4015020, // fake id
-        SPELLFROST_BOLT = 415734,
+        SPELLFROST_BOLT = 412532,
         BALEFIRE_BOLT = 428878,
         DEEP_FREEZE = 428739,
         SCORCH = 2948,
@@ -369,7 +369,7 @@ namespace spell
             max_dmg = 450 * defaultRuneScale(lvl);
             cast_time = 3;
             coeff = 1;
-            speed = 28;
+            speed = 24;
         }
     };
 
@@ -397,7 +397,7 @@ namespace spell
             max_dmg = 355 * defaultRuneScale(lvl);
             cast_time = 2.5;
             coeff = 0.814; // 3.0 / 3.5 * 0.95
-            speed = 28;
+            speed = 24;
         }
     };
 
@@ -411,7 +411,7 @@ namespace spell
             max_dmg = 420 * defaultRuneScale(lvl);
             cast_time = 2.5;
             coeff = 3.0/3.5;
-            speed = 28;
+            speed = 24;
         }
     };
 
@@ -962,7 +962,7 @@ namespace spell
             coeff = 0.56;
             can_proc = false;
             proc = true;
-            speed = 24;
+            speed = 20;
         }
     };
 

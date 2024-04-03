@@ -1771,7 +1771,7 @@
                 <div class="closer" @click="closeAPL"></div>
                 <div class="inner">
                     <div class="title">APL - Edit rotation</div>
-                    <apl v-model="config.apl.combat" />
+                    <apl ref="apl" v-model="config.apl.combat" />
                     <div class="btn wide mt-3" @click="closeAPL">Close</div>
                 </div>
             </div>
