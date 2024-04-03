@@ -295,7 +295,6 @@ var equip = {
         { id: 18338, title: "Wand of Arcane Potency", ilvl: 59, sp_arcane: 16, q: "rare", phase: 4 },
         { id: 19367, title: "Dragon's Touch", ilvl: 75, int: 12, sp: 6, phase: 4 },
         { id: 13938, title: "Bonecreeper Stylus", ilvl: 62, int: 4, sp: 11, q: "rare", phase: 4 },
-        { id: 11748, title: "Pyric Caduceus", ilvl: 53, sp_fire: 13, q: "rare", phase: 3 },
         { id: 20672, title: "Sparkling Crystal Wand", ilvl: 62, int: 9, sp: 5, q: "rare", phase: 4 },
         { id: 22408, title: "Ritssyn's Wand of Bad Mojo", ilvl: 63, sp: 11, q: "rare", phase: 4 },
         { id: 18301, title: "Lethtendris's Wand", ilvl: 58, sp: 9, q: "uncommon", phase: 4 },
@@ -318,6 +317,9 @@ var equip = {
         { id: 18483, title: "Mana Channeling Wand", ilvl: 61, mp5: 4, q: "rare", phase: 4 },
         { id: 13534, title: "Banshee Finger", ilvl: 60, q: "rare", phase: 4 },
 
+        { id: 220604, title: "Nightmare Trophy", ilvl: 55, int: 5, sp: 9, q: "rare", phase: 3 },
+        { id: 11748, title: "Pyric Caduceus", ilvl: 53, sp_fire: 13, q: "rare", phase: 3 },
+        { id: 220603, title: "Rod of Irreversible Corrosion", ilvl: 55, spi: 6, q: "rare", phase: 3 },
         { id: 19118, title: "Nature's Breath", ilvl: 50, int: 6, q: "uncommon", phase: 3 },
 
         { id: 213559, title: "Mechanostrider Gear Shifter", ilvl: 45, sp: 9, q: "rare", phase: 2 },
@@ -1097,7 +1099,7 @@ var equip = {
         { id: 14458, title: "Elunarian Boots", ilvl: 60, int: 6, spi: 17, q: "uncommon", phase: 4 },
         { id: 8284, title: "Arcane Boots", ilvl: 57, int: 4, spi: 16, q: "uncommon", phase: 4 },
 
-        { id: 220681, itemset: ids.SET_MALEVOLENT_PROPHET, title: "Malevolent Prophet's Sandals", ilvl: 55, int: 9, spi: 10, sp: 15, hit: 1, q: "rare", phase: 3 },
+        { id: 220681, itemset: ids.SET_MALEVOLENT_PROPHET, title: "Malevolent Prophet's Sandals", ilvl: 55, int: 9, spi: 10, sp: 15, crit: 1, q: "rare", phase: 3 },
         { id: 221426, itemset: ids.SET_EMERALD_ENCHANTED, title: "Emerald Enchanted Boots", ilvl: 50, int: 10, spi: 9, sp: 8, q: "rare", phase: 3 },
         { id: 220909, itemset: ids.SET_BLOOD_GUARD, title: "First Sergeant's Dreadweave Boots", ilvl: 51, int: 12, sp: 9, q: "rare", faction: "h", pvp: true, phase: 3 },
         { id: 220891, itemset: ids.SET_KNIGHT_LIEUTENANT, title: "Sergeant Major's Dreadweave Boots", ilvl: 51, int: 12, sp: 9, q: "rare", faction: "a", pvp: true, phase: 3 },
@@ -1298,7 +1300,7 @@ var equip = {
         { id: 18371, title: "Mindtap Talisman", ilvl: 61, mp5: 11, q: "rare", phase: 4 },
 
         { id: ids.TRINKET_ATALAI_BLOOD_RITUAL_CHARM, title: "Atal'ai Blood Ritual Charm", ilvl: 55, unique: true, use: true, phase: 3, icon: "inv_jewelry_necklace_26" },
-        { id: 223195, title: "Breadth of the Beast", ilvl: 55, hit: 1, q: "rare", phase: 3 },
+        { id: 223195, title: "Breadth of the Beast", ilvl: 55, crit: 1, hit: 1, q: "rare", phase: 3 },
         { id: ids.TRINKET_FIRE_RUBY, title: "Fire Ruby", ilvl: 52, q: "rare", use: true, unique: true, phase: 3, icon: "inv_misc_gem_bloodstone_02" },
         { id: 10659, title: "Shard of the Splithooves", ilvl: 57, mp5: 5, q: "uncommon", faction: "a", phase: 3 },
 
