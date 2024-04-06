@@ -229,7 +229,8 @@ void Unit::applyMana(const State& state, double _mana)
 
 double Unit::spiritManaPerSecond() const
 {
-    return (getSpirit() * 0.25 + 12.5) * 0.5;
+    double spi = getSpirit();
+    return 0.25 * std::min(spi, 50.0) + 0.125 * (std::max(spi, 50.0) - 50.0);
 }
 
 double Unit::staticManaPerSecond() const
