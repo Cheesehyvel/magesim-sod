@@ -2785,28 +2785,28 @@
             },
 
             bow() {
-                if (this.lvl >= 14)
-                    return 10;
-                if (this.lvl >= 24)
-                    return 15;
-                if (this.lvl >= 34)
-                    return 20;
-                if (this.lvl >= 44)
-                    return 25;
                 if (this.lvl >= 54)
                     return 30;
+                if (this.lvl >= 44)
+                    return 25;
+                if (this.lvl >= 34)
+                    return 20;
+                if (this.lvl >= 24)
+                    return 15;
+                if (this.lvl >= 14)
+                    return 10;
                 return 0;
             },
 
             manaSpring() {
-                if (this.lvl >= 26)
-                    return 4;
-                if (this.lvl >= 36)
-                    return 6;
-                if (this.lvl >= 46)
-                    return 8;
                 if (this.lvl >= 56)
                     return 10;
+                if (this.lvl >= 46)
+                    return 8;
+                if (this.lvl >= 36)
+                    return 6;
+                if (this.lvl >= 26)
+                    return 4;
                 return 0;
             },
 
