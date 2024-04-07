@@ -615,7 +615,7 @@ std::vector<action::Action> Player::onCastSuccessProc(const State& state, std::s
     }
 
     // Unconfirmed, on cast sucess
-    if (is_harmful && config.set_malevolent_prophet_3p && random<int>(0, 4) == 0) {
+    if (target && is_harmful && config.set_malevolent_prophet_3p && random<int>(0, 4) == 0) {
         actions.push_back(debuffAction<debuff::Malevolence>(target));
     }
 
