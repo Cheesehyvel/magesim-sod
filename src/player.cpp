@@ -2201,7 +2201,7 @@ action::Action Player::APL_Action(APL::Action apl, const State& state)
             // Check if spell is available and not on cooldown
             if (spell->id == spell::ARCANE_BLAST && !runes.arcane_blast)
                 return none;
-            if (spell->id == spell::ARCANE_SURGE && (!runes.arcane_blast || hasCooldown(cooldown::ARCANE_SURGE)))
+            if (spell->id == spell::ARCANE_SURGE && (!runes.arcane_surge || hasCooldown(cooldown::ARCANE_SURGE)))
                 return none;
             if (spell->id == spell::BALEFIRE_BOLT && (!runes.balefire_bolt || buffStacks(buff::BALEFIRE_BOLT) == 9))
                 return none;
@@ -2308,27 +2308,9 @@ action::Action Player::APL_Action(APL::Action apl, const State& state)
 
     else if (apl.type == APL::ACTION_TYPE_CUSTOM) {
         if (apl.str == "potion") {
-            if (hasCooldown(cooldown::POTION))
+            if (hasCooldown(cooldown::POTION) || config.potion == POTION_NONE)
                 return none;
             action::Action action { action::TYPE_POTION };
-            action.primary_action = true;
-            return action;
-        }
-        else if (apl.str == "trinket1") {
-            if (!isUseTrinket(config.trinket1) || hasCooldown(cooldown::TRINKET1) || isTrinketOnSharedCD(config.trinket1))
-                return none;
-            action::Action action{ action::TYPE_TRINKET };
-            action.cooldown = std::make_shared<cooldown::Cooldown>(cooldown::TRINKET1);
-            action.trinket = config.trinket1;
-            action.primary_action = true;
-            return action;
-        }
-        else if (apl.str == "trinket2") {
-            if (!isUseTrinket(config.trinket2) || hasCooldown(cooldown::TRINKET1) || isTrinketOnSharedCD(config.trinket2))
-                return none;
-            action::Action action{ action::TYPE_TRINKET };
-            action.cooldown = std::make_shared<cooldown::Cooldown>(cooldown::TRINKET2);
-            action.trinket = config.trinket2;
             action.primary_action = true;
             return action;
         }
