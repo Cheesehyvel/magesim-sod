@@ -1395,7 +1395,7 @@ var itemsets = [
     { id: ids.SET_IRRADIATED, set2: { crit: 1 }, set3: { sp: 11 }},
     { id: ids.SET_HYPERCONDUCTIVE_WIZARD, set2: { hit: 1 }},
     { id: ids.SET_HYPERCONDUCTIVE_MENDER, set2: { spi: 14 }, set3: { mp5: 7 }},
-    { id: ids.SET_MALEVOLENT_PROPHET, set2: { hit: 1 }},
+    { id: ids.SET_MALEVOLENT_PROPHET, set2: { crit: 1 }},
     { id: ids.SET_EMERALD_ENCHANTED, set6: { sp: 12 }},
 ];
 

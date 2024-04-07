@@ -19,6 +19,8 @@ class SimulationWorker {
 
     start(config, iterations) {
         config = _.cloneDeep(config);
+        if (config.rotation != 1)
+            config.apl = {combat: [], precombat: []};
         if (!config.dot_targets || config.dot_targets > config.targets)
             config.dot_targets = config.targets;
         this.worker.postMessage({
