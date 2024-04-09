@@ -1112,6 +1112,12 @@
                                         <help>25 spirit for 30min. Horde only</help>
                                     </label>
                                 </div>
+                                <div class="form-item" v-if="lvl >= 45">
+                                    <label><input type="checkbox" v-model="config.infallible_mind">
+                                        <span>Infallible Mind</span>
+                                        <help>25 int from Blasted Lands</help>
+                                    </label>
+                                </div>
                                 <div class="form-item" v-if="lvl >= 50">
                                     <label><input type="checkbox" v-model="config.songflower">
                                         <span>Songflower</span>
@@ -1914,6 +1920,7 @@
 
                 // World buffs
                 rising_spirit: false,
+                infallible_mind: false,
                 songflower: true,
                 rallying_cry: false,
                 spirit_of_zandalar: false,
@@ -3815,6 +3822,8 @@
                 // World buffs
                 if (this.config.rising_spirit && this.faction == "horde" && !this.divineSpirit)
                     stats.spirit+= 25;
+                if (this.config.infallible_mind && this.lvl >= 45)
+                    stats.intellect+= 25;
                 if (this.config.songflower && this.lvl >= 50) {
                     stats.crit+= 5;
                     stats.intellect+= 15;

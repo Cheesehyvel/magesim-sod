@@ -1329,7 +1329,7 @@ var enchants = {
     ],
     head: [
         { id: 24164, enchantmentId: 2588, title: "Presence of Sight", sp: 18, hit: 1, phase: 4 },
-        { id: 22844, enchantmentId: 2544, title: "Arcanum of Focus", sp: 8, phase: 4 },
+        { id: 22844, enchantmentId: 2544, title: "Arcanum of Focus", sp: 8, phase: 3 },
     ],
     shoulder: [
         { id: 29467, enchantmentId: 2721, title: "Power of the Scourge", sp: 15, crit: 1, phase: 4 },
@@ -1363,7 +1363,7 @@ var enchants = {
     ],
     legs: [
         { id: 24164, enchantmentId: 2588, title: "Presence of Sight", sp: 18, hit: 1, phase: 4 },
-        { id: 22844, enchantmentId: 2544, title: "Arcanum of Focus", sp: 8, phase: 4 },
+        { id: 22844, enchantmentId: 2544, title: "Arcanum of Focus", sp: 8, phase: 3 },
     ],
     feet: [
         { id: 13890, enchantmentId: 911, title: "Minor speed", phase: 2 },
