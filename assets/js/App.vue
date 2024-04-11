@@ -961,14 +961,28 @@
                             </fieldset>
                             <fieldset class="config-debuffs">
                                 <legend>Debuffs</legend>
+                                <template v-if="lvlPhase >= 3">
+                                    <div class="form-item">
+                                        <label><input type="checkbox" v-model="config.curse_of_elements_eye" @click="dontStack($event, 'curse_of_elements')">
+                                            <span>Curse of Elements (Eye of the Void)</span>
+                                            <help>10% fire/frost dmg, -75 resistance</help>
+                                        </label>
+                                    </div>
+                                    <div class="form-item">
+                                        <label><input type="checkbox" v-model="config.curse_of_shadow_eye" @click="dontStack($event, 'curse_of_shadow')">
+                                            <span>Curse of Shadow (Eye of the Void)</span>
+                                            <help>10% arcane dmg, -75 resistance</help>
+                                        </label>
+                                    </div>
+                                </template>
                                 <div class="form-item" v-if="coeDmg">
-                                    <label><input type="checkbox" v-model="config.curse_of_elements">
+                                    <label><input type="checkbox" v-model="config.curse_of_elements" @click="dontStack($event, 'curse_of_elements_eye')">
                                         <span>Curse of Elements</span>
                                         <help>{{ coeDmg }}% fire/frost dmg, -{{ coeSpen }} resistance</help>
                                     </label>
                                 </div>
                                 <div class="form-item" v-if="cosDmg">
-                                    <label><input type="checkbox" v-model="config.curse_of_shadow">
+                                    <label><input type="checkbox" v-model="config.curse_of_shadow" @click="dontStack($event, 'curse_of_shadow_eye')">
                                         <span>Curse of Shadow</span>
                                         <help>{{ cosDmg }}% arcane dmg, -{{ cosSpen }} resistance</help>
                                     </label>
@@ -1913,6 +1927,8 @@
                 atiesh_warlock: false,
 
                 // Debuffs
+                curse_of_elements_eye: false,
+                curse_of_shadow_eye: false,
                 curse_of_elements: false,
                 curse_of_shadow: false,
                 mekkatorques_arcano_shredder: false,
@@ -4229,6 +4245,11 @@
                         else
                             this.config.potion = this.potions.POTION_LESSER_MANA;
                     }
+                }
+
+                if (to < 50) {
+                    this.config.curse_of_elements_eye = false;
+                    this.config.curse_of_shadow_eye = false;
                 }
 
                 this.$nextTick(() => {

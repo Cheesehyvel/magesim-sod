@@ -259,6 +259,8 @@ EMSCRIPTEN_BINDINGS(my_module)
         .property("demonic_pact", &Config::demonic_pact)
         .property("demonic_pact_bonus", &Config::demonic_pact_bonus)
 
+        .property("curse_of_elements_eye", &Config::curse_of_elements_eye)
+        .property("curse_of_shadow_eye", &Config::curse_of_shadow_eye)
         .property("curse_of_elements", &Config::curse_of_elements)
         .property("curse_of_shadow", &Config::curse_of_shadow)
         .property("judgement_of_wisdom", &Config::judgement_of_wisdom)

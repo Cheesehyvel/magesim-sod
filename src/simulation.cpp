@@ -1344,7 +1344,13 @@ double Simulation::debuffDmgMultiplier(std::shared_ptr<unit::Unit> unit, std::sh
     if (target->hasDebuff(debuff::IMPROVED_SCORCH) && spell->isSchool(SCHOOL_FIRE))
         multi *= 1 + (0.03 * target->debuffStacks(debuff::IMPROVED_SCORCH));
 
-    if (config.curse_of_shadow && spell->isSchool(SCHOOL_ARCANE, SCHOOL_SHADOW)) {
+    if (config.curse_of_shadow_eye && spell->isSchool(SCHOOL_ARCANE, SCHOOL_SHADOW)) {
+        multi *= 1.1;
+    }
+    else if (config.curse_of_elements_eye && spell->isSchool(SCHOOL_FIRE, SCHOOL_FROST)) {
+        multi *= 1.1;
+    }
+    else if (config.curse_of_shadow && spell->isSchool(SCHOOL_ARCANE, SCHOOL_SHADOW)) {
         if (config.player_level >= 56)
             multi *= 1.1;
         else if (config.player_level >= 44)

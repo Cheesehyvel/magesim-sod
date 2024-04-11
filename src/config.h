@@ -30,6 +30,8 @@ struct Config
     double demonic_pact_bonus = 0;
 
     // Debuffs
+    bool curse_of_elements_eye = false;
+    bool curse_of_shadow_eye = false;
     bool curse_of_elements = false;
     bool curse_of_shadow = false;
     bool judgement_of_wisdom = false;
