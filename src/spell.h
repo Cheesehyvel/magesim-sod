@@ -796,6 +796,7 @@ namespace spell
             t_interval = 2;
             ticks = 2;
             coeff = 0;
+            dynamic = true;
             min_dmg = max_dmg = _dmg;
         }
     };

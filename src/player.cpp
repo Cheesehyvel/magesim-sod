@@ -275,19 +275,22 @@ double Player::buffDmgMultiplier(std::shared_ptr<spell::Spell> spell, const Stat
     // Additive category
     additive = 1;
 
-
     if (spell->id == spell::BALEFIRE_BOLT)
         additive += buffStacks(buff::BALEFIRE_BOLT) * 0.1;
-    if (talents.arcane_instability)
-        additive += talents.arcane_instability * 0.01;
     if (talents.piercing_ice && spell->isSchool(SCHOOL_FROST))
         additive += talents.piercing_ice * 0.02;
-    if (talents.fire_power && spell->isSchool(SCHOOL_FIRE))
-        additive += talents.fire_power * 0.02;
     if (spell->id == spell::CONE_OF_COLD && talents.imp_cone_of_cold)
         additive += 0.05 + talents.imp_cone_of_cold * 0.1;
     if (hasBuff(buff::ARCANE_POWER))
         additive += 0.3;
+
+    // Ignite does not double dip talents
+    if (spell->id != spell::IGNITE) {
+        if (talents.fire_power && spell->isSchool(SCHOOL_FIRE))
+            additive += talents.fire_power * 0.02;
+        if (talents.arcane_instability)
+            additive += talents.arcane_instability * 0.01;
+    }
 
     // Special case
     // Multiplicative for LF

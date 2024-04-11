@@ -837,22 +837,24 @@ void Simulation::dotApply(std::shared_ptr<unit::Unit> unit, std::shared_ptr<spel
 {
     // Ignite special case
     if (spell->id == spell::IGNITE) {
-        auto leftover = getDotDamage(unit, spell, target);
+        double leftover = 0;
 
         // Remove pending ignite ticks
         for (auto i = queue.begin(); i != queue.end();) {
-            if (i->type == EVENT_SPELL_IMPACT && i->instance.spell->id == spell->id && i->unit == unit && i->target == target)
+            if (i->type == EVENT_SPELL_IMPACT && i->instance.spell->id == spell->id && i->unit == unit && i->target == target) {
+                leftover+= i->instance.spell->min_dmg;
                 i = queue.erase(i);
-            else
+            }
+            else {
                 i++;
+            }
         }
 
-        for (int i = 1; i <= spell->ticks; i++) {
-            auto dot = getSpellInstance(unit, spell, target);
-            dot.tick = i;
-            dot.dmg += round(leftover / 2.0);
-            pushDotTick(unit, dot, target);
-        }
+        // Add leftover dmg to new ignite
+        spell->min_dmg = spell->max_dmg = spell->min_dmg + round(leftover / 2.0);
+
+        for (int i = 1; i <= spell->ticks; i++)
+            pushDot(unit, spell, target, i);
     }
     else {
         // Remove all dot ticks and create new ones
@@ -1180,15 +1182,6 @@ void Simulation::useTrinket(std::shared_ptr<unit::Unit> unit, Trinket trinket, s
 {
     std::vector<action::Action> actions = unit->useTrinket(trinket, cooldown);
     processActions(unit, actions);
-}
-
-double Simulation::getDotDamage(std::shared_ptr<unit::Unit> unit, std::shared_ptr<spell::Spell> spell, std::shared_ptr<target::Target> target) const
-{
-    double ret = 0;
-    for (auto const& i : queue)
-        if (i.type == EVENT_SPELL_IMPACT && i.instance.spell->id == spell->id && i.unit == unit && i.target == target)
-            ret += i.instance.dmg;
-    return ret;
 }
 
 void Simulation::removeSpellImpact(std::shared_ptr<unit::Unit> unit, std::shared_ptr<spell::Spell> spell, std::shared_ptr<target::Target> target)
