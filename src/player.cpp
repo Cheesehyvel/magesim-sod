@@ -573,7 +573,7 @@ std::vector<action::Action> Player::onCastSuccessProc(const State& state, std::s
         }
     }
 
-    if (runes.fingers_of_frost && hasBuff(buff::FINGERS_OF_FROST) && is_harmful) {
+    if (runes.fingers_of_frost && hasBuff(buff::FINGERS_OF_FROST) && is_harmful && !spell->dot) {
         fingers_of_frost--;
         if (fingers_of_frost <= 0) {
             actions.push_back(buffExpireAction<buff::FingersOfFrost>());
@@ -643,6 +643,14 @@ std::vector<action::Action> Player::onSpellImpactProc(const State& state, const 
 
     if (instance.spell->id == spell::LIVING_BOMB && instance.tick == instance.spell->ticks) {
         actions.push_back(spellAction<spell::LivingBombExplosion>());
+    }
+
+    if (runes.fingers_of_frost && instance.spell->id == spell::LIVING_BOMB_EXPLOSION && hasBuff(buff::FINGERS_OF_FROST)) {
+        fingers_of_frost--;
+        if (fingers_of_frost <= 0) {
+            actions.push_back(buffExpireAction<buff::FingersOfFrost>());
+            actions.push_back(buffAction<buff::GhostFingers>());
+        }
     }
 
     if (instance.result == spell::MISS && config.set_aq40_5p)
