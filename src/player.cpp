@@ -608,8 +608,7 @@ std::vector<action::Action> Player::onCastSuccessProc(const State& state, std::s
         actions.push_back(buffAction<buff::UnrestrainedPower>());
     }
 
-    // Rune spells dont consume it
-    if (is_harmful && hasBuff(buff::CHAOS_FIRE) && spell->isSchool(SCHOOL_FIRE) && static_cast<int>(spell->id) < 300000) {
+    if (is_harmful && hasBuff(buff::CHAOS_FIRE) && spell->isSchool(SCHOOL_FIRE)) {
         actions.push_back(buffExpireAction<buff::ChaosFire>());
     }
 
