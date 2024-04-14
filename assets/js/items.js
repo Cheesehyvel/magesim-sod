@@ -129,6 +129,7 @@ var equip = {
 
         { id: ids.BLADE_OF_ETERNAL_DARKNESS, title: "Blade of Eternal Darkness", ilvl: 54, sp: 20, phase: 3 },
         { id: 220590, title: "Spire of Hakkari Worship", ilvl: 55, int: 14, spi: 13, sp: 19, crit: 2, twohand: true, phase: 3 },
+        { id: 220595, title: "Nightmare Focus Staff", ilvl: 58, int: 26, sp: 29, twohand: true, phase: 3 },
         { id: 220591, title: "Mijan's Restorative Rod", ilvl: 55, int: 11, spi: 11, twohand: true, q: "rare", phase: 3 },
         { id: 220586, title: "Hubris, the Bandit Brander", ilvl: 55, int: 11, sp: 20, phase: 3 },
         { id: 223198, title: "Modas Karkun", ilvl: 55, sp_fire: 23, phase: 3 },
