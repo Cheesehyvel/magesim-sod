@@ -419,7 +419,7 @@
                                                     </span>
                                                 </td>
                                                 <td class="title">
-                                                    <a :href="itemUrl(item)" :class="['quality-'+$get(item, 'q', 'epic')]" target="_blank" @click.prevent>
+                                                    <a :href="itemUrl(item)" data-whtticon="false" :class="['quality-'+$get(item, 'q', 'epic')]" target="_blank" @click.prevent>
                                                         {{ item.title }}
                                                     </a>
                                                     <span class="link" @click.stop="openItem(item)">
@@ -1622,7 +1622,7 @@
                                 <template v-if="item_id">
                                     <td>{{ formatKey(slot) }}</td>
                                     <td>
-                                        <a :href="itemUrl(item_id)" target="_blank" :class="['quality-'+$get(getItem(slot, item_id), 'q', 'epic')]">
+                                        <a :href="itemUrl(item_id)" data-whtticon="false" target="_blank" :class="['quality-'+$get(getItem(slot, item_id), 'q', 'epic')]">
                                             {{ getItem(slot, item_id).title }}
                                         </a>
                                     </td>
