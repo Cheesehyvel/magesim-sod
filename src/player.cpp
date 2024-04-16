@@ -617,15 +617,6 @@ std::vector<action::Action> Player::onCastSuccessProc(const State& state, std::s
         actions.push_back(buffAction<buff::RoarOfTheDream>());
     }
 
-    /**
-     * Disabled for now
-     * Only lasts for 1 spell from any source, so it will practically never benefit the caster
-    // Unconfirmed, on cast sucess
-    if (target && is_harmful && config.set_malevolent_prophet_3p && random<int>(0, 4) == 0) {
-        // actions.push_back(debuffAction<debuff::Malevolence>(target));
-    }
-    */
-
     return actions;
 }
 
@@ -661,12 +652,23 @@ std::vector<action::Action> Player::onSpellImpactProc(const State& state, const 
 
         if (instance.spell->id == spell::FIREBALL)
             actions.push_back(spellAction<spell::FireballDot>(target));
+        
         if (instance.spell->id == spell::PYROBLAST) {
             actions.push_back(spellAction<spell::PyroblastDot>(target));
             actions.push_back(debuffAction<debuff::Pyroblast>(target));
         }
+
         if (instance.spell->id == spell::FROSTFIRE_BOLT)
             actions.push_back(spellAction<spell::FrostfireBoltDot>(target));
+
+        /**
+         * Disabled for now
+         * Only lasts for 1 spell from any source, so it will practically never benefit the caster
+        // Unconfirmed, on cast sucess
+        if (target && is_harmful && config.set_malevolent_prophet_3p && random<int>(0, 4) == 0) {
+            // actions.push_back(debuffAction<debuff::Malevolence>(target));
+        }
+        */
 
         if (instance.spell->dot) {
             // Dot trinkets, if any

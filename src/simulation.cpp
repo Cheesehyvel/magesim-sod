@@ -1336,39 +1336,68 @@ double Simulation::buffDmgMultiplier(const std::shared_ptr<unit::Unit> unit, std
 
 double Simulation::debuffDmgMultiplier(std::shared_ptr<unit::Unit> unit, std::shared_ptr<spell::Spell> spell, std::shared_ptr<target::Target> target) const
 {
-    double multi = 1;
-
     if (!unit->get_raid_debuffs)
-        return multi;
+        return 1.0;
 
-    if (target->hasDebuff(debuff::IMPROVED_SCORCH) && spell->isSchool(SCHOOL_FIRE))
-        multi *= 1 + (0.03 * target->debuffStacks(debuff::IMPROVED_SCORCH));
+    std::vector<double> multiv;
+    for (int i=SCHOOL_NONE; i != SCHOOL_PHYSICAL; i++)
+        multiv.push_back(1);
 
-    if (config.curse_of_shadow_eye && spell->isSchool(SCHOOL_ARCANE, SCHOOL_SHADOW)) {
-        multi *= 1.1;
+    if (config.curse_of_shadow_eye) {
+        multiv[SCHOOL_ARCANE] *= 1.1;
+        multiv[SCHOOL_SHADOW] *= 1.1;
     }
-    else if (config.curse_of_elements_eye && spell->isSchool(SCHOOL_FIRE, SCHOOL_FROST)) {
-        multi *= 1.1;
-    }
-    else if (config.curse_of_shadow && spell->isSchool(SCHOOL_ARCANE, SCHOOL_SHADOW)) {
-        if (config.player_level >= 56)
-            multi *= 1.1;
-        else if (config.player_level >= 44)
-            multi *= 1.08;
-    }
-    else if (config.curse_of_elements && spell->isSchool(SCHOOL_FIRE, SCHOOL_FROST)) {
-        if (config.player_level >= 56)
-            multi *= 1.1;
-        else if (config.player_level >= 44)
-            multi *= 1.08;
-        else if (config.player_level >= 32)
-            multi *= 1.06;
-    }
-    else if (config.mekkatorques_arcano_shredder) {
-        multi*= 1.06;
+    else if (config.curse_of_shadow) {
+        if (config.player_level >= 56) {
+            multiv[SCHOOL_ARCANE] *= 1.1;
+            multiv[SCHOOL_SHADOW] *= 1.1;
+        }
+        else if (config.player_level >= 44) {
+            multiv[SCHOOL_ARCANE] *= 1.08;
+            multiv[SCHOOL_SHADOW] *= 1.08;
+        }
     }
 
-    return multi;
+    if (config.curse_of_elements_eye) {
+        multiv[SCHOOL_FIRE] *= 1.1;
+        multiv[SCHOOL_FROST] *= 1.1;
+    }
+    else if (config.curse_of_elements) {
+        if (config.player_level >= 56) {
+            multiv[SCHOOL_FIRE] *= 1.1;
+            multiv[SCHOOL_FROST] *= 1.1;
+        }
+        else if (config.player_level >= 44) {
+            multiv[SCHOOL_FIRE] *= 1.08;
+            multiv[SCHOOL_FROST] *= 1.08;
+        }
+        else if (config.player_level >= 32) {
+            multiv[SCHOOL_FIRE] *= 1.06;
+            multiv[SCHOOL_FROST] *= 1.06;
+        }
+    }
+
+    // Doesnt stack with curses
+    if (config.mekkatorques_arcano_shredder) {
+        multiv[SCHOOL_ARCANE] = std::max(multiv[SCHOOL_ARCANE], 1.06);
+        multiv[SCHOOL_FIRE] = std::max(multiv[SCHOOL_FIRE], 1.06);
+        multiv[SCHOOL_FROST] = std::max(multiv[SCHOOL_FROST], 1.06);
+        multiv[SCHOOL_SHADOW] = std::max(multiv[SCHOOL_SHADOW], 1.06);
+        multiv[SCHOOL_NATURE] = std::max(multiv[SCHOOL_NATURE], 1.06);
+        multiv[SCHOOL_HOLY] = std::max(multiv[SCHOOL_HOLY], 1.06);
+    }
+
+    if (target->hasDebuff(debuff::IMPROVED_SCORCH))
+        multiv[SCHOOL_FIRE] *= 1 + (0.03 * target->debuffStacks(debuff::IMPROVED_SCORCH));
+
+    // Find highest multiplier for spell school
+    double multi_max = 1;
+    for (int i=SCHOOL_NONE; i != SCHOOL_PHYSICAL; i++) {
+        if (spell->isSchool(static_cast<School>(i)) && multiv[i] > multi_max)
+            multi_max = multiv[i];
+    }
+
+    return multi_max;
 }
 
 double Simulation::spellDmg(const std::shared_ptr<unit::Unit> unit, std::shared_ptr<spell::Spell> spell, std::shared_ptr<target::Target> target)
