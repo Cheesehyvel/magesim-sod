@@ -1272,6 +1272,13 @@ double Simulation::hitChance(std::shared_ptr<unit::Unit> unit, std::shared_ptr<s
     if (dlevel > 2)
         hit -= (dlevel - 2) * 10.0;
 
+    // Miss chance for binary spells
+    // Based on targets non-level based resistance
+    // Chance of resist is 75% of the resistScore/resistCap
+    // https://royalgiraffe.github.io/resist-guide
+    if (spell->binary)
+        hit *= 1.0 - 0.75 * resistScore(unit, spell, false) / (config.target_level * 5.0);
+
     hit += unit->hitChance(spell);
 
     return std::min(hit, 99.0);
@@ -1515,32 +1522,72 @@ double Simulation::spellDmgResist(std::shared_ptr<unit::Unit> unit, const spell:
     return round(instance.dmg * resistance_multiplier);
 }
 
-double Simulation::resistScore(std::shared_ptr<unit::Unit> unit, std::shared_ptr<spell::Spell> spell, bool level_based)
+double Simulation::resistScore(std::shared_ptr<unit::Unit> unit, std::shared_ptr<spell::Spell> spell, bool level_based) const
 {
-    double res_score = config.target_resistance;
-    res_score-= unit->getSpellPenetration(spell->school);
+    // Init target resistances
+    std::vector<double> resistv;
+    for (int i=SCHOOL_NONE; i != SCHOOL_PHYSICAL; i++)
+        resistv.push_back(config.target_resistance - unit->getSpellPenetration(static_cast<School>(i)));
 
-    if (config.curse_of_shadow && spell->isSchool(SCHOOL_ARCANE, SCHOOL_SHADOW)) {
-        if (config.player_level >= 56)
-            res_score-= 75.0;
-        else if (config.player_level >= 44)
-            res_score-= 60.0;
+    // Apply target resistance debuffs (curses)
+    if (config.curse_of_shadow_eye) {
+        resistv[SCHOOL_ARCANE] -= 75.0;
+        resistv[SCHOOL_SHADOW] -= 75.0;
     }
-    else if (config.curse_of_elements && spell->isSchool(SCHOOL_FIRE, SCHOOL_FROST)) {
-        if (config.player_level >= 56)
-            res_score-= 75.0;
-        else if (config.player_level >= 44)
-            res_score-= 60.0;
-        else if (config.player_level >= 32)
-            res_score-= 45.0;
+    else if (config.curse_of_shadow) {
+        if (config.player_level >= 56) {
+            resistv[SCHOOL_ARCANE] -= 75.0;
+            resistv[SCHOOL_SHADOW] -= 75.0;
+        }
+        else if (config.player_level >= 44) {
+            resistv[SCHOOL_ARCANE] -= 60.0;
+            resistv[SCHOOL_SHADOW] -= 60.0;
+        }
     }
     else if (config.mekkatorques_arcano_shredder) {
-        res_score-= 45.0;
+        resistv[SCHOOL_ARCANE] = std::min(resistv[SCHOOL_ARCANE], -45.0);
+        resistv[SCHOOL_SHADOW] = std::min(resistv[SCHOOL_SHADOW], -45.0);
     }
 
+    if (config.curse_of_elements_eye) {
+        resistv[SCHOOL_FIRE] -= 75.0;
+        resistv[SCHOOL_FROST] -= 75.0;
+    }
+    else if (config.curse_of_elements) {
+        if (config.player_level >= 56) {
+            resistv[SCHOOL_FIRE] -= 75.0;
+            resistv[SCHOOL_FROST] -= 75.0;
+        }
+        else if (config.player_level >= 44) {
+            resistv[SCHOOL_FIRE] -= 60.0;
+            resistv[SCHOOL_FROST] -= 60.0;
+        }
+        else if (config.player_level >= 32) {
+            resistv[SCHOOL_FIRE] -= 45.0;
+            resistv[SCHOOL_FROST] -= 45.0;
+        }
+    }
+    else if (config.mekkatorques_arcano_shredder) {
+        resistv[SCHOOL_FIRE] = std::min(resistv[SCHOOL_FIRE], -45.0);
+        resistv[SCHOOL_FROST] = std::min(resistv[SCHOOL_FROST], -45.0);
+    }
+    
+    if (config.mekkatorques_arcano_shredder) {
+        resistv[SCHOOL_NATURE] = std::min(resistv[SCHOOL_NATURE], -45.0);
+        resistv[SCHOOL_HOLY] = std::min(resistv[SCHOOL_HOLY], -45.0);
+    }
+
+    // Find lowest resist for spell school
+    double res_score = 50000;
+    for (int i=SCHOOL_NONE; i != SCHOOL_PHYSICAL; i++) {
+        if (spell->isSchool(static_cast<School>(i)) && resistv[i] < res_score)
+            res_score = resistv[i];
+    }
+
+    // Minimum 0 resistance
     res_score = std::max(res_score, 0.0);
 
-    // Target level minimum resistance
+    // Level-based minimum resistance
     if (level_based && config.target_level > config.player_level) {
         double diff = config.target_level - config.player_level;
 

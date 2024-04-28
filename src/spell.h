@@ -370,6 +370,7 @@ namespace spell
             cast_time = 3;
             coeff = 1;
             speed = 24;
+            binary = true;
         }
     };
 
@@ -398,6 +399,7 @@ namespace spell
             cast_time = 2.5;
             coeff = 0.814; // 3.0 / 3.5 * 0.95
             speed = 24;
+            binary = true;
         }
     };
 

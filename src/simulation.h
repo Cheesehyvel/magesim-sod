@@ -229,7 +229,7 @@ public:
 
     double spellDmgResist(std::shared_ptr<unit::Unit> unit, const spell::SpellInstance& instance);
 
-    double resistScore(std::shared_ptr<unit::Unit> unit, std::shared_ptr<spell::Spell> spell, bool level_based);
+    double resistScore(std::shared_ptr<unit::Unit> unit, std::shared_ptr<spell::Spell> spell, bool level_based) const;
 
     spell::Result getSpellResult(std::shared_ptr<unit::Unit> unit, std::shared_ptr<spell::Spell> spell, std::shared_ptr<target::Target> target) const;
 
